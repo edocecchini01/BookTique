@@ -4,6 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="#FFF4E0"
     tools:context=".MainActivity">
 
     <com.google.android.material.bottomnavigation.BottomNavigationView
@@ -54,15 +55,125 @@
             android:id="@+id/my_button"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_gravity="right"
+            android:layout_marginEnd="35dp"
             android:background="?attr/selectableItemBackgroundBorderless"
             android:contentDescription=""
             android:padding="8dp"
-            android:src="@drawable/profile_circle_icon"
-            android:layout_gravity="right"
-            android:layout_marginEnd="35dp"
-            />
+            android:src="@drawable/profile_circle_icon" />
 
 
     </androidx.appcompat.widget.Toolbar>
+
+    <HorizontalScrollView
+        android:id="@+id/horizontalScrollView3"
+        android:layout_width="410dp"
+        android:layout_height="140dp"
+        android:layout_marginTop="43dp"
+        android:layout_marginBottom="43dp"
+        android:background="#80FFBF9B"
+        app:layout_constraintBottom_toTopOf="@+id/bottomNavigationView"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/horizontalScrollView"
+        app:layout_constraintVertical_bias="0.222">
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent" />
+    </HorizontalScrollView>
+
+    <HorizontalScrollView
+        android:id="@+id/horizontalScrollView2"
+        android:layout_width="410dp"
+        android:layout_height="140dp"
+        android:layout_marginTop="43dp"
+        android:background="#80FFBF9B"
+        app:layout_constraintBottom_toTopOf="@+id/horizontalScrollView"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/toolbar">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <ImageButton
+                android:id="@+id/book"
+                android:layout_width="88dp"
+                android:layout_height="match_parent"
+                android:layout_gravity="center"
+                android:layout_marginEnd="35dp"
+                android:background="?attr/selectableItemBackgroundBorderless"
+                android:contentDescription=""
+                android:padding="8dp"
+                android:src="@drawable/profile_circle_icon" />
+
+            <ImageButton
+                android:id="@+id/book2"
+                android:layout_width="88dp"
+                android:layout_height="match_parent"
+                android:layout_gravity="center"
+                android:layout_marginEnd="35dp"
+                android:background="?attr/selectableItemBackgroundBorderless"
+                android:contentDescription=""
+                android:padding="8dp"
+                android:src="@drawable/profile_circle_icon" />
+
+            <ImageButton
+                android:id="@+id/book3"
+                android:layout_width="88dp"
+                android:layout_height="match_parent"
+                android:layout_gravity="center"
+                android:layout_marginEnd="35dp"
+                android:background="?attr/selectableItemBackgroundBorderless"
+                android:contentDescription=""
+                android:padding="8dp"
+                android:src="@drawable/profile_circle_icon" />
+
+            <ImageButton
+                android:id="@+id/book4"
+                android:layout_width="88dp"
+                android:layout_height="match_parent"
+                android:layout_gravity="center"
+                android:layout_marginEnd="35dp"
+                android:background="?attr/selectableItemBackgroundBorderless"
+                android:contentDescription=""
+                android:padding="8dp"
+                android:src="@drawable/profile_circle_icon" />
+
+            <ImageButton
+                android:id="@+id/book5"
+                android:layout_width="88dp"
+                android:layout_height="match_parent"
+                android:layout_gravity="center"
+                android:layout_marginEnd="35dp"
+                android:background="?attr/selectableItemBackgroundBorderless"
+                android:contentDescription=""
+                android:padding="8dp"
+                android:src="@drawable/profile_circle_icon" />
+
+
+        </LinearLayout>
+    </HorizontalScrollView>
+
+    <HorizontalScrollView
+        android:id="@+id/horizontalScrollView"
+        android:layout_width="410dp"
+        android:layout_height="140dp"
+        android:layout_marginTop="43dp"
+        android:background="#80FFBF9B"
+        app:layout_constraintBottom_toTopOf="@+id/horizontalScrollView3"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/horizontalScrollView2">
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent" />
+    </HorizontalScrollView>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
