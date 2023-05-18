@@ -11,5 +11,11 @@ class MainActivity : AppCompatActivity() {
         if (supportActionBar != null) {
             supportActionBar!!.hide()
         }
+
+        val fragment = CatalogoHome()
+        supportFragmentManager.beginTransaction()
+            .replace(R.id.fragmentContainer, fragment)
+            .commit()
+
     }
 }
