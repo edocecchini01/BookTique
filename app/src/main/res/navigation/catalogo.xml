@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/catalogo"
+    app:startDestination="@id/catalogoHome">
+    <fragment
+        android:id="@+id/catalogoHome"
+        android:name="com.example.booktique.CatalogoHome"
+        android:label="CatalogoHome" >
+        <action
+            android:id="@+id/action_catalogoHome_to_catalogoDaLeggere"
+            app:destination="@id/catalogoDaLeggere" />
+    </fragment>
+    <fragment
+        android:id="@+id/catalogoDaLeggere"
+        android:name="com.example.booktique.CatalogoDaLeggere"
+        android:label="fragment_catalogo_da_leggere"
+        tools:layout="@layout/fragment_catalogo_da_leggere" />
+</navigation>
