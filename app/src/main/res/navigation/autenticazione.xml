@@ -3,11 +3,22 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/autenticazione"
-    app:startDestination="@id/autenticazioneActivity">
+    app:startDestination="@id/login">
 
-    <activity
-        android:id="@+id/autenticazioneActivity"
-        android:name="com.example.booktique.AutenticazioneActivity"
-        android:label="activity_autenticazione"
-        tools:layout="@layout/activity_autenticazione" />
+    <fragment
+        android:id="@+id/login"
+        android:name="com.example.booktique.Login"
+        android:label="Login" >
+        <action
+            android:id="@+id/action_login_to_registrazione"
+            app:destination="@id/registrazione" />
+    </fragment>
+    <fragment
+        android:id="@+id/registrazione"
+        android:name="com.example.booktique.registrazione"
+        android:label="registrazione" >
+        <action
+            android:id="@+id/action_registrazione_to_login"
+            app:destination="@id/login" />
+    </fragment>
 </navigation>
