@@ -22,6 +22,8 @@
         android:label="registrazione" >
         <action
             android:id="@+id/action_registrazione_to_login"
-            app:destination="@id/login" />
+            app:destination="@id/login"
+            app:popUpTo="@id/registrazione"
+            app:popUpToInclusive="true"/>
     </fragment>
 </navigation>
