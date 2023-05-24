@@ -6,7 +6,7 @@
         android:title="Catalogo"
         android:icon="@drawable/catalogo_icon"/>
     <item
-        android:id="@+id/scoprie"
+        android:id="@+id/scopriPulsante"
         android:title="Scopri"
         android:icon="@drawable/scopri_icon"/>
     <item

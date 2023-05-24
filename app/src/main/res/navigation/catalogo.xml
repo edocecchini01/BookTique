@@ -11,10 +11,21 @@
         <action
             android:id="@+id/action_catalogoHome_to_catalogoDaLeggere"
             app:destination="@id/catalogoDaLeggere" />
+        <action
+            android:id="@+id/action_catalogoHome_to_scopri"
+            app:destination="@id/scopri" />
     </fragment>
     <fragment
         android:id="@+id/catalogoDaLeggere"
         android:name="com.example.booktique.CatalogoDaLeggere"
         android:label="fragment_catalogo_da_leggere"
         tools:layout="@layout/fragment_catalogo_da_leggere" />
+    <fragment
+        android:id="@+id/scopri"
+        android:name="com.example.booktique.Scopri"
+        android:label="Scopri" >
+        <action
+            android:id="@+id/action_scopri_to_catalogoHome"
+            app:destination="@id/catalogoHome" />
+    </fragment>
 </navigation>
