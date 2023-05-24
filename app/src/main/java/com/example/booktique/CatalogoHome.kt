@@ -1,5 +1,6 @@
 package com.example.booktique
 
+import android.content.Intent
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
@@ -8,6 +9,7 @@ import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
 import androidx.navigation.Navigation
 import com.example.booktique.databinding.FragmentCatalogoHomeBinding
+import com.example.booktique.AutenticazioneActivity
 
 class CatalogoHome : Fragment() {
     private lateinit var binding: FragmentCatalogoHomeBinding
@@ -23,6 +25,11 @@ class CatalogoHome : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         binding.daLeggereLabel.setOnClickListener {
             Navigation.findNavController(view).navigate(R.id.action_catalogoHome_to_catalogoDaLeggere)
+        }
+
+        binding.myButton.setOnClickListener{
+            val intent = Intent(requireActivity(), AutenticazioneActivity::class.java)
+            startActivity(intent)
         }
 
     }
