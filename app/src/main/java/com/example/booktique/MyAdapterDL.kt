@@ -10,6 +10,12 @@ import androidx.recyclerview.widget.RecyclerView
 class MyAdapterDL(private val listaLibri : ArrayList<Libro>) :
     RecyclerView.Adapter<MyAdapterDL.MyViewHolder>() {
 
+    class MyViewHolder(itemView : View) : RecyclerView.ViewHolder(itemView){
+
+        val cover : ImageButton = itemView.findViewById(R.id.coverDL)
+        val titolo : TextView = itemView.findViewById(R.id.titoloDL)
+        val genere : TextView = itemView.findViewById(R.id.genereDL)
+    }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MyViewHolder {
         val itemView = LayoutInflater.from(parent.context).inflate(R.layout.lista_libri_da_leggere,parent,false)
@@ -27,11 +33,5 @@ class MyAdapterDL(private val listaLibri : ArrayList<Libro>) :
         holder.genere.text = currentItem.genere
     }
 
-    class MyViewHolder(itemView : View) : RecyclerView.ViewHolder(itemView){
-
-        val cover : ImageButton = itemView.findViewById(R.id.coverDL)
-        val titolo : TextView = itemView.findViewById(R.id.titoloDL)
-        val genere : TextView = itemView.findViewById(R.id.genereDL)
-    }
 
 }

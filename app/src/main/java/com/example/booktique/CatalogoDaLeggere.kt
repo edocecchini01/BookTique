@@ -1,6 +1,7 @@
 package com.example.booktique
 
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -23,9 +24,6 @@ class CatalogoDaLeggere : Fragment() {
 
         recyclerView = binding.listaLibriLeggere
         recyclerView.layoutManager = LinearLayoutManager(requireContext())
-
-        adapter = MyAdapterDL(listaLibri)
-        recyclerView.adapter = adapter
 
         return binding.root
     }
