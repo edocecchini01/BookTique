@@ -32,7 +32,6 @@ class Login : Fragment() {
                 Navigation.findNavController(view).navigate(R.id.action_login_to_registrazione)
             }
         }
-
     }
 }
 

@@ -8,6 +8,7 @@ import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
 import androidx.navigation.Navigation
 import com.example.booktique.databinding.FragmentScopriBinding
+import com.example.booktique.FragmentUtils
 
 private lateinit var binding: FragmentScopriBinding
 class Scopri : Fragment() {
@@ -30,11 +31,15 @@ class Scopri : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        binding.button2.setOnClickListener {
+            FragmentUtils.replaceFragment(requireFragmentManager(), R.id.fragmentContainerView, ScopriPerTe())
+        }
+/*
         binding.clickListenerPerTe = object: ClickListenerPerTe {
             override fun onButtonClick() {
                 Navigation.findNavController(view).navigate(R.id.action_scopri_to_scopriPerTe)
             }
-        }
+        }*/
 
     }
 }
