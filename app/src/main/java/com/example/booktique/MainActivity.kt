@@ -2,24 +2,47 @@ package com.example.booktique
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import androidx.navigation.NavController
-import androidx.navigation.findNavController
-import androidx.navigation.ui.setupWithNavController
-import com.google.android.material.bottomnavigation.BottomNavigationView
+import androidx.fragment.app.Fragment
+import com.example.booktique.databinding.ActivityMainBinding
 
 
 class MainActivity : AppCompatActivity() {
+    private lateinit var binding: ActivityMainBinding
 
-    private lateinit var navController: NavController
-    private lateinit var bottomNavView: BottomNavigationView
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_main)
+
 
         if (supportActionBar != null) {
             supportActionBar!!.hide()
         }
 
+
+        binding = ActivityMainBinding.inflate(layoutInflater)
+        setContentView(binding.root)
+        replaceFragment(CatalogoHome())
+
+        binding.bottomNavigationView.setOnItemSelectedListener {
+            when (it.itemId) {
+
+                R.id.catalogoPulsante -> replaceFragment(CatalogoHome())
+                R.id.scopriPulsante -> replaceFragment(Scopri())
+
+                else -> {}
+            }
+
+            true
+        }
+
+    }
+
+        private fun replaceFragment(fragment: Fragment){
+            val fragmentManager = supportFragmentManager
+            val fragmentTransaction = fragmentManager.beginTransaction()
+            fragmentTransaction.replace(R.id.fragmentContainerView,  fragment)
+            fragmentTransaction.commit()
+
+        }
 
         //provare con l'explicit intent
 
@@ -43,5 +66,5 @@ class MainActivity : AppCompatActivity() {
         }*/
 
 
-    }
+
 }

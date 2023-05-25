@@ -2,6 +2,12 @@
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools">
+    <data>
+        <variable
+            name="clickListenerPerTe"
+            type="com.example.booktique.Scopri.ClickListenerPerTe" />
+    </data>
+
 <FrameLayout
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -64,7 +70,8 @@
                         app:layout_constraintHorizontal_chainStyle="packed"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toBottomOf="@+id/searchView"
-                        app:layout_constraintVertical_bias="0.733" />
+                        app:layout_constraintVertical_bias="0.733"
+                        />
 
                     <Button
                         android:id="@+id/button2"
@@ -79,7 +86,8 @@
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toEndOf="@+id/button1"
-                        app:layout_constraintTop_toBottomOf="@+id/searchView" />
+                        app:layout_constraintTop_toBottomOf="@+id/searchView"
+                        android:onClick="@{() -> clickListenerPerTe.onButtonClick()}"/>
 
 
                 </androidx.constraintlayout.widget.ConstraintLayout>
@@ -87,7 +95,7 @@
                 <androidx.constraintlayout.widget.ConstraintLayout
                     android:id="@+id/generi"
                     android:layout_width="match_parent"
-                    android:layout_height="194dp"
+                    android:layout_height="222dp"
                     android:background="#80FFBF9B"
                     android:title="Toolbar"
                     app:layout_constraintEnd_toEndOf="@+id/button1"
@@ -105,6 +113,7 @@
                         android:textAllCaps="false"
                         android:textColor="#B46060"
                         android:textSize="20dp"
+                        app:layout_constraintBottom_toTopOf="@+id/button3"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintHorizontal_bias="0.069"
                         app:layout_constraintStart_toStartOf="parent"
@@ -115,45 +124,52 @@
                         android:layout_width="105dp"
                         android:layout_height="48dp"
                         android:layout_marginStart="20dp"
-                        android:layout_marginBottom="20dp"
+                        android:layout_marginTop="64dp"
+                        android:layout_marginEnd="24dp"
+                        android:layout_marginBottom="38dp"
                         android:backgroundTint="#F2F2F2"
                         android:fontFamily="@font/lora_bold_italic"
                         android:text="Fantasy"
-                        android:textSize="13dp"
                         android:textColor="#4D4D4D"
+                        android:textSize="13dp"
                         app:layout_constraintBottom_toTopOf="@+id/button6"
                         app:layout_constraintEnd_toStartOf="@+id/button4"
-                        app:layout_constraintHorizontal_bias="0.032"
                         app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@+id/textView6"
-                        app:layout_constraintVertical_bias="1.0" />
+                        app:layout_constraintTop_toTopOf="parent" />
 
                     <Button
                         android:id="@+id/button4"
                         android:layout_width="105dp"
                         android:layout_height="47dp"
-                        android:layout_marginTop="52dp"
-                        android:layout_marginEnd="24dp"
+                        android:layout_marginTop="64dp"
+                        android:layout_marginBottom="37dp"
                         android:backgroundTint="#F2F2F2"
                         android:fontFamily="@font/lora_bold_italic"
                         android:text="Romanzi"
-                        android:textSize="13dp"
                         android:textColor="#4D4D4D"
+                        android:textSize="13dp"
+                        app:layout_constraintBottom_toTopOf="@+id/button7"
                         app:layout_constraintEnd_toStartOf="@+id/button5"
+                        app:layout_constraintHorizontal_bias="1.0"
+                        app:layout_constraintStart_toEndOf="@+id/button3"
                         app:layout_constraintTop_toTopOf="parent" />
 
                     <Button
                         android:id="@+id/button5"
                         android:layout_width="106dp"
                         android:layout_height="47dp"
-                        android:layout_marginTop="52dp"
+                        android:layout_marginStart="24dp"
+                        android:layout_marginTop="64dp"
                         android:layout_marginEnd="20dp"
+                        android:layout_marginBottom="39dp"
                         android:backgroundTint="#F2F2F2"
                         android:fontFamily="@font/lora_bold_italic"
                         android:text="Gialli"
-                        android:textSize="13dp"
                         android:textColor="#4D4D4D"
+                        android:textSize="13dp"
+                        app:layout_constraintBottom_toTopOf="@+id/button8"
                         app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toEndOf="@+id/button4"
                         app:layout_constraintTop_toTopOf="parent" />
 
                     <Button
@@ -161,251 +177,248 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="20dp"
+                        android:layout_marginEnd="24dp"
                         android:layout_marginBottom="24dp"
                         android:backgroundTint="#F2F2F2"
                         android:fontFamily="@font/lora_bold_italic"
                         android:text="Biografie"
-                        android:textSize="13dp"
                         android:textColor="#4D4D4D"
+                        android:textSize="13dp"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintEnd_toStartOf="@+id/button7"
-                        app:layout_constraintHorizontal_bias="0.04"
-                        app:layout_constraintStart_toStartOf="parent" />
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/button3"
+                        app:layout_constraintVertical_bias="1.0" />
 
                     <Button
                         android:id="@+id/button7"
                         android:layout_width="107dp"
                         android:layout_height="48dp"
-                        android:layout_marginEnd="24dp"
                         android:layout_marginBottom="24dp"
                         android:backgroundTint="#F2F2F2"
                         android:fontFamily="@font/lora_bold_italic"
                         android:text="Storico"
-                        android:textSize="13dp"
                         android:textColor="#4D4D4D"
+                        android:textSize="13dp"
                         app:layout_constraintBottom_toBottomOf="parent"
-                        app:layout_constraintEnd_toStartOf="@+id/button8" />
+                        app:layout_constraintEnd_toStartOf="@+id/button8"
+                        app:layout_constraintHorizontal_bias="1.0"
+                        app:layout_constraintStart_toEndOf="@+id/button6"
+                        app:layout_constraintTop_toBottomOf="@+id/button4"
+                        app:layout_constraintVertical_bias="0.948" />
 
                     <Button
                         android:id="@+id/button8"
                         android:layout_width="105dp"
                         android:layout_height="48dp"
+                        android:layout_marginStart="24dp"
                         android:layout_marginEnd="20dp"
                         android:layout_marginBottom="24dp"
                         android:backgroundTint="#F2F2F2"
                         android:fontFamily="@font/lora_bold_italic"
                         android:text="Horror"
-                        android:textSize="13dp"
                         android:textColor="#4D4D4D"
+                        android:textSize="13dp"
                         app:layout_constraintBottom_toBottomOf="parent"
-                        app:layout_constraintEnd_toEndOf="parent" />
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toEndOf="@+id/button7"
+                        app:layout_constraintTop_toBottomOf="@+id/button5"
+                        app:layout_constraintVertical_bias="1.0" />
                 </androidx.constraintlayout.widget.ConstraintLayout>
 
-                <androidx.constraintlayout.widget.ConstraintLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent">
 
 
-                    <HorizontalScrollView
-                        android:id="@+id/horizontalScrollView2"
-                        android:layout_width="409dp"
-                        android:layout_height="140dp"
-                        android:layout_marginBottom="20dp"
-                        android:background="#80FFBF9B"
-                        app:layout_constraintBottom_toTopOf="@+id/in_corso_label"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintHorizontal_bias="0.0"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toTopOf="parent"
-                        app:layout_constraintVertical_bias="1.0">
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:orientation="vertical">
 
-                        <LinearLayout
-                            android:layout_width="match_parent"
-                            android:layout_height="match_parent">
-
-                            <ImageButton
-                                android:id="@+id/book_leggere1"
-                                android:layout_width="88dp"
-                                android:layout_height="match_parent"
-                                android:layout_gravity="center"
-                                android:layout_marginStart="40dp"
-                                android:layout_marginEnd="35dp"
-                                android:background="?attr/selectableItemBackgroundBorderless"
-                                android:contentDescription=""
-                                android:padding="8dp"
-                                android:src="@drawable/profile_circle_icon" />
-
-                            <ImageButton
-                                android:id="@+id/book_leggere2"
-                                android:layout_width="88dp"
-                                android:layout_height="match_parent"
-                                android:layout_gravity="center"
-                                android:layout_marginEnd="35dp"
-                                android:background="?attr/selectableItemBackgroundBorderless"
-                                android:contentDescription=""
-                                android:padding="8dp"
-                                android:src="@drawable/profile_circle_icon" />
-
-                            <ImageButton
-                                android:id="@+id/book_leggere3"
-                                android:layout_width="88dp"
-                                android:layout_height="match_parent"
-                                android:layout_gravity="center"
-                                android:layout_marginEnd="35dp"
-                                android:background="?attr/selectableItemBackgroundBorderless"
-                                android:contentDescription="c"
-                                android:padding="8dp"
-                                android:src="@drawable/profile_circle_icon" />
-
-                            <ImageButton
-                                android:id="@+id/book_leggere4"
-                                android:layout_width="88dp"
-                                android:layout_height="match_parent"
-                                android:layout_gravity="center"
-                                android:layout_marginEnd="35dp"
-                                android:background="?attr/selectableItemBackgroundBorderless"
-                                android:contentDescription=""
-                                android:padding="8dp"
-                                android:src="@drawable/profile_circle_icon" />
-
-                            <ImageButton
-                                android:id="@+id/book_leggere5"
-                                android:layout_width="88dp"
-                                android:layout_height="match_parent"
-                                android:layout_gravity="center"
-                                android:layout_marginEnd="35dp"
-                                android:background="?attr/selectableItemBackgroundBorderless"
-                                android:contentDescription=""
-                                android:padding="8dp"
-                                android:src="@drawable/profile_circle_icon" />
-
-                            <ImageButton
-                                android:id="@+id/book_leggere6"
-                                android:layout_width="88dp"
-                                android:layout_height="match_parent"
-                                android:layout_gravity="center"
-                                android:layout_marginEnd="35dp"
-                                android:background="?attr/selectableItemBackgroundBorderless"
-                                android:contentDescription=""
-                                android:padding="8dp"
-                                android:src="@drawable/profile_circle_icon" />
-
-
-                        </LinearLayout>
-                    </HorizontalScrollView>
-
-                    <HorizontalScrollView
-                        android:id="@+id/horizontalScrollView"
-                        android:layout_width="410dp"
-                        android:layout_height="140dp"
-                        android:background="#80FFBF9B"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintStart_toStartOf="parent"
-                        tools:layout_editor_absoluteY="259dp">
-
-                        <LinearLayout
+                        <TextView
+                            android:id="@+id/in_corso_label"
                             android:layout_width="wrap_content"
-                            android:layout_height="match_parent">
+                            android:layout_height="wrap_content"
+                            android:layout_marginBottom="12dp"
+                            android:layout_marginTop="28dp"
+                            android:fontFamily="@font/lora_bold_italic"
+                            android:text="Nuove Uscite:"
+                            android:textColor="@color/red"
+                            android:textSize="17dp" />
 
-                            <ImageButton
-                                android:id="@+id/book_in_c1"
-                                android:layout_width="88dp"
-                                android:layout_height="match_parent"
-                                android:layout_gravity="center"
-                                android:layout_marginStart="40dp"
-                                android:layout_marginEnd="35dp"
-                                android:background="?attr/selectableItemBackgroundBorderless"
-                                android:contentDescription=""
-                                android:padding="8dp"
-                                android:src="@drawable/profile_circle_icon" />
+                        <HorizontalScrollView
+                            android:id="@+id/horizontalScrollView"
+                            android:layout_width="410dp"
+                            android:layout_height="140dp"
+                            android:background="#80FFBF9B">
 
-                            <ImageButton
-                                android:id="@+id/book_in_c2"
-                                android:layout_width="88dp"
-                                android:layout_height="match_parent"
-                                android:layout_gravity="center"
-                                android:layout_marginEnd="35dp"
-                                android:background="?attr/selectableItemBackgroundBorderless"
-                                android:contentDescription=""
-                                android:padding="8dp"
-                                android:src="@drawable/profile_circle_icon" />
+                            <LinearLayout
+                                android:layout_width="wrap_content"
+                                android:layout_height="match_parent">
 
-                            <ImageButton
-                                android:id="@+id/book_in_c3"
-                                android:layout_width="88dp"
-                                android:layout_height="match_parent"
-                                android:layout_gravity="center"
-                                android:layout_marginEnd="35dp"
-                                android:background="?attr/selectableItemBackgroundBorderless"
-                                android:contentDescription=""
-                                android:padding="8dp"
-                                android:src="@drawable/profile_circle_icon" />
+                                <ImageButton
+                                    android:id="@+id/book_in_c1"
+                                    android:layout_width="88dp"
+                                    android:layout_height="match_parent"
+                                    android:layout_gravity="center"
+                                    android:layout_marginStart="40dp"
+                                    android:layout_marginEnd="35dp"
+                                    android:background="?attr/selectableItemBackgroundBorderless"
+                                    android:contentDescription=""
+                                    android:padding="8dp"
+                                    android:src="@drawable/profile_circle_icon" />
 
-                            <ImageButton
-                                android:id="@+id/book_in_c4"
-                                android:layout_width="88dp"
-                                android:layout_height="match_parent"
-                                android:layout_gravity="center"
-                                android:layout_marginEnd="35dp"
-                                android:background="?attr/selectableItemBackgroundBorderless"
-                                android:contentDescription=""
-                                android:padding="8dp"
-                                android:src="@drawable/profile_circle_icon" />
+                                <ImageButton
+                                    android:id="@+id/book_in_c2"
+                                    android:layout_width="88dp"
+                                    android:layout_height="match_parent"
+                                    android:layout_gravity="center"
+                                    android:layout_marginEnd="35dp"
+                                    android:background="?attr/selectableItemBackgroundBorderless"
+                                    android:contentDescription=""
+                                    android:padding="8dp"
+                                    android:src="@drawable/profile_circle_icon" />
 
-                            <ImageButton
-                                android:id="@+id/book_in_c5"
-                                android:layout_width="88dp"
-                                android:layout_height="match_parent"
-                                android:layout_gravity="center"
-                                android:layout_marginEnd="35dp"
-                                android:background="?attr/selectableItemBackgroundBorderless"
-                                android:contentDescription=""
-                                android:padding="8dp"
-                                android:src="@drawable/profile_circle_icon" />
+                                <ImageButton
+                                    android:id="@+id/book_in_c3"
+                                    android:layout_width="88dp"
+                                    android:layout_height="match_parent"
+                                    android:layout_gravity="center"
+                                    android:layout_marginEnd="35dp"
+                                    android:background="?attr/selectableItemBackgroundBorderless"
+                                    android:contentDescription=""
+                                    android:padding="8dp"
+                                    android:src="@drawable/profile_circle_icon" />
 
-                            <ImageButton
-                                android:id="@+id/book_in_c6"
-                                android:layout_width="88dp"
-                                android:layout_height="match_parent"
-                                android:layout_gravity="center"
-                                android:layout_marginEnd="35dp"
-                                android:background="?attr/selectableItemBackgroundBorderless"
-                                android:contentDescription=""
-                                android:padding="8dp"
-                                android:src="@drawable/profile_circle_icon" />
-                        </LinearLayout>
-                    </HorizontalScrollView>
+                                <ImageButton
+                                    android:id="@+id/book_in_c4"
+                                    android:layout_width="88dp"
+                                    android:layout_height="match_parent"
+                                    android:layout_gravity="center"
+                                    android:layout_marginEnd="35dp"
+                                    android:background="?attr/selectableItemBackgroundBorderless"
+                                    android:contentDescription=""
+                                    android:padding="8dp"
+                                    android:src="@drawable/profile_circle_icon" />
 
-                    <TextView
-                        android:id="@+id/in_corso_label"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginBottom="12dp"
-                        android:fontFamily="@font/lora_bold_italic"
-                        android:text="Nuove Uscite:"
-                        android:textColor="@color/red"
-                        android:textSize="17dp"
-                        app:layout_constraintBottom_toTopOf="@+id/horizontalScrollView"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintHorizontal_bias="0.045"
-                        app:layout_constraintStart_toStartOf="parent" />
+                                <ImageButton
+                                    android:id="@+id/book_in_c5"
+                                    android:layout_width="88dp"
+                                    android:layout_height="match_parent"
+                                    android:layout_gravity="center"
+                                    android:layout_marginEnd="35dp"
+                                    android:background="?attr/selectableItemBackgroundBorderless"
+                                    android:contentDescription=""
+                                    android:padding="8dp"
+                                    android:src="@drawable/profile_circle_icon" />
 
-                    <TextView
-                        android:id="@+id/da_leggere_label"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginBottom="12dp"
-                        android:fontFamily="@font/lora_bold_italic"
-                        android:text="Popolari 2023:"
-                        android:textColor="@color/red"
-                        android:textSize="17dp"
-                        app:layout_constraintBottom_toTopOf="@+id/horizontalScrollView2"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintHorizontal_bias="0.048"
-                        app:layout_constraintStart_toStartOf="parent" />
+                                <ImageButton
+                                    android:id="@+id/book_in_c6"
+                                    android:layout_width="88dp"
+                                    android:layout_height="match_parent"
+                                    android:layout_gravity="center"
+                                    android:layout_marginEnd="35dp"
+                                    android:background="?attr/selectableItemBackgroundBorderless"
+                                    android:contentDescription=""
+                                    android:padding="8dp"
+                                    android:src="@drawable/profile_circle_icon" />
+                            </LinearLayout>
+                        </HorizontalScrollView>
+
+                        <TextView
+                            android:id="@+id/da_leggere_label"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginBottom="12dp"
+                            android:layout_marginTop="28dp"
+                            android:fontFamily="@font/lora_bold_italic"
+                            android:text="Popolari 2023:"
+                            android:textColor="@color/red"
+                            android:textSize="17dp" />
+
+                        <HorizontalScrollView
+                            android:id="@+id/horizontalScrollView2"
+                            android:layout_width="409dp"
+                            android:layout_height="140dp"
+                            android:layout_marginBottom="20dp"
+                            android:background="#80FFBF9B">
+
+                            <LinearLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="match_parent">
+
+                                <ImageButton
+                                    android:id="@+id/book_leggere1"
+                                    android:layout_width="88dp"
+                                    android:layout_height="match_parent"
+                                    android:layout_gravity="center"
+                                    android:layout_marginStart="40dp"
+                                    android:layout_marginEnd="35dp"
+                                    android:background="?attr/selectableItemBackgroundBorderless"
+                                    android:contentDescription=""
+                                    android:padding="8dp"
+                                    android:src="@drawable/profile_circle_icon" />
+
+                                <ImageButton
+                                    android:id="@+id/book_leggere2"
+                                    android:layout_width="88dp"
+                                    android:layout_height="match_parent"
+                                    android:layout_gravity="center"
+                                    android:layout_marginEnd="35dp"
+                                    android:background="?attr/selectableItemBackgroundBorderless"
+                                    android:contentDescription=""
+                                    android:padding="8dp"
+                                    android:src="@drawable/profile_circle_icon" />
+
+                                <ImageButton
+                                    android:id="@+id/book_leggere3"
+                                    android:layout_width="88dp"
+                                    android:layout_height="match_parent"
+                                    android:layout_gravity="center"
+                                    android:layout_marginEnd="35dp"
+                                    android:background="?attr/selectableItemBackgroundBorderless"
+                                    android:contentDescription="c"
+                                    android:padding="8dp"
+                                    android:src="@drawable/profile_circle_icon" />
+
+                                <ImageButton
+                                    android:id="@+id/book_leggere4"
+                                    android:layout_width="88dp"
+                                    android:layout_height="match_parent"
+                                    android:layout_gravity="center"
+                                    android:layout_marginEnd="35dp"
+                                    android:background="?attr/selectableItemBackgroundBorderless"
+                                    android:contentDescription=""
+                                    android:padding="8dp"
+                                    android:src="@drawable/profile_circle_icon" />
+
+                                <ImageButton
+                                    android:id="@+id/book_leggere5"
+                                    android:layout_width="88dp"
+                                    android:layout_height="match_parent"
+                                    android:layout_gravity="center"
+                                    android:layout_marginEnd="35dp"
+                                    android:background="?attr/selectableItemBackgroundBorderless"
+                                    android:contentDescription=""
+                                    android:padding="8dp"
+                                    android:src="@drawable/profile_circle_icon" />
+
+                                <ImageButton
+                                    android:id="@+id/book_leggere6"
+                                    android:layout_width="88dp"
+                                    android:layout_height="match_parent"
+                                    android:layout_gravity="center"
+                                    android:layout_marginEnd="35dp"
+                                    android:background="?attr/selectableItemBackgroundBorderless"
+                                    android:contentDescription=""
+                                    android:padding="8dp"
+                                    android:src="@drawable/profile_circle_icon" />
 
 
-                </androidx.constraintlayout.widget.ConstraintLayout>
+                            </LinearLayout>
+                        </HorizontalScrollView>
+
+                    </LinearLayout>
+
+
 
             </LinearLayout>
         </ScrollView>

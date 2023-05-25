@@ -27,5 +27,16 @@
         <action
             android:id="@+id/action_scopri_to_catalogoHome"
             app:destination="@id/catalogoHome" />
+        <action
+            android:id="@+id/action_scopri_to_scopriPerTe"
+            app:destination="@id/scopriPerTe" />
+    </fragment>
+    <fragment
+        android:id="@+id/scopriPerTe"
+        android:name="com.example.booktique.ScopriPerTe"
+        android:label="ScopriPerTe" >
+        <action
+            android:id="@+id/action_scopriPerTe_to_scopri"
+            app:destination="@id/scopri" />
     </fragment>
 </navigation>

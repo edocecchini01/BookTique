@@ -8,15 +8,303 @@
     tools:context=".CatalogoHome">
 
     <androidx.constraintlayout.widget.ConstraintLayout
-        android:layout_width="409dp"
-        android:layout_height="729dp"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
         tools:layout_editor_absoluteX="1dp"
         tools:layout_editor_absoluteY="1dp">
 
+        <ScrollView
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/toolbar">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/da_leggere_label"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="28dp"
+                    android:layout_marginBottom="12dp"
+                    android:fontFamily="@font/lora_bold_italic"
+                    android:text="Da leggere"
+                    android:textColor="@color/red"
+                    android:textSize="17dp" />
+
+                <HorizontalScrollView
+                    android:id="@+id/horizontalScrollView3"
+                    android:layout_width="410dp"
+                    android:layout_height="140dp"
+                    android:layout_marginBottom="28dp"
+                    android:background="#80FFBF9B">
+
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent">
+
+                        <ImageButton
+                            android:id="@+id/book_letti1"
+                            android:layout_width="88dp"
+                            android:layout_height="match_parent"
+                            android:layout_gravity="center"
+                            android:layout_marginStart="40dp"
+                            android:layout_marginEnd="35dp"
+                            android:background="?attr/selectableItemBackgroundBorderless"
+                            android:contentDescription="c"
+                            android:padding="8dp"
+                            android:src="@drawable/profile_circle_icon" />
+
+                        <ImageButton
+                            android:id="@+id/book_letti2"
+                            android:layout_width="88dp"
+                            android:layout_height="match_parent"
+                            android:layout_gravity="center"
+                            android:layout_marginEnd="35dp"
+                            android:background="?attr/selectableItemBackgroundBorderless"
+                            android:contentDescription="c"
+                            android:padding="8dp"
+                            android:src="@drawable/profile_circle_icon" />
+
+                        <ImageButton
+                            android:id="@+id/book_letti3"
+                            android:layout_width="88dp"
+                            android:layout_height="match_parent"
+                            android:layout_gravity="center"
+                            android:layout_marginEnd="35dp"
+                            android:background="?attr/selectableItemBackgroundBorderless"
+                            android:contentDescription=""
+                            android:padding="8dp"
+                            android:src="@drawable/profile_circle_icon" />
+
+                        <ImageButton
+                            android:id="@+id/book_letti4"
+                            android:layout_width="88dp"
+                            android:layout_height="match_parent"
+                            android:layout_gravity="center"
+                            android:layout_marginEnd="35dp"
+                            android:background="?attr/selectableItemBackgroundBorderless"
+                            android:contentDescription=""
+                            android:padding="8dp"
+                            android:src="@drawable/profile_circle_icon" />
+
+                        <ImageButton
+                            android:id="@+id/book_letti5"
+                            android:layout_width="88dp"
+                            android:layout_height="match_parent"
+                            android:layout_gravity="center"
+                            android:layout_marginEnd="35dp"
+                            android:background="?attr/selectableItemBackgroundBorderless"
+                            android:contentDescription=""
+                            android:padding="8dp"
+                            android:src="@drawable/profile_circle_icon" />
+
+                        <ImageButton
+                            android:id="@+id/book_letti6"
+                            android:layout_width="88dp"
+                            android:layout_height="match_parent"
+                            android:layout_gravity="center"
+                            android:layout_marginEnd="35dp"
+                            android:background="?attr/selectableItemBackgroundBorderless"
+                            android:contentDescription=""
+                            android:padding="8dp"
+                            android:src="@drawable/profile_circle_icon" />
+                    </LinearLayout>
+                </HorizontalScrollView>
+
+                <TextView
+                    android:id="@+id/letti_label"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="12dp"
+                    android:fontFamily="@font/lora_bold_italic"
+                    android:text="Letti"
+                    android:textColor="@color/red"
+                    android:textSize="17dp" />
+
+                <HorizontalScrollView
+                    android:id="@+id/horizontalScrollView2"
+                    android:layout_width="409dp"
+                    android:layout_height="140dp"
+                    android:layout_marginBottom="28dp"
+                    android:background="#80FFBF9B">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent">
+
+                        <ImageButton
+                            android:id="@+id/book_leggere1"
+                            android:layout_width="88dp"
+                            android:layout_height="match_parent"
+                            android:layout_gravity="center"
+                            android:layout_marginStart="40dp"
+                            android:layout_marginEnd="35dp"
+                            android:background="?attr/selectableItemBackgroundBorderless"
+                            android:contentDescription=""
+                            android:padding="8dp"
+                            android:src="@drawable/profile_circle_icon" />
+
+                        <ImageButton
+                            android:id="@+id/book_leggere2"
+                            android:layout_width="88dp"
+                            android:layout_height="match_parent"
+                            android:layout_gravity="center"
+                            android:layout_marginEnd="35dp"
+                            android:background="?attr/selectableItemBackgroundBorderless"
+                            android:contentDescription=""
+                            android:padding="8dp"
+                            android:src="@drawable/profile_circle_icon" />
+
+                        <ImageButton
+                            android:id="@+id/book_leggere3"
+                            android:layout_width="88dp"
+                            android:layout_height="match_parent"
+                            android:layout_gravity="center"
+                            android:layout_marginEnd="35dp"
+                            android:background="?attr/selectableItemBackgroundBorderless"
+                            android:contentDescription="c"
+                            android:padding="8dp"
+                            android:src="@drawable/profile_circle_icon" />
+
+                        <ImageButton
+                            android:id="@+id/book_leggere4"
+                            android:layout_width="88dp"
+                            android:layout_height="match_parent"
+                            android:layout_gravity="center"
+                            android:layout_marginEnd="35dp"
+                            android:background="?attr/selectableItemBackgroundBorderless"
+                            android:contentDescription=""
+                            android:padding="8dp"
+                            android:src="@drawable/profile_circle_icon" />
+
+                        <ImageButton
+                            android:id="@+id/book_leggere5"
+                            android:layout_width="88dp"
+                            android:layout_height="match_parent"
+                            android:layout_gravity="center"
+                            android:layout_marginEnd="35dp"
+                            android:background="?attr/selectableItemBackgroundBorderless"
+                            android:contentDescription=""
+                            android:padding="8dp"
+                            android:src="@drawable/profile_circle_icon" />
+
+                        <ImageButton
+                            android:id="@+id/book_leggere6"
+                            android:layout_width="88dp"
+                            android:layout_height="match_parent"
+                            android:layout_gravity="center"
+                            android:layout_marginEnd="35dp"
+                            android:background="?attr/selectableItemBackgroundBorderless"
+                            android:contentDescription=""
+                            android:padding="8dp"
+                            android:src="@drawable/profile_circle_icon" />
+
+
+                    </LinearLayout>
+                </HorizontalScrollView>
+
+                <TextView
+                    android:id="@+id/in_corso_label"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="12dp"
+                    android:fontFamily="@font/lora_bold_italic"
+                    android:text="In corso"
+                    android:textColor="@color/red"
+                    android:textSize="17dp" />
+
+                <HorizontalScrollView
+                    android:id="@+id/horizontalScrollView"
+                    android:layout_width="410dp"
+                    android:layout_height="140dp"
+                    android:layout_marginBottom="28dp"
+                    android:background="#80FFBF9B">
+
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent">
+
+                        <ImageButton
+                            android:id="@+id/book_in_c1"
+                            android:layout_width="88dp"
+                            android:layout_height="match_parent"
+                            android:layout_gravity="center"
+                            android:layout_marginStart="40dp"
+                            android:layout_marginEnd="35dp"
+                            android:background="?attr/selectableItemBackgroundBorderless"
+                            android:contentDescription=""
+                            android:padding="8dp"
+                            android:src="@drawable/profile_circle_icon" />
+
+                        <ImageButton
+                            android:id="@+id/book_in_c2"
+                            android:layout_width="88dp"
+                            android:layout_height="match_parent"
+                            android:layout_gravity="center"
+                            android:layout_marginEnd="35dp"
+                            android:background="?attr/selectableItemBackgroundBorderless"
+                            android:contentDescription=""
+                            android:padding="8dp"
+                            android:src="@drawable/profile_circle_icon" />
+
+                        <ImageButton
+                            android:id="@+id/book_in_c3"
+                            android:layout_width="88dp"
+                            android:layout_height="match_parent"
+                            android:layout_gravity="center"
+                            android:layout_marginEnd="35dp"
+                            android:background="?attr/selectableItemBackgroundBorderless"
+                            android:contentDescription=""
+                            android:padding="8dp"
+                            android:src="@drawable/profile_circle_icon" />
+
+                        <ImageButton
+                            android:id="@+id/book_in_c4"
+                            android:layout_width="88dp"
+                            android:layout_height="match_parent"
+                            android:layout_gravity="center"
+                            android:layout_marginEnd="35dp"
+                            android:background="?attr/selectableItemBackgroundBorderless"
+                            android:contentDescription=""
+                            android:padding="8dp"
+                            android:src="@drawable/profile_circle_icon" />
+
+                        <ImageButton
+                            android:id="@+id/book_in_c5"
+                            android:layout_width="88dp"
+                            android:layout_height="match_parent"
+                            android:layout_gravity="center"
+                            android:layout_marginEnd="35dp"
+                            android:background="?attr/selectableItemBackgroundBorderless"
+                            android:contentDescription=""
+                            android:padding="8dp"
+                            android:src="@drawable/profile_circle_icon" />
+
+                        <ImageButton
+                            android:id="@+id/book_in_c6"
+                            android:layout_width="88dp"
+                            android:layout_height="match_parent"
+                            android:layout_gravity="center"
+                            android:layout_marginEnd="35dp"
+                            android:background="?attr/selectableItemBackgroundBorderless"
+                            android:contentDescription=""
+                            android:padding="8dp"
+                            android:src="@drawable/profile_circle_icon" />
+                    </LinearLayout>
+                </HorizontalScrollView>
+            </LinearLayout>
+        </ScrollView>
+
         <androidx.appcompat.widget.Toolbar
             android:id="@+id/toolbar"
-            android:layout_width="411dp"
-            android:layout_height="63dp"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
             android:layout_marginBottom="48dp"
             android:background="#4D4D4D"
             android:minHeight="?attr/actionBarSize"
@@ -53,301 +341,6 @@
 
         </androidx.appcompat.widget.Toolbar>
 
-        <HorizontalScrollView
-            android:id="@+id/horizontalScrollView2"
-            android:layout_width="409dp"
-            android:layout_height="140dp"
-            android:layout_marginBottom="28dp"
-            android:background="#80FFBF9B"
-            app:layout_constraintBottom_toTopOf="@+id/in_corso_label"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.0"
-            app:layout_constraintStart_toStartOf="parent">
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="match_parent">
-
-                <ImageButton
-                    android:id="@+id/book_leggere1"
-                    android:layout_width="88dp"
-                    android:layout_height="match_parent"
-                    android:layout_gravity="center"
-                    android:layout_marginStart="40dp"
-                    android:layout_marginEnd="35dp"
-                    android:background="?attr/selectableItemBackgroundBorderless"
-                    android:contentDescription=""
-                    android:padding="8dp"
-                    android:src="@drawable/profile_circle_icon" />
-
-                <ImageButton
-                    android:id="@+id/book_leggere2"
-                    android:layout_width="88dp"
-                    android:layout_height="match_parent"
-                    android:layout_gravity="center"
-                    android:layout_marginEnd="35dp"
-                    android:background="?attr/selectableItemBackgroundBorderless"
-                    android:contentDescription=""
-                    android:padding="8dp"
-                    android:src="@drawable/profile_circle_icon" />
-
-                <ImageButton
-                    android:id="@+id/book_leggere3"
-                    android:layout_width="88dp"
-                    android:layout_height="match_parent"
-                    android:layout_gravity="center"
-                    android:layout_marginEnd="35dp"
-                    android:background="?attr/selectableItemBackgroundBorderless"
-                    android:contentDescription="c"
-                    android:padding="8dp"
-                    android:src="@drawable/profile_circle_icon" />
-
-                <ImageButton
-                    android:id="@+id/book_leggere4"
-                    android:layout_width="88dp"
-                    android:layout_height="match_parent"
-                    android:layout_gravity="center"
-                    android:layout_marginEnd="35dp"
-                    android:background="?attr/selectableItemBackgroundBorderless"
-                    android:contentDescription=""
-                    android:padding="8dp"
-                    android:src="@drawable/profile_circle_icon" />
-
-                <ImageButton
-                    android:id="@+id/book_leggere5"
-                    android:layout_width="88dp"
-                    android:layout_height="match_parent"
-                    android:layout_gravity="center"
-                    android:layout_marginEnd="35dp"
-                    android:background="?attr/selectableItemBackgroundBorderless"
-                    android:contentDescription=""
-                    android:padding="8dp"
-                    android:src="@drawable/profile_circle_icon" />
-
-                <ImageButton
-                    android:id="@+id/book_leggere6"
-                    android:layout_width="88dp"
-                    android:layout_height="match_parent"
-                    android:layout_gravity="center"
-                    android:layout_marginEnd="35dp"
-                    android:background="?attr/selectableItemBackgroundBorderless"
-                    android:contentDescription=""
-                    android:padding="8dp"
-                    android:src="@drawable/profile_circle_icon" />
-
-
-            </LinearLayout>
-        </HorizontalScrollView>
-
-        <HorizontalScrollView
-            android:id="@+id/horizontalScrollView"
-            android:layout_width="410dp"
-            android:layout_height="140dp"
-            android:layout_marginBottom="20dp"
-            android:background="#80FFBF9B"
-            app:layout_constraintBottom_toTopOf="@+id/letti_label"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.0"
-            app:layout_constraintStart_toStartOf="parent">
-
-            <LinearLayout
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent">
-
-                <ImageButton
-                    android:id="@+id/book_in_c1"
-                    android:layout_width="88dp"
-                    android:layout_height="match_parent"
-                    android:layout_gravity="center"
-                    android:layout_marginStart="40dp"
-                    android:layout_marginEnd="35dp"
-                    android:background="?attr/selectableItemBackgroundBorderless"
-                    android:contentDescription=""
-                    android:padding="8dp"
-                    android:src="@drawable/profile_circle_icon" />
-
-                <ImageButton
-                    android:id="@+id/book_in_c2"
-                    android:layout_width="88dp"
-                    android:layout_height="match_parent"
-                    android:layout_gravity="center"
-                    android:layout_marginEnd="35dp"
-                    android:background="?attr/selectableItemBackgroundBorderless"
-                    android:contentDescription=""
-                    android:padding="8dp"
-                    android:src="@drawable/profile_circle_icon" />
-
-                <ImageButton
-                    android:id="@+id/book_in_c3"
-                    android:layout_width="88dp"
-                    android:layout_height="match_parent"
-                    android:layout_gravity="center"
-                    android:layout_marginEnd="35dp"
-                    android:background="?attr/selectableItemBackgroundBorderless"
-                    android:contentDescription=""
-                    android:padding="8dp"
-                    android:src="@drawable/profile_circle_icon" />
-
-                <ImageButton
-                    android:id="@+id/book_in_c4"
-                    android:layout_width="88dp"
-                    android:layout_height="match_parent"
-                    android:layout_gravity="center"
-                    android:layout_marginEnd="35dp"
-                    android:background="?attr/selectableItemBackgroundBorderless"
-                    android:contentDescription=""
-                    android:padding="8dp"
-                    android:src="@drawable/profile_circle_icon" />
-
-                <ImageButton
-                    android:id="@+id/book_in_c5"
-                    android:layout_width="88dp"
-                    android:layout_height="match_parent"
-                    android:layout_gravity="center"
-                    android:layout_marginEnd="35dp"
-                    android:background="?attr/selectableItemBackgroundBorderless"
-                    android:contentDescription=""
-                    android:padding="8dp"
-                    android:src="@drawable/profile_circle_icon" />
-
-                <ImageButton
-                    android:id="@+id/book_in_c6"
-                    android:layout_width="88dp"
-                    android:layout_height="match_parent"
-                    android:layout_gravity="center"
-                    android:layout_marginEnd="35dp"
-                    android:background="?attr/selectableItemBackgroundBorderless"
-                    android:contentDescription=""
-                    android:padding="8dp"
-                    android:src="@drawable/profile_circle_icon" />
-            </LinearLayout>
-        </HorizontalScrollView>
-
-        <TextView
-            android:id="@+id/in_corso_label"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="12dp"
-            android:fontFamily="@font/lora_bold_italic"
-            android:text="In corso"
-            android:textColor="@color/red"
-            android:textSize="17dp"
-            app:layout_constraintBottom_toTopOf="@+id/horizontalScrollView"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.045"
-            app:layout_constraintStart_toStartOf="parent" />
-
-        <TextView
-            android:id="@+id/da_leggere_label"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="12dp"
-            android:fontFamily="@font/lora_bold_italic"
-            android:text="Da leggere"
-            android:textColor="@color/red"
-            android:textSize="17dp"
-            app:layout_constraintBottom_toTopOf="@+id/horizontalScrollView2"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.048"
-            app:layout_constraintStart_toStartOf="parent" />
-
-        <TextView
-            android:id="@+id/letti_label"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="12dp"
-            android:fontFamily="@font/lora_bold_italic"
-            android:text="Letti"
-            android:textColor="@color/red"
-            android:textSize="17dp"
-            app:layout_constraintBottom_toTopOf="@+id/horizontalScrollView3"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.042"
-            app:layout_constraintStart_toStartOf="parent" />
-
-        <HorizontalScrollView
-            android:id="@+id/horizontalScrollView3"
-            android:layout_width="410dp"
-            android:layout_height="140dp"
-            android:layout_marginBottom="60dp"
-            android:background="#80FFBF9B"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.0"
-            app:layout_constraintStart_toStartOf="parent">
-
-            <LinearLayout
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent">
-
-                <ImageButton
-                    android:id="@+id/book_letti1"
-                    android:layout_width="88dp"
-                    android:layout_height="match_parent"
-                    android:layout_gravity="center"
-                    android:layout_marginStart="40dp"
-                    android:layout_marginEnd="35dp"
-                    android:background="?attr/selectableItemBackgroundBorderless"
-                    android:contentDescription="c"
-                    android:padding="8dp"
-                    android:src="@drawable/profile_circle_icon" />
-
-                <ImageButton
-                    android:id="@+id/book_letti2"
-                    android:layout_width="88dp"
-                    android:layout_height="match_parent"
-                    android:layout_gravity="center"
-                    android:layout_marginEnd="35dp"
-                    android:background="?attr/selectableItemBackgroundBorderless"
-                    android:contentDescription="c"
-                    android:padding="8dp"
-                    android:src="@drawable/profile_circle_icon" />
-
-                <ImageButton
-                    android:id="@+id/book_letti3"
-                    android:layout_width="88dp"
-                    android:layout_height="match_parent"
-                    android:layout_gravity="center"
-                    android:layout_marginEnd="35dp"
-                    android:background="?attr/selectableItemBackgroundBorderless"
-                    android:contentDescription=""
-                    android:padding="8dp"
-                    android:src="@drawable/profile_circle_icon" />
-
-                <ImageButton
-                    android:id="@+id/book_letti4"
-                    android:layout_width="88dp"
-                    android:layout_height="match_parent"
-                    android:layout_gravity="center"
-                    android:layout_marginEnd="35dp"
-                    android:background="?attr/selectableItemBackgroundBorderless"
-                    android:contentDescription=""
-                    android:padding="8dp"
-                    android:src="@drawable/profile_circle_icon" />
-
-                <ImageButton
-                    android:id="@+id/book_letti5"
-                    android:layout_width="88dp"
-                    android:layout_height="match_parent"
-                    android:layout_gravity="center"
-                    android:layout_marginEnd="35dp"
-                    android:background="?attr/selectableItemBackgroundBorderless"
-                    android:contentDescription=""
-                    android:padding="8dp"
-                    android:src="@drawable/profile_circle_icon" />
-
-                <ImageButton
-                    android:id="@+id/book_letti6"
-                    android:layout_width="88dp"
-                    android:layout_height="match_parent"
-                    android:layout_gravity="center"
-                    android:layout_marginEnd="35dp"
-                    android:background="?attr/selectableItemBackgroundBorderless"
-                    android:contentDescription=""
-                    android:padding="8dp"
-                    android:src="@drawable/profile_circle_icon" />
-            </LinearLayout>
-        </HorizontalScrollView>
     </androidx.constraintlayout.widget.ConstraintLayout>
 </FrameLayout>
 </layout>
