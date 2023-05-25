@@ -10,7 +10,7 @@
         android:title="Scopri"
         android:icon="@drawable/scopri_icon"/>
     <item
-        android:id="@+id/impostazioni"
+        android:id="@+id/impostazioniPulsante"
         android:title="Impostazioni"
         android:icon="@drawable/impostazioni_icon"/>
 
