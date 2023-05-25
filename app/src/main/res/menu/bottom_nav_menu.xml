@@ -2,7 +2,7 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
 
     <item
-        android:id="@+id/catalogo"
+        android:id="@+id/catalogoPulsante"
         android:title="Catalogo"
         android:icon="@drawable/catalogo_icon"/>
     <item
@@ -10,7 +10,7 @@
         android:title="Scopri"
         android:icon="@drawable/scopri_icon"/>
     <item
-        android:id="@+id/impostazioni"
+        android:id="@+id/impostazioniPulsante"
         android:title="Impostazioni"
         android:icon="@drawable/impostazioni_icon"/>
 
