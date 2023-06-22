@@ -45,8 +45,19 @@ class CatalogoDaLeggere : Fragment() {
             dettagli = "Una grande epopea fantasy ambientata nella Terra di Mezzo."
         )
 
+        val libro2 = Libro(
+            cover = R.drawable.cover1,
+            titolo = "Madonna mia",
+            genere = "Horror",
+            autore = "J.R.R. Tolkien",
+            nPagine = 300,
+            Isbn = 9789804668235,
+            dettagli = "Una grande epopea fantasy ambientata nella Terra di Mezzo."
+        )
+
         // Aggiungi il libro alla lista dei libri
         listaLibri.add(libro1)
+        listaLibri.add(libro2)
 
         recyclerView = view.findViewById(R.id.lista_libri_leggere)
         recyclerView.layoutManager = LinearLayoutManager(requireContext())
