@@ -36,7 +36,7 @@
                     android:layout_gravity="center"
                     android:layout_marginStart="35dp"
                     android:layout_marginEnd="35dp"
-                    android:queryHint="Titolo, Autore, ..." />
+                    android:hint="Titolo, Autore, ..." />
 
                 <ImageButton
                     android:id="@+id/plusbuttonDl"

@@ -48,7 +48,7 @@
         </androidx.appcompat.widget.Toolbar>
 
         <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/lista_libri_leggere"
+            android:id="@+id/lista_libri_corso"
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_weight="1" />

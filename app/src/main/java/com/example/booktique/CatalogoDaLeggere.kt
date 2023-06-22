@@ -13,13 +13,14 @@ import com.example.booktique.databinding.FragmentCatalogoDaLeggereBinding
 
 class CatalogoDaLeggere : Fragment() {
 
+    private lateinit var binding: FragmentCatalogoDaLeggereBinding
     private lateinit var recyclerView : RecyclerView
     private lateinit var adapter: MyAdapterDL
     private lateinit var listaLibri: ArrayList<Libro>
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
-        val binding = DataBindingUtil.inflate<FragmentCatalogoDaLeggereBinding>(inflater,
+            binding = DataBindingUtil.inflate<FragmentCatalogoDaLeggereBinding>(inflater,
             R.layout.fragment_catalogo_da_leggere,container,false)
 
         recyclerView = binding.listaLibriLeggere
