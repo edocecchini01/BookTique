@@ -6,7 +6,7 @@
     android:layout_height="150dp">
 
     <ImageButton
-        android:id="@+id/coverIC"
+        android:id="@+id/coverL"
         android:layout_width="88dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
@@ -27,9 +27,9 @@
         android:layout_marginEnd="81dp"
         android:fontFamily="@font/lora_bold_italic"
         android:text="Genere"
-        app:layout_constraintEnd_toStartOf="@+id/downIC"
-        app:layout_constraintStart_toEndOf="@+id/coverIC"
-        app:layout_constraintTop_toBottomOf="@+id/titoloIC" />
+        app:layout_constraintEnd_toStartOf="@+id/commentL"
+        app:layout_constraintStart_toEndOf="@+id/coverL"
+        app:layout_constraintTop_toBottomOf="@+id/titoloL" />
 
     <TextView
         android:id="@+id/titolo_labelDL"
@@ -39,13 +39,13 @@
         android:layout_marginTop="16dp"
         android:fontFamily="@font/lora_bold_italic"
         android:text="Titolo"
-        app:layout_constraintEnd_toStartOf="@+id/downIC"
+        app:layout_constraintEnd_toStartOf="@+id/commentL"
         app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toEndOf="@+id/coverIC"
+        app:layout_constraintStart_toEndOf="@+id/coverL"
         app:layout_constraintTop_toTopOf="parent" />
 
     <ImageButton
-        android:id="@+id/deleteIC"
+        android:id="@+id/deleteL"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginEnd="25dp"
@@ -53,13 +53,13 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="1.0"
-        app:layout_constraintStart_toEndOf="@+id/downIC"
+        app:layout_constraintStart_toEndOf="@+id/commentL"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.504"
         app:srcCompat="@drawable/delete_icon" />
 
     <TextView
-        android:id="@+id/genereIC"
+        android:id="@+id/genereL"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="20dp"
@@ -67,14 +67,14 @@
         android:fontFamily="sans-serif"
         android:text="TextView"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toStartOf="@+id/downIC"
+        app:layout_constraintEnd_toStartOf="@+id/commentL"
         app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toEndOf="@+id/coverIC"
+        app:layout_constraintStart_toEndOf="@+id/coverL"
         app:layout_constraintTop_toBottomOf="@+id/genere_labelDL"
         app:layout_constraintVertical_bias="0.0" />
 
     <ImageButton
-        android:id="@+id/downIC"
+        android:id="@+id/commentL"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="128dp"
@@ -83,19 +83,19 @@
         app:layout_constraintStart_toEndOf="@+id/genere_labelDL"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.504"
-        app:srcCompat="@drawable/nav_down_icon" />
+        app:srcCompat="@drawable/comment_icon" />
 
     <TextView
-        android:id="@+id/titoloIC"
+        android:id="@+id/titoloL"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="20dp"
         android:layout_marginTop="8dp"
         android:fontFamily="sans-serif"
         android:text="TextView"
-        app:layout_constraintEnd_toStartOf="@+id/downIC"
+        app:layout_constraintEnd_toStartOf="@+id/commentL"
         app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toEndOf="@+id/coverIC"
+        app:layout_constraintStart_toEndOf="@+id/coverL"
         app:layout_constraintTop_toBottomOf="@+id/titolo_labelDL" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

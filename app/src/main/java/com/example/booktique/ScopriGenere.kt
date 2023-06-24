@@ -8,23 +8,23 @@ import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.example.booktique.databinding.FragmentCatalogoInCorsoBinding
 import com.example.booktique.databinding.FragmentCatalogoLettiBinding
+import com.example.booktique.databinding.FragmentScopriGenereBinding
 
-class CatalogoLetti : Fragment() {
-    private lateinit var binding: FragmentCatalogoLettiBinding
+class ScopriGenere : Fragment() {
+    private lateinit var binding: FragmentScopriGenereBinding
     private lateinit var recyclerView : RecyclerView
-    private lateinit var adapter: MyAdapterL
+    private lateinit var adapter: MyAdapterGenere
     private lateinit var listaLibri: ArrayList<Libro>
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-            binding = DataBindingUtil.inflate<FragmentCatalogoLettiBinding>(inflater,
-            R.layout.fragment_catalogo_letti,container,false)
+        binding = DataBindingUtil.inflate<FragmentScopriGenereBinding>(inflater,
+            R.layout.fragment_scopri_genere,container,false)
 
-        recyclerView = binding.listaLibriLeggere
+        recyclerView = binding.listaLibriScopriGenere
         recyclerView.layoutManager = LinearLayoutManager(requireContext())
 
         return binding.root
@@ -37,11 +37,11 @@ class CatalogoLetti : Fragment() {
 
         val libro1 = Libro(
             cover = R.drawable.cover1,
-            titolo = "LETTOOO",
+            titolo = "SCOPRI",
             genere = "Fantasy",
-            autore = "J.R.R. Tolkien",
+            autore = "Edoardo",
             nPagine = 1178,
-            Isbn = 9788804361235,
+            Isbn = 9788804351235,
             dettagli = "Una grande epopea fantasy ambientata nella Terra di Mezzo."
         )
 
@@ -49,7 +49,7 @@ class CatalogoLetti : Fragment() {
 
         recyclerView.setHasFixedSize(true)
 
-        adapter = MyAdapterL(listaLibri)
+        adapter = MyAdapterGenere(listaLibri)
         recyclerView.adapter = adapter
 
     }

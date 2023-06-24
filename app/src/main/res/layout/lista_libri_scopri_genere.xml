@@ -6,14 +6,14 @@
     android:layout_height="150dp">
 
     <ImageButton
-        android:id="@+id/coverIC"
+        android:id="@+id/coverSG"
         android:layout_width="88dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
         android:layout_marginTop="8dp"
         android:adjustViewBounds="true"
-        android:scaleType="fitCenter"
         android:background="?attr/selectableItemBackgroundBorderless"
+        android:scaleType="fitCenter"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         tools:srcCompat="@tools:sample/avatars" />
@@ -23,13 +23,11 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="20dp"
-        android:layout_marginTop="16dp"
-        android:layout_marginEnd="81dp"
+        android:layout_marginTop="8dp"
         android:fontFamily="@font/lora_bold_italic"
-        android:text="Genere"
-        app:layout_constraintEnd_toStartOf="@+id/downIC"
-        app:layout_constraintStart_toEndOf="@+id/coverIC"
-        app:layout_constraintTop_toBottomOf="@+id/titoloIC" />
+        android:text="Autore"
+        app:layout_constraintStart_toEndOf="@+id/coverSG"
+        app:layout_constraintTop_toBottomOf="@+id/titoloSG" />
 
     <TextView
         android:id="@+id/titolo_labelDL"
@@ -39,27 +37,31 @@
         android:layout_marginTop="16dp"
         android:fontFamily="@font/lora_bold_italic"
         android:text="Titolo"
-        app:layout_constraintEnd_toStartOf="@+id/downIC"
+        app:layout_constraintEnd_toStartOf="@+id/sendSG"
         app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toEndOf="@+id/coverIC"
+        app:layout_constraintStart_toEndOf="@+id/coverSG"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <ImageButton
-        android:id="@+id/deleteIC"
+    <TextView
+        android:id="@+id/aggiungi_label"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginEnd="25dp"
-        android:background="?attr/selectableItemBackgroundBorderless"
+        android:layout_marginTop="6dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginBottom="32dp"
+        android:fontFamily="@font/lora_bold_italic"
+        android:text="Aggiungi"
+        android:textSize="10sp"
+        android:textColor="@color/red"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="1.0"
-        app:layout_constraintStart_toEndOf="@+id/downIC"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.504"
-        app:srcCompat="@drawable/delete_icon" />
+        app:layout_constraintHorizontal_bias="0.788"
+        app:layout_constraintStart_toEndOf="@+id/genere_labelDL"
+        app:layout_constraintTop_toBottomOf="@+id/sendSG"
+        app:layout_constraintVertical_bias="0.0" />
 
     <TextView
-        android:id="@+id/genereIC"
+        android:id="@+id/autoreSG"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="20dp"
@@ -67,35 +69,36 @@
         android:fontFamily="sans-serif"
         android:text="TextView"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toStartOf="@+id/downIC"
+        app:layout_constraintEnd_toStartOf="@+id/sendSG"
         app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toEndOf="@+id/coverIC"
+        app:layout_constraintStart_toEndOf="@+id/coverSG"
         app:layout_constraintTop_toBottomOf="@+id/genere_labelDL"
         app:layout_constraintVertical_bias="0.0" />
 
     <ImageButton
-        android:id="@+id/downIC"
+        android:id="@+id/sendSG"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="128dp"
+        android:layout_marginTop="60dp"
+        android:layout_marginEnd="20dp"
         android:background="?attr/selectableItemBackgroundBorderless"
-        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.815"
         app:layout_constraintStart_toEndOf="@+id/genere_labelDL"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.504"
-        app:srcCompat="@drawable/nav_down_icon" />
+        app:srcCompat="@drawable/send_icon" />
 
     <TextView
-        android:id="@+id/titoloIC"
+        android:id="@+id/titoloSG"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="20dp"
         android:layout_marginTop="8dp"
         android:fontFamily="sans-serif"
         android:text="TextView"
-        app:layout_constraintEnd_toStartOf="@+id/downIC"
+        app:layout_constraintEnd_toStartOf="@+id/sendSG"
         app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toEndOf="@+id/coverIC"
+        app:layout_constraintStart_toEndOf="@+id/coverSG"
         app:layout_constraintTop_toBottomOf="@+id/titolo_labelDL" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
