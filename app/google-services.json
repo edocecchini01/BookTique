@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "846296117324",
+    "project_id": "booktique-87881",
+    "storage_bucket": "booktique-87881.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:846296117324:android:4a1d5260c1d1f8b38d44e9",
+        "android_client_info": {
+          "package_name": "com.example.booktique"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "846296117324-2h3f5gav2gfe500p6un7qna5vc0qmf8r.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.booktique",
+            "certificate_hash": "0a10ad523e3cbd2eb6246e287353103432a965f3"
+          }
+        },
+        {
+          "client_id": "846296117324-9br0lsa5km6eohvgkqlj7uirbp6dtt43.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyC6Xm69uJPdKTfPdjVIEklEb3ixiKgwS2w"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "846296117324-9br0lsa5km6eohvgkqlj7uirbp6dtt43.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
