@@ -207,8 +207,8 @@ class Scopri : Fragment() {
 
     private fun setupImageButtonClickListener(book: VolumeDet, imageButton: ImageButton) {
         imageButton.setOnClickListener {
+            BookHolder.book = book
             val intent = Intent(requireContext(), DettaglioLibro::class.java)
-            intent.putExtra("book", book) // Passa l'ID del libro all'Activity
             startActivity(intent)
         }
     }
