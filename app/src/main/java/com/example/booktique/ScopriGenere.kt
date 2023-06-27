@@ -37,7 +37,6 @@ class ScopriGenere : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         listaLibri = ArrayList()
-
         recyclerView.setHasFixedSize(true)
         subjectBooks("harrypotter", "newest")
         adapter = MyAdapterGenere(listaLibri)
@@ -63,7 +62,6 @@ class ScopriGenere : Fragment() {
                             title = bookItem.volumeInfo.title,
                             authors = bookItem.volumeInfo.authors,
                             description = bookItem.volumeInfo.description,
-                            id = bookItem.volumeInfo.id,
                             categories = bookItem.volumeInfo.categories,
                             publisher = bookItem.volumeInfo.publisher,
                             language = bookItem.volumeInfo.language
@@ -92,6 +90,7 @@ class ScopriGenere : Fragment() {
     private fun loadBooks(books: List<VolumeDet>?){
         if (books != null) {
             listaLibri.addAll(books)
+            Log.d("TAG","LIBRI")
         }
     }
 

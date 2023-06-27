@@ -8,7 +8,8 @@ data class BookResponse(
 )
 
 data class BookItem(
-    val volumeInfo: VolumeDet
+    val volumeInfo: VolumeDet,
+    val id: String
 )
 
 data class VolumeDet(
@@ -16,7 +17,6 @@ data class VolumeDet(
     val title: String,
     val authors: List<String>,
     val description: String,
-    val id: String,
     val publisher: String,
     val categories: List<String>,
     val language: String

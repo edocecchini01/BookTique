@@ -11,7 +11,7 @@ class DettaglioLibro : AppCompatActivity() {
         setContentView(R.layout.activity_dettaglio_libro)
 
 
-        val book = intent?.("book")
+        /*val book = intent?.("book")
 
         if (book != null) {
             // Utilizza l'oggetto 'book' per impostare i valori nelle TextView e nell'ImageView
@@ -23,6 +23,6 @@ class DettaglioLibro : AppCompatActivity() {
             Glide.with(this)
                 .load(book.imageLinks.smallThumbnail)
                 .into(imageView)
-        }
+        }*/
     }
 }

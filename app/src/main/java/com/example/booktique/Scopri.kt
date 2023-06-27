@@ -63,7 +63,6 @@ class Scopri : Fragment() {
                             title = bookItem.volumeInfo.title,
                             authors = bookItem.volumeInfo.authors,
                             description = bookItem.volumeInfo.description,
-                            id = bookItem.volumeInfo.id,
                             categories = bookItem.volumeInfo.categories,
                             publisher = bookItem.volumeInfo.publisher,
                             language = bookItem.volumeInfo.language
@@ -107,7 +106,6 @@ class Scopri : Fragment() {
                             title = bookItem.volumeInfo.title,
                             authors = bookItem.volumeInfo.authors,
                             description = bookItem.volumeInfo.description,
-                            id = bookItem.volumeInfo.id,
                             categories = bookItem.volumeInfo.categories,
                             publisher = bookItem.volumeInfo.publisher,
                             language = bookItem.volumeInfo.language
@@ -198,13 +196,14 @@ class Scopri : Fragment() {
 
                     .into(targetButtons[i])
 
-                setupImageButtonClickListener(book, targetButtons[i])
+                //setupImageButtonClickListener(book, targetButtons[i])
 
             }
         }
     }
 
 
+    /*
     private fun setupImageButtonClickListener(book: VolumeDet, imageButton: ImageButton) {
         imageButton.setOnClickListener {
             val intent = Intent(requireContext(), DettaglioLibro::class.java)
@@ -212,7 +211,7 @@ class Scopri : Fragment() {
             startActivity(intent)
         }
     }
-
+*/
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
