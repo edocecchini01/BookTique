@@ -71,7 +71,8 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:fontFamily="@font/lora_bold_italic"
-            android:paddingTop="10pt"
+            android:paddingTop="10dp"
+            android:padding="8dp"
             android:text="TITOLO"
             android:textAlignment="center"
             android:textSize="28sp" />
@@ -81,8 +82,9 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:fontFamily="@font/lora_bold_italic"
-            android:paddingTop="6pt"
-            android:paddingBottom="8pt"
+            android:paddingTop="6dp"
+            android:paddingBottom="8dp"
+            android:padding="8dp"
             android:text="Autore"
             android:textAlignment="center"
             android:textSize="20sp" />
