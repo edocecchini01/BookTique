@@ -16,9 +16,6 @@ data class VolumeDet(
     val imageLinks: ImageLinks,
     val title: String,
     val authors: List<String>,
-    val description: String,
-    val publisher: String,
-    val categories: List<String>,
     val language: String
 )
 

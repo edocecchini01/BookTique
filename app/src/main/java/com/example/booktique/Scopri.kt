@@ -62,9 +62,6 @@ class Scopri : Fragment() {
                             imageLinks = bookItem.volumeInfo.imageLinks,
                             title = bookItem.volumeInfo.title,
                             authors = bookItem.volumeInfo.authors,
-                            description = bookItem.volumeInfo.description,
-                            categories = bookItem.volumeInfo.categories,
-                            publisher = bookItem.volumeInfo.publisher,
                             language = bookItem.volumeInfo.language
                         )
                     }
@@ -105,9 +102,6 @@ class Scopri : Fragment() {
                             imageLinks = bookItem.volumeInfo.imageLinks,
                             title = bookItem.volumeInfo.title,
                             authors = bookItem.volumeInfo.authors,
-                            description = bookItem.volumeInfo.description,
-                            categories = bookItem.volumeInfo.categories,
-                            publisher = bookItem.volumeInfo.publisher,
                             language = bookItem.volumeInfo.language
                         )
                     }
