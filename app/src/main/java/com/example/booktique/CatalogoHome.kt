@@ -37,10 +37,14 @@ class CatalogoHome : Fragment() {
         }
 
         if (FirebaseAuth.getInstance().currentUser != null) {
+            replaceFragment(CatalogoHome())
             binding.myButton.setOnClickListener {
                 replaceFragment(Impostazioni())
+                val bottomNavigationView = requireActivity().findViewById<BottomNavigationView>(R.id.bottomNavigationView)
+                bottomNavigationView.selectedItemId = R.id.impostazioniPulsante
             }
         } else {
+            replaceFragment(CatalogoHomeBlock())
             binding.myButton.setOnClickListener {
                 val intent = Intent(requireActivity(), AutenticazioneActivity::class.java)
                 startActivity(intent)
@@ -54,7 +58,5 @@ class CatalogoHome : Fragment() {
         val fragmentTransaction = fragmentManager.beginTransaction()
         fragmentTransaction.replace(R.id.fragmentContainerView, fragment)
         fragmentTransaction.commit()
-        val bottomNavigationView = requireActivity().findViewById<BottomNavigationView>(R.id.bottomNavigationView)
-        bottomNavigationView.selectedItemId = R.id.impostazioniPulsante
     }
 }
