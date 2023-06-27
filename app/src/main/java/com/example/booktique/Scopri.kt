@@ -57,8 +57,10 @@ class Scopri : Fragment() {
                     Log.d("TAG", "bookResponse: $bookResponse")
                     val newReleases =bookResponse?.items?.map { bookItem ->
                         VolumeDet(
-                            imageLinks = bookItem.volumeInfo.imageLinks
-
+                            imageLinks = bookItem.volumeInfo.imageLinks,
+                            title = bookItem.volumeInfo.title,
+                            authors = bookItem.volumeInfo.authors,
+                            description = bookItem.volumeInfo.description
                         )
                     }
                     loadImagesIntoImageButtons(newReleases, "newest")
@@ -95,8 +97,10 @@ class Scopri : Fragment() {
                     Log.d("TAG", "bookResponse: $bookResponse")
                     val newReleases =bookResponse?.items?.map { bookItem ->
                         VolumeDet(
-                            imageLinks = bookItem.volumeInfo.imageLinks
-
+                            imageLinks = bookItem.volumeInfo.imageLinks,
+                            title = bookItem.volumeInfo.title,
+                            authors = bookItem.volumeInfo.authors,
+                            description = bookItem.volumeInfo.description
                         )
                     }
                     loadImagesIntoImageButtons(newReleases, "relevance")
