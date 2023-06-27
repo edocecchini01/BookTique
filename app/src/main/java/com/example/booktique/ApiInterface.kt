@@ -27,5 +27,9 @@ interface ApiInterface {
     @GET("books/v1/volumes")
     fun getMostRelevant(@Query("orderBy") filter: String): Call<BookResponse>
 
+    //generi
+    @GET("books/v1/volumes")
+    fun getSubjectBooks(@Query("q") query: String, @Query("orderBy") orderBy: String): Call<BookResponse>
+
 }
 

@@ -38,13 +38,13 @@ class ScopriGenere : Fragment() {
 
         listaLibri = ArrayList()
         recyclerView.setHasFixedSize(true)
-        subjectBooks("harrypotter", "newest")
+        getSubjectBooks("subject:history", "relevance")
 
     }
 
-    private fun subjectBooks(query:String, tipologia: String){
+    private fun getSubjectBooks(query:String, ordine: String){
         // Chiamata per ottenere i nuovi libri
-        val newReleasesCall = ApiServiceManager.apiService.getNewReleases(query, tipologia)
+        val newReleasesCall = ApiServiceManager.apiService.getNewReleases(query, ordine)
         Log.d("Image", "imageUrl: $newReleasesCall")
 
         newReleasesCall.enqueue(object : Callback<BookResponse> {

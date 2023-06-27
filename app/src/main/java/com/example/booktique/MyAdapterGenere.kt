@@ -34,12 +34,21 @@ class MyAdapterGenere(private val listaLibri: ArrayList<VolumeDet>) :
             .load(currentItem.imageLinks.smallThumbnail)
             .into(holder.cover)
 
-        holder.titolo.text = currentItem.title
+        holder.titolo.text = abbreviaInfo(currentItem.title,25)
 
         if (currentItem.authors.isNotEmpty()) {
-            holder.autore.text = currentItem.authors.joinToString(", ")
+            holder.autore.text = abbreviaInfo(currentItem.authors.joinToString(", "),25)
         } else {
             holder.autore.text = "Autore sconosciuto"
+        }
+    }
+
+    fun abbreviaInfo(stringa: String, lunghezzaMassima: Int): String {
+        return if (stringa.length <= lunghezzaMassima) {
+            stringa
+        } else {
+            val sottostringa = stringa.take(lunghezzaMassima)
+            "$sottostringa..."
         }
     }
 

@@ -239,6 +239,7 @@
                             android:layout_height="wrap_content"
                             android:layout_marginBottom="12dp"
                             android:layout_marginTop="28dp"
+                            android:layout_marginStart="7dp"
                             android:fontFamily="@font/lora_bold_italic"
                             android:text="Nuove Uscite:"
                             android:textColor="@color/red"
@@ -259,12 +260,12 @@
                                     android:layout_width="88dp"
                                     android:layout_height="match_parent"
                                     android:layout_gravity="center"
-                                    android:layout_marginStart="40dp"
+                                    android:layout_marginStart="30dp"
                                     android:layout_marginEnd="35dp"
                                     android:background="?attr/selectableItemBackgroundBorderless"
                                     android:contentDescription=""
                                     android:padding="8dp"
-                                    android:src="@drawable/profile_circle_icon"
+                                    android:src="@drawable/book_icon"/>
  />
 
                                 <ImageButton
@@ -276,7 +277,7 @@
                                     android:background="?attr/selectableItemBackgroundBorderless"
                                     android:contentDescription=""
                                     android:padding="8dp"
-                                    android:src="@drawable/profile_circle_icon" />
+                                    android:src="@drawable/book_icon" />
 
                                 <ImageButton
                                     android:id="@+id/book_in_c3"
@@ -287,7 +288,7 @@
                                     android:background="?attr/selectableItemBackgroundBorderless"
                                     android:contentDescription=""
                                     android:padding="8dp"
-                                    android:src="@drawable/profile_circle_icon" />
+                                    android:src="@drawable/book_icon" />
 
                                 <ImageButton
                                     android:id="@+id/book_in_c4"
@@ -298,7 +299,7 @@
                                     android:background="?attr/selectableItemBackgroundBorderless"
                                     android:contentDescription=""
                                     android:padding="8dp"
-                                    android:src="@drawable/profile_circle_icon" />
+                                    android:src="@drawable/book_icon" />
 
                                 <ImageButton
                                     android:id="@+id/book_in_c5"
@@ -309,7 +310,7 @@
                                     android:background="?attr/selectableItemBackgroundBorderless"
                                     android:contentDescription=""
                                     android:padding="8dp"
-                                    android:src="@drawable/profile_circle_icon" />
+                                    android:src="@drawable/book_icon" />
 
                                 <ImageButton
                                     android:id="@+id/book_in_c6"
@@ -320,7 +321,7 @@
                                     android:background="?attr/selectableItemBackgroundBorderless"
                                     android:contentDescription=""
                                     android:padding="8dp"
-                                    android:src="@drawable/profile_circle_icon" />
+                                    android:src="@drawable/book_icon" />
                             </LinearLayout>
                         </HorizontalScrollView>
 
@@ -330,6 +331,7 @@
                             android:layout_height="wrap_content"
                             android:layout_marginBottom="12dp"
                             android:layout_marginTop="28dp"
+                            android:layout_marginStart="7dp"
                             android:fontFamily="@font/lora_bold_italic"
                             android:text="Popolari 2023:"
                             android:textColor="@color/red"
@@ -351,12 +353,12 @@
                                     android:layout_width="88dp"
                                     android:layout_height="match_parent"
                                     android:layout_gravity="center"
-                                    android:layout_marginStart="40dp"
+                                    android:layout_marginStart="30dp"
                                     android:layout_marginEnd="35dp"
                                     android:background="?attr/selectableItemBackgroundBorderless"
                                     android:contentDescription=""
                                     android:padding="8dp"
-                                    android:src="@drawable/profile_circle_icon" />
+                                    android:src="@drawable/book_icon" />
 
                                 <ImageButton
                                     android:id="@+id/book_leggere2"
@@ -367,7 +369,7 @@
                                     android:background="?attr/selectableItemBackgroundBorderless"
                                     android:contentDescription=""
                                     android:padding="8dp"
-                                    android:src="@drawable/profile_circle_icon" />
+                                    android:src="@drawable/book_icon" />
 
                                 <ImageButton
                                     android:id="@+id/book_leggere3"
@@ -376,9 +378,9 @@
                                     android:layout_gravity="center"
                                     android:layout_marginEnd="35dp"
                                     android:background="?attr/selectableItemBackgroundBorderless"
-                                    android:contentDescription="c"
+                                    android:contentDescription=""
                                     android:padding="8dp"
-                                    android:src="@drawable/profile_circle_icon" />
+                                    android:src="@drawable/book_icon" />
 
                                 <ImageButton
                                     android:id="@+id/book_leggere4"
@@ -389,7 +391,7 @@
                                     android:background="?attr/selectableItemBackgroundBorderless"
                                     android:contentDescription=""
                                     android:padding="8dp"
-                                    android:src="@drawable/profile_circle_icon" />
+                                    android:src="@drawable/book_icon" />
 
                                 <ImageButton
                                     android:id="@+id/book_leggere5"
@@ -400,7 +402,7 @@
                                     android:background="?attr/selectableItemBackgroundBorderless"
                                     android:contentDescription=""
                                     android:padding="8dp"
-                                    android:src="@drawable/profile_circle_icon" />
+                                    android:src="@drawable/book_icon" />
 
                                 <ImageButton
                                     android:id="@+id/book_leggere6"
@@ -411,7 +413,7 @@
                                     android:background="?attr/selectableItemBackgroundBorderless"
                                     android:contentDescription=""
                                     android:padding="8dp"
-                                    android:src="@drawable/profile_circle_icon" />
+                                    android:src="@drawable/book_icon" />
 
 
                             </LinearLayout>
