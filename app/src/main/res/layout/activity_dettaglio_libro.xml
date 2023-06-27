@@ -6,108 +6,112 @@
     android:layout_height="match_parent"
     tools:context=".DettaglioLibro">
 
-    <ScrollView
-        android:id="@+id/scrollView2"
-        android:layout_width="0dp"
-        android:layout_height="match_parent"
-        app:layout_constraintBottom_toBottomOf="parent"
+    <LinearLayout
+        android:id="@+id/linearLayout2"
+        android:layout_width="match_parent"
+        android:layout_height="380dp"
+        android:background="#FFE3D3"
+        android:orientation="vertical"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
-        <LinearLayout
-            android:id="@+id/linearLayout2"
-            android:layout_width="409dp"
-            android:layout_height="304dp"
-            android:background="#80FFBF9B"
-            android:orientation="vertical"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent">
+        <androidx.appcompat.widget.Toolbar
+            android:id="@+id/toolbar2"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:minHeight="?attr/actionBarSize"
+            android:theme="?attr/actionBarTheme">
 
-            <androidx.appcompat.widget.Toolbar
-                android:id="@+id/toolbar2"
-                android:layout_width="match_parent"
+            <ImageButton
+                android:id="@+id/imageButton"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:minHeight="?attr/actionBarSize"
-                android:theme="?attr/actionBarTheme">
+                android:background="@android:color/transparent"
+                app:srcCompat="@drawable/back_icon" />
+        </androidx.appcompat.widget.Toolbar>
 
-                <ImageButton
-                    android:id="@+id/imageButton"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:background="@android:color/transparent"
-                    app:srcCompat="@drawable/back_icon" />
-            </androidx.appcompat.widget.Toolbar>
-
-            <ImageView
-                android:id="@+id/imageView3"
-                android:layout_width="192dp"
-                android:layout_height="190dp"
-                android:layout_gravity="center"
-                android:paddingTop="8pt"
-                android:paddingBottom="10pt"
-                app:srcCompat="@drawable/ic_launcher_background" />
-
-        </LinearLayout>
-
-    </ScrollView>
-
-    <LinearLayout
-        android:id="@+id/linearLayout3"
-        android:layout_width="418dp"
-        android:layout_height="481dp"
-        android:layout_marginTop="254dp"
-        android:background="#FFF4E0"
-        android:orientation="vertical"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/scrollView2">
-
-        <TextView
-            android:id="@+id/textView11"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+        <ImageView
+            android:id="@+id/imageView3"
+            android:layout_width="250dp"
+            android:layout_height="250dp"
             android:layout_gravity="center"
-            android:fontFamily="@font/lora_bold_italic"
-            android:paddingTop="10dp"
-            android:padding="20dp"
-            android:text="TITOLO"
-            android:textAlignment="center"
-            android:textSize="28sp" />
-
-        <TextView
-            android:id="@+id/textView9"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:fontFamily="@font/lora_bold_italic"
-            android:paddingTop="6dp"
+            android:layout_marginBottom="20dp"
+            android:adjustViewBounds="true"
+            android:background="@drawable/box_libro_dettaglio"
+            android:paddingTop="8dp"
             android:paddingBottom="8dp"
-            android:padding="8dp"
-            android:text="Autore"
-            android:textAlignment="center"
-            android:textSize="20sp" />
-
-        <Button
-            android:id="@+id/button"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:backgroundTint="@color/red"
-            android:fontFamily="@font/lora_bold_italic"
-            android:text="AGGIUNGI" />
-
-        <TextView
-            android:id="@+id/textView13"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:fontFamily="@font/lora_bold_italic"
-            android:text="TextView"
-            android:textAlignment="viewStart"
-            android:paddingTop="10pt"
-            android:paddingLeft="4pt"
-            android:paddingRight="4pt"/>
+            android:scaleType="fitCenter"
+            app:srcCompat="@drawable/ic_launcher_background" />
 
     </LinearLayout>
+
+
+    <ScrollView
+        android:id="@+id/scrollView2"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:background="@color/beige"
+        app:layout_constraintTop_toBottomOf="@+id/linearLayout2"
+        app:layout_constraintBottom_toBottomOf="parent"
+        tools:layout_editor_absoluteX="0dp"
+        tools:layout_editor_absoluteY="310dp">
+
+        <LinearLayout
+            android:id="@+id/linearLayout3"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="#FFF4E0"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/textView11"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:fontFamily="@font/lora_bold_italic"
+                android:textColor="@color/gray"
+                android:padding="20dp"
+                android:paddingTop="10dp"
+                android:text="TITOLO"
+                android:textAlignment="center"
+                android:textSize="28sp" />
+
+            <TextView
+                android:id="@+id/textView9"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/lora_bold_italic"
+                android:textColor="@color/gray"
+                android:padding="8dp"
+                android:paddingTop="6dp"
+                android:paddingBottom="8dp"
+                android:layout_marginBottom="8dp"
+                android:text="Autore"
+                android:textAlignment="center"
+                android:textSize="20sp" />
+
+            <Button
+                android:id="@+id/button"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:backgroundTint="@color/red"
+                android:fontFamily="@font/lora_bold_italic"
+                android:text="AGGIUNGI" />
+
+            <TextView
+                android:id="@+id/textView13"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/lora_bold_italic"
+                android:textColor="@color/gray"
+                android:paddingLeft="4pt"
+                android:paddingTop="10pt"
+                android:paddingRight="4pt"
+                android:text="TextView"
+                android:textAlignment="viewStart" />
+
+        </LinearLayout>
+    </ScrollView>
 </androidx.constraintlayout.widget.ConstraintLayout>
