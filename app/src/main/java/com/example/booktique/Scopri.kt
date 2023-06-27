@@ -48,7 +48,7 @@ class Scopri : Fragment() {
     private fun orderedBooks(query:String, tipologia: String){
         // Chiamata per ottenere i nuovi libri
         val newReleasesCall = ApiServiceManager.apiService.getNewReleases(query, tipologia)
-        Log.d("Image", "imageUrl: $newReleasesCall")
+        Log.d("ImageC", "imageUrl: $newReleasesCall")
 
         newReleasesCall.enqueue(object : Callback<BookResponse> {
             override fun onResponse(call: Call<BookResponse>, response: Response<BookResponse>) {
