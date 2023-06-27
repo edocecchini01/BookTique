@@ -37,7 +37,6 @@ class CatalogoHome : Fragment() {
         }
 
         if (FirebaseAuth.getInstance().currentUser != null) {
-            replaceFragment(CatalogoHome())
             binding.myButton.setOnClickListener {
                 replaceFragment(Impostazioni())
                 val bottomNavigationView = requireActivity().findViewById<BottomNavigationView>(R.id.bottomNavigationView)
@@ -46,8 +45,9 @@ class CatalogoHome : Fragment() {
         } else {
             replaceFragment(CatalogoHomeBlock())
             binding.myButton.setOnClickListener {
-                val intent = Intent(requireActivity(), AutenticazioneActivity::class.java)
+                val intent = Intent(requireContext(), AutenticazioneActivity::class.java)
                 startActivity(intent)
+                requireActivity().finish()
             }
 
         }
