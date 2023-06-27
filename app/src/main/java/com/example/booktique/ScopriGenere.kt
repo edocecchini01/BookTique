@@ -38,18 +38,8 @@ class ScopriGenere : Fragment() {
 
         listaLibri = ArrayList()
 
-        val libro1 = Libro(
-            cover = R.drawable.cover1,
-            titolo = "SCOPRI",
-            genere = "Fantasy",
-            autore = "Edoardo",
-            nPagine = 1178,
-            Isbn = 9788804351235,
-            dettagli = "Una grande epopea fantasy ambientata nella Terra di Mezzo."
-        )
-
         recyclerView.setHasFixedSize(true)
-
+        subjectBooks("harrypotter", "newest")
         adapter = MyAdapterGenere(listaLibri)
         recyclerView.adapter = adapter
 
@@ -67,14 +57,19 @@ class ScopriGenere : Fragment() {
 
                     val bookResponse = response.body()
                     Log.d("TAG", "bookResponse: $bookResponse")
-                    val newReleases =bookResponse?.items?.map { bookItem ->
+                    val subBook =bookResponse?.items?.map { bookItem ->
                         VolumeDet(
                             imageLinks = bookItem.volumeInfo.imageLinks,
                             title = bookItem.volumeInfo.title,
                             authors = bookItem.volumeInfo.authors,
-                            description = bookItem.volumeInfo.description
+                            description = bookItem.volumeInfo.description,
+                            id = bookItem.volumeInfo.id,
+                            categories = bookItem.volumeInfo.categories,
+                            publisher = bookItem.volumeInfo.publisher,
+                            language = bookItem.volumeInfo.language
                         )
                     }
+                    loadBooks(subBook)
 
                 } else {
                     val statusCode = response.code()

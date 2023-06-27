@@ -5,9 +5,11 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageButton
 import android.widget.TextView
+import androidx.core.content.ContentProviderCompat.requireContext
 import androidx.recyclerview.widget.RecyclerView
+import com.bumptech.glide.Glide
 
-class MyAdapterGenere (private val listaLibri : ArrayList<Libro>) :
+class MyAdapterGenere(private val listaLibri: ArrayList<VolumeDet>) :
     RecyclerView.Adapter<MyAdapterGenere.MyViewHolder>() {
 
     class MyViewHolder(itemView : View) : RecyclerView.ViewHolder(itemView){
@@ -24,9 +26,15 @@ class MyAdapterGenere (private val listaLibri : ArrayList<Libro>) :
 
     override fun onBindViewHolder(holder: MyViewHolder, position: Int) {
         val currentItem = listaLibri[position]
-        holder.cover.setImageResource(currentItem.cover)
-        holder.titolo.text = currentItem.titolo
-        holder.autore.text = currentItem.autore
+        Glide.with(holder.itemView.context)
+            .load(currentItem.imageLinks)
+            .into(holder.cover)
+
+        holder.titolo.text = currentItem.title
+        if(currentItem.authors.isNotEmpty())
+            currentItem.authors.joinToString(", ")
+        else
+            holder.autore.text = "Autore sconosciuto"
     }
 
     override fun getItemCount(): Int {
