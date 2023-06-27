@@ -72,7 +72,7 @@
             android:layout_gravity="center"
             android:fontFamily="@font/lora_bold_italic"
             android:paddingTop="10dp"
-            android:padding="15dp"
+            android:padding="20dp"
             android:text="TITOLO"
             android:textAlignment="center"
             android:textSize="28sp" />
