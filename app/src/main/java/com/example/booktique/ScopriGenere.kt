@@ -1,6 +1,7 @@
 package com.example.booktique
 
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -8,14 +9,16 @@ import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.example.booktique.databinding.FragmentCatalogoLettiBinding
 import com.example.booktique.databinding.FragmentScopriGenereBinding
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
 
 class ScopriGenere : Fragment() {
     private lateinit var binding: FragmentScopriGenereBinding
     private lateinit var recyclerView : RecyclerView
     private lateinit var adapter: MyAdapterGenere
-    private lateinit var listaLibri: ArrayList<Libro>
+    private lateinit var listaLibri: ArrayList<VolumeDet>
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -45,13 +48,53 @@ class ScopriGenere : Fragment() {
             dettagli = "Una grande epopea fantasy ambientata nella Terra di Mezzo."
         )
 
-        listaLibri.add(libro1)
-
         recyclerView.setHasFixedSize(true)
 
         adapter = MyAdapterGenere(listaLibri)
         recyclerView.adapter = adapter
 
+    }
+
+    private fun subjectBooks(query:String, tipologia: String){
+        // Chiamata per ottenere i nuovi libri
+        val newReleasesCall = ApiServiceManager.apiService.getNewReleases(query, tipologia)
+        Log.d("Image", "imageUrl: $newReleasesCall")
+
+        newReleasesCall.enqueue(object : Callback<BookResponse> {
+            override fun onResponse(call: Call<BookResponse>, response: Response<BookResponse>) {
+                if (response.isSuccessful) {
+                    Log.d("TAG", "Messaggio di debug")
+
+                    val bookResponse = response.body()
+                    Log.d("TAG", "bookResponse: $bookResponse")
+                    val newReleases =bookResponse?.items?.map { bookItem ->
+                        VolumeDet(
+                            imageLinks = bookItem.volumeInfo.imageLinks,
+                            title = bookItem.volumeInfo.title,
+                            authors = bookItem.volumeInfo.authors
+                        )
+                    }
+
+                } else {
+                    val statusCode = response.code()
+                    val errorMessage = response.message()
+                    Log.d("API Error", "Status Code: $statusCode")
+                    Log.d("API Error", "Error Message: $errorMessage")
+
+                }
+            }
+
+            override fun onFailure(call: Call<BookResponse>, t: Throwable) {
+                Log.d("TAG", "Messaggio di debug11111")
+                Log.e("TAG", "Errore nella chiamata API: ${t.message}", t)
+
+            }
+        })
+
+    }
+
+    private fun loadBooks(books: List<VolumeDet>?){
+        listaLibri.add(books)
     }
 
 }
