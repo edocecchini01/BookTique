@@ -60,7 +60,11 @@ class Scopri : Fragment() {
                             imageLinks = bookItem.volumeInfo.imageLinks,
                             title = bookItem.volumeInfo.title,
                             authors = bookItem.volumeInfo.authors,
-                            description = bookItem.volumeInfo.description
+                            description = bookItem.volumeInfo.description,
+                            id = bookItem.volumeInfo.id,
+                            categories = bookItem.volumeInfo.categories,
+                            publisher = bookItem.volumeInfo.publisher,
+                            language = bookItem.volumeInfo.language
                         )
                     }
                     loadImagesIntoImageButtons(newReleases, "newest")
@@ -100,7 +104,11 @@ class Scopri : Fragment() {
                             imageLinks = bookItem.volumeInfo.imageLinks,
                             title = bookItem.volumeInfo.title,
                             authors = bookItem.volumeInfo.authors,
-                            description = bookItem.volumeInfo.description
+                            description = bookItem.volumeInfo.description,
+                            id = bookItem.volumeInfo.id,
+                            categories = bookItem.volumeInfo.categories,
+                            publisher = bookItem.volumeInfo.publisher,
+                            language = bookItem.volumeInfo.language
                         )
                     }
                     loadImagesIntoImageButtons(newReleases, "relevance")

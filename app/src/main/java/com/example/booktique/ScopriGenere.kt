@@ -71,7 +71,8 @@ class ScopriGenere : Fragment() {
                         VolumeDet(
                             imageLinks = bookItem.volumeInfo.imageLinks,
                             title = bookItem.volumeInfo.title,
-                            authors = bookItem.volumeInfo.authors
+                            authors = bookItem.volumeInfo.authors,
+                            description = bookItem.volumeInfo.description
                         )
                     }
 
@@ -94,7 +95,9 @@ class ScopriGenere : Fragment() {
     }
 
     private fun loadBooks(books: List<VolumeDet>?){
-        listaLibri.add(books)
+        if (books != null) {
+            listaLibri.addAll(books)
+        }
     }
 
 }
