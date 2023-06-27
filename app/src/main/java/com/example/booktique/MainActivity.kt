@@ -25,7 +25,7 @@ class MainActivity : AppCompatActivity() {
         binding.bottomNavigationView.setOnItemSelectedListener {
             when (it.itemId) {
 
-                R.id.catalogoPulsante -> replaceFragment(CatalogoHome())
+                R.id.catalogoPulsante -> replaceFragment(ScopriGenere())
                 R.id.scopriPulsante -> replaceFragment(Scopri())
                 R.id.impostazioniPulsante -> replaceFragment(Impostazioni())
 
