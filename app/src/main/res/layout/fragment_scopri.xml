@@ -264,7 +264,8 @@
                                     android:background="?attr/selectableItemBackgroundBorderless"
                                     android:contentDescription=""
                                     android:padding="8dp"
-                                    android:src="@drawable/profile_circle_icon" />
+                                    android:src="@drawable/profile_circle_icon"
+ />
 
                                 <ImageButton
                                     android:id="@+id/book_in_c2"

@@ -24,13 +24,16 @@ class CatalogoHome : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         binding.daLeggereLabel.setOnClickListener {
-            Navigation.findNavController(view).navigate(R.id.action_catalogoHome_to_catalogoDaLeggere)
+            Navigation.findNavController(view)
+                .navigate(R.id.action_catalogoHome_to_catalogoDaLeggere)
         }
 
-        binding.myButton.setOnClickListener{
+        binding.myButton.setOnClickListener {
             val intent = Intent(requireActivity(), AutenticazioneActivity::class.java)
             startActivity(intent)
         }
 
     }
+
+
 }
