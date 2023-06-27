@@ -16,7 +16,7 @@ class DettaglioLibro : AppCompatActivity() {
         if (book != null) {
             // Utilizza l'oggetto 'book' per impostare i valori nelle TextView e nell'ImageView
             findViewById<TextView>(R.id.textView11).text = book.title
-            findViewById<TextView>(R.id.textView9).text = book.authors[1]
+            findViewById<TextView>(R.id.textView9).text = book.authors[0]
             // Imposta gli altri valori nelle TextView
 
             val imageView = findViewById<ImageView>(R.id.imageView3)

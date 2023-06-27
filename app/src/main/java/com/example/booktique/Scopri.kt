@@ -190,14 +190,14 @@ class Scopri : Fragment() {
 
                     .into(targetButtons[i])
 
-                //setupImageButtonClickListener(book, targetButtons[i])
+                setupImageButtonClickListener(book, targetButtons[i])
 
             }
         }
     }
 
 
-    /*
+
     private fun setupImageButtonClickListener(book: VolumeDet, imageButton: ImageButton) {
         imageButton.setOnClickListener {
             BookHolder.book = book
@@ -205,7 +205,7 @@ class Scopri : Fragment() {
             startActivity(intent)
         }
     }
-*/
+
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
