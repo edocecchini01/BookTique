@@ -2,7 +2,9 @@ plugins {
     id 'com.android.application'
     id 'org.jetbrains.kotlin.android'
     id 'com.google.gms.google-services'
+    id 'androidx.navigation.safeargs' version '2.5.0'
 }
+
 
 android {
     namespace 'com.example.booktique'
@@ -39,6 +41,13 @@ android {
 
     buildFeatures{
         viewBinding true
+    }
+
+    buildscript {
+        dependencies {
+            // ...
+            classpath "androidx.navigation:navigation-safe-args-gradle-plugin:2.5.0"
+        }
     }
 
 }

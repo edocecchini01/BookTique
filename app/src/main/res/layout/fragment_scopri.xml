@@ -2,11 +2,7 @@
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools">
-    <data>
-        <variable
-            name="clickListenerPerTe"
-            type="com.example.booktique.Scopri.ClickListenerPerTe" />
-    </data>
+
 
 <FrameLayout
     android:layout_width="match_parent"
@@ -48,7 +44,7 @@
                         android:background="#C6C6C6"
                         android:queryHint="Cerca"
                         android:theme="@style/ThemeOverlay.AppCompat.Light"
-                        app:layout_constraintBottom_toTopOf="@+id/button2"
+                        app:layout_constraintBottom_toTopOf="@+id/buttonPerTe"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toTopOf="parent" />
@@ -66,7 +62,7 @@
                         android:text="SCOPRI"
                         android:textColor="#4D4D4D"
                         app:layout_constraintBottom_toBottomOf="parent"
-                        app:layout_constraintEnd_toStartOf="@+id/button2"
+                        app:layout_constraintEnd_toStartOf="@+id/buttonPerTe"
                         app:layout_constraintHorizontal_chainStyle="packed"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toBottomOf="@+id/searchView"
@@ -74,7 +70,7 @@
                         />
 
                     <Button
-                        android:id="@+id/button2"
+                        android:id="@+id/buttonPerTe"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginEnd="17dp"
@@ -129,7 +125,7 @@
                         android:layout_marginBottom="38dp"
                         android:backgroundTint="#F2F2F2"
                         android:fontFamily="@font/lora_bold_italic"
-                        android:text="Fantasy"
+                        android:text="Fantasia"
                         android:textColor="#4D4D4D"
                         android:textSize="13dp"
                         app:layout_constraintBottom_toTopOf="@+id/button6"
@@ -164,7 +160,7 @@
                         android:layout_marginBottom="39dp"
                         android:backgroundTint="#F2F2F2"
                         android:fontFamily="@font/lora_bold_italic"
-                        android:text="Gialli"
+                        android:text="Fiction"
                         android:textColor="#4D4D4D"
                         android:textSize="13dp"
                         app:layout_constraintBottom_toTopOf="@+id/button8"
@@ -181,7 +177,7 @@
                         android:layout_marginBottom="24dp"
                         android:backgroundTint="#F2F2F2"
                         android:fontFamily="@font/lora_bold_italic"
-                        android:text="Biografie"
+                        android:text="Biografia"
                         android:textColor="#4D4D4D"
                         android:textSize="13dp"
                         app:layout_constraintBottom_toBottomOf="parent"
@@ -197,7 +193,7 @@
                         android:layout_marginBottom="24dp"
                         android:backgroundTint="#F2F2F2"
                         android:fontFamily="@font/lora_bold_italic"
-                        android:text="Storico"
+                        android:text="Storia"
                         android:textColor="#4D4D4D"
                         android:textSize="13dp"
                         app:layout_constraintBottom_toBottomOf="parent"

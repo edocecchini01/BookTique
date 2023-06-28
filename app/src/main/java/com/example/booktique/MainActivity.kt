@@ -27,7 +27,7 @@ class MainActivity : AppCompatActivity() {
 
                 R.id.catalogoPulsante -> replaceFragment(CatalogoHome())
                 R.id.scopriPulsante -> replaceFragment(Scopri())
-                R.id.impostazioniPulsante -> replaceFragment(Impostazioni())
+                R.id.impostazioniPulsante -> replaceFragment(ScopriGenere())
 
                 else -> {}
             }

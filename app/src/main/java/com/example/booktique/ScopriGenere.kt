@@ -19,6 +19,17 @@ class ScopriGenere : Fragment() {
     private lateinit var recyclerView : RecyclerView
     private lateinit var adapter: MyAdapterGenere
     private lateinit var listaLibri: ArrayList<VolumeDet>
+    private var param: String? = null
+
+    companion object {
+        fun newInstance(param1: String): ScopriGenere {
+            val fragment = ScopriGenere()
+            val args = Bundle()
+            args.putString("param1", param1)
+            fragment.arguments = args
+            return fragment
+        }
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -30,6 +41,12 @@ class ScopriGenere : Fragment() {
         recyclerView = binding.listaLibriScopriGenere
         recyclerView.layoutManager = LinearLayoutManager(requireContext())
 
+        arguments?.let { args ->
+            param = args.getString("param1")
+
+            binding.genere.text = param }
+
+
         return binding.root
     }
 
@@ -38,7 +55,9 @@ class ScopriGenere : Fragment() {
 
         listaLibri = ArrayList()
         recyclerView.setHasFixedSize(true)
-        getSubjectBooks("subject:history", "relevance")
+        val queryparameter= "subject:"+ param
+        Log.d("TAG", queryparameter)
+        getSubjectBooks(queryparameter, "relevance")
 
     }
 

@@ -52,10 +52,10 @@
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:background="@color/beige"
-        app:layout_constraintTop_toBottomOf="@+id/linearLayout2"
         app:layout_constraintBottom_toBottomOf="parent"
-        tools:layout_editor_absoluteX="0dp"
-        tools:layout_editor_absoluteY="310dp">
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/linearLayout2">
 
         <LinearLayout
             android:id="@+id/linearLayout3"
@@ -70,25 +70,25 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:fontFamily="@font/lora_bold_italic"
-                android:textColor="@color/gray"
                 android:padding="20dp"
                 android:paddingTop="10dp"
                 android:text="TITOLO"
                 android:textAlignment="center"
+                android:textColor="@color/gray"
                 android:textSize="28sp" />
 
             <TextView
                 android:id="@+id/textView9"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginBottom="8dp"
                 android:fontFamily="@font/lora_bold_italic"
-                android:textColor="@color/gray"
                 android:padding="8dp"
                 android:paddingTop="6dp"
                 android:paddingBottom="8dp"
-                android:layout_marginBottom="8dp"
                 android:text="Autore"
                 android:textAlignment="center"
+                android:textColor="@color/gray"
                 android:textSize="20sp" />
 
             <Button
@@ -105,12 +105,11 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:fontFamily="@font/lora_bold_italic"
-                android:textColor="@color/gray"
                 android:paddingLeft="4pt"
                 android:paddingTop="10pt"
                 android:paddingRight="4pt"
-                android:text="TextView"
-                android:textAlignment="viewStart" />
+                android:textAlignment="viewStart"
+                android:textColor="@color/gray" />
 
         </LinearLayout>
     </ScrollView>

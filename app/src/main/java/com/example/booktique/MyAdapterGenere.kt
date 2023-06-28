@@ -1,5 +1,6 @@
 package com.example.booktique
 
+import android.content.Intent
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
@@ -7,6 +8,7 @@ import android.view.ViewGroup
 import android.widget.ImageButton
 import android.widget.TextView
 import androidx.core.content.ContentProviderCompat.requireContext
+import androidx.core.content.ContextCompat.startActivity
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 
@@ -40,6 +42,12 @@ class MyAdapterGenere(private val listaLibri: ArrayList<VolumeDet>) :
             holder.autore.text = abbreviaInfo(currentItem.authors.joinToString(", "),25)
         } else {
             holder.autore.text = "Autore sconosciuto"
+        }
+
+        holder.cover.setOnClickListener {
+            BookHolder.book = currentItem
+            val intent = Intent(holder.itemView.context, DettaglioLibro::class.java)
+            holder.itemView.context.startActivity(intent)
         }
     }
 

@@ -9,7 +9,11 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageButton
+import androidx.appcompat.widget.SearchView
 import androidx.databinding.DataBindingUtil
+import androidx.navigation.Navigation
+import androidx.navigation.fragment.findNavController
+import androidx.navigation.ui.AppBarConfiguration
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.DataSource
 import com.bumptech.glide.load.engine.GlideException
@@ -39,12 +43,69 @@ class Scopri : Fragment() {
             inflater,
             R.layout.fragment_scopri, container, false
         )
-        orderedBooks("harrypotter", "newest")
-        relevantBooks("harrypotter", "relevance")
+        orderedBooks("a", "newest")
+        relevantBooks("a", "relevance")
+        searchBook()
+
 
         return binding.root
     }
 
+    private fun searchBook(){
+        val searchview = binding.searchView
+        searchview.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
+            override fun onQueryTextSubmit(query: String): Boolean {
+                // Effettua la chiamata all'API
+                val newReleasesCall = ApiServiceManager.apiService.searchBooks(query)   //forse meglio usare getnewreleases con relevant come parametro oltre la query
+                newReleasesCall.enqueue(object : Callback<BookResponse> {
+                    override fun onResponse(call: Call<BookResponse>, response: Response<BookResponse>) {
+                        if (response.isSuccessful) {
+                            Log.d("TAG", "Messaggio di debug")
+
+                            val bookResponse = response.body()
+                            Log.d("TAG", "bookResponse: $bookResponse")
+                            val newReleases =bookResponse?.items?.map { bookItem ->
+                                VolumeDet(
+                                    imageLinks = bookItem.volumeInfo.imageLinks,
+                                    title = bookItem.volumeInfo.title,
+                                    authors = bookItem.volumeInfo.authors,
+                                    language = bookItem.volumeInfo.language
+                                )
+                            }
+                            //da qui inizia dettaglio libro
+                            if (!newReleases.isNullOrEmpty()) {
+                                BookHolder.book = newReleases[0]
+                                val intent = Intent(requireContext(), DettaglioLibro::class.java)
+                                startActivity(intent)
+                            }
+                            //qui finisce
+
+                        } else {
+                            val statusCode = response.code()
+                            val errorMessage = response.message()
+                            Log.d("API Error", "Status Code: $statusCode")
+                            Log.d("API Error", "Error Message: $errorMessage")
+
+                        }
+                    }
+
+                    override fun onFailure(call: Call<BookResponse>, t: Throwable) {
+                        Log.d("TAG", "Messaggio di debug11111")
+                        Log.e("TAG", "Errore nella chiamata API: ${t.message}", t)
+
+                    }
+                })
+                return true
+            }
+
+            override fun onQueryTextChange(newText: String): Boolean {
+                // Gestisci gli eventi di modifica del testo della SearchView, se necessario
+                return true
+            }
+        })
+
+
+    }
     private fun orderedBooks(query:String, tipologia: String){
         // Chiamata per ottenere i nuovi libri
         val newReleasesCall = ApiServiceManager.apiService.getNewReleases(query, tipologia)
@@ -207,18 +268,90 @@ class Scopri : Fragment() {
     }
 
 
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        binding.button2.setOnClickListener {
-            FragmentUtils.replaceFragment(requireFragmentManager(), R.id.fragmentContainerView, ScopriPerTe())
-        }
+        perTeButton()
+        genereButtons()
 /*
         binding.clickListenerPerTe = object: ClickListenerPerTe {
             override fun onButtonClick() {
                 Navigation.findNavController(view).navigate(R.id.action_scopri_to_scopriPerTe)
             }
         }*/
+
+    }
+
+    private fun perTeButton(){
+        binding.buttonPerTe.setOnClickListener {
+            val fragmentManager = requireActivity().supportFragmentManager
+            FragmentUtils.replaceFragment(fragmentManager, R.id.fragmentContainerView, ScopriPerTe())
+        }
+    }
+
+    private fun genereButtons() {
+
+        binding.button3.setOnClickListener {
+
+            val fragmentManager = requireActivity().supportFragmentManager
+            val scopriFragment = ScopriGenere.newInstance("fantasia")
+            FragmentUtils.replaceFragment(
+                fragmentManager,
+                R.id.fragmentContainerView,
+                scopriFragment
+            )
+        }
+        binding.button4.setOnClickListener {
+
+            val fragmentManager = requireActivity().supportFragmentManager
+            val scopriFragment = ScopriGenere.newInstance("romanzi")
+            FragmentUtils.replaceFragment(
+                fragmentManager,
+                R.id.fragmentContainerView,
+                scopriFragment
+            )
+        }
+        binding.button5.setOnClickListener {
+
+            val fragmentManager = requireActivity().supportFragmentManager
+            val scopriFragment = ScopriGenere.newInstance("fiction")
+            FragmentUtils.replaceFragment(
+                fragmentManager,
+                R.id.fragmentContainerView,
+                scopriFragment
+            )
+        }
+        binding.button6.setOnClickListener {
+
+            val fragmentManager = requireActivity().supportFragmentManager
+            val scopriFragment = ScopriGenere.newInstance("biografia" )
+            FragmentUtils.replaceFragment(
+                fragmentManager,
+                R.id.fragmentContainerView,
+                scopriFragment
+            )
+        }
+        binding.button7.setOnClickListener {
+
+            val fragmentManager = requireActivity().supportFragmentManager
+            val scopriFragment = ScopriGenere.newInstance("storia")
+            FragmentUtils.replaceFragment(
+                fragmentManager,
+                R.id.fragmentContainerView,
+                scopriFragment
+            )
+        }
+        binding.button8.setOnClickListener {
+
+            val fragmentManager = requireActivity().supportFragmentManager
+            val scopriFragment = ScopriGenere.newInstance("horror")
+            FragmentUtils.replaceFragment(
+                fragmentManager,
+                R.id.fragmentContainerView,
+                scopriFragment
+            )
+        }
 
     }
 }

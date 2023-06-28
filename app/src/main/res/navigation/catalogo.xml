@@ -30,6 +30,13 @@
         <action
             android:id="@+id/action_scopri_to_scopriPerTe"
             app:destination="@id/scopriPerTe" />
+        <action
+            android:id="@+id/action_scopri_to_scopriGenere"
+            app:destination="@id/scopriGenere" >
+            <argument
+                android:name="parametro"
+                app:argType="string" />
+        </action>
     </fragment>
     <fragment
         android:id="@+id/scopriPerTe"
@@ -39,4 +46,14 @@
             android:id="@+id/action_scopriPerTe_to_scopri"
             app:destination="@id/scopri" />
     </fragment>
+    <fragment
+        android:id="@+id/scopriGenere"
+        android:name="com.example.booktique.ScopriGenere"
+        android:label="ScopriGenere" >
+        <argument
+            android:name="parametro"
+            app:argType="string"
+            android:defaultValue="" />
+    </fragment>
+
 </navigation>
