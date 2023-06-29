@@ -20,12 +20,24 @@ class ScopriGenere : Fragment() {
     private lateinit var adapter: MyAdapterGenere
     private lateinit var listaLibri: ArrayList<VolumeDet>
     private var param: String? = null
+    private var ricerca: Boolean = false
 
     companion object {
-        fun newInstance(param1: String): ScopriGenere {
+
+        fun newInstance(genre: String): ScopriGenere {
             val fragment = ScopriGenere()
             val args = Bundle()
-            args.putString("param1", param1)
+            args.putString("param", genre)
+            args.putBoolean("ricerca", false)
+            fragment.arguments = args
+            return fragment
+        }
+
+        fun newInstanceS(searchQuery: String): ScopriGenere {
+            val fragment = ScopriGenere()
+            val args = Bundle()
+            args.putString("param", searchQuery)
+            args.putBoolean("ricerca", true)
             fragment.arguments = args
             return fragment
         }
@@ -42,10 +54,15 @@ class ScopriGenere : Fragment() {
         recyclerView.layoutManager = LinearLayoutManager(requireContext())
 
         arguments?.let { args ->
-            param = args.getString("param1")
-
-            binding.genere.text = param }
-
+            ricerca = args.getBoolean("ricerca")
+            param = args.getString("param")
+            if(param != null){
+                if(ricerca)
+                    binding.genere.text = "Ricerca: "+ param
+                else
+                    binding.genere.text = param
+            }
+        }
 
         return binding.root
     }
@@ -55,9 +72,13 @@ class ScopriGenere : Fragment() {
 
         listaLibri = ArrayList()
         recyclerView.setHasFixedSize(true)
-        val queryparameter= "subject:"+ param
-        Log.d("TAG", queryparameter)
-        getSubjectBooks(queryparameter, "relevance")
+        if(!ricerca) {
+            val queryparameter = "subject:" + param
+            Log.d("TAG", queryparameter)
+            getSubjectBooks(queryparameter, "relevance")
+        }else{
+            loadBooks(BooksHolder.books)
+        }
 
     }
 

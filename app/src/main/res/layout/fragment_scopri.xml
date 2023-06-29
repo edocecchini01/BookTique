@@ -82,8 +82,7 @@
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toEndOf="@+id/button1"
-                        app:layout_constraintTop_toBottomOf="@+id/searchView"
-                        android:onClick="@{() -> clickListenerPerTe.onButtonClick()}"/>
+                        app:layout_constraintTop_toBottomOf="@+id/searchView" />
 
 
                 </androidx.constraintlayout.widget.ConstraintLayout>

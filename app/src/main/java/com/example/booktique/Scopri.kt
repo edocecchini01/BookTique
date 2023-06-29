@@ -10,6 +10,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageButton
 import androidx.appcompat.widget.SearchView
+import androidx.core.content.ContextCompat
 import androidx.databinding.DataBindingUtil
 import androidx.navigation.Navigation
 import androidx.navigation.fragment.findNavController
@@ -65,18 +66,28 @@ class Scopri : Fragment() {
                             val bookResponse = response.body()
                             Log.d("TAG", "bookResponse: $bookResponse")
                             val newReleases =bookResponse?.items?.map { bookItem ->
+                                val imageLinks = bookItem.volumeInfo.imageLinks.orDefault(ImageLinks("android.resource://com.example.booktique/drawable/no_book_icon"))
+                                val title = bookItem.volumeInfo.title.orDefault("Titolo sconosciuto")
+                                val authors = bookItem.volumeInfo.authors.orDefault(listOf("Autore sconosciuto"))
+                                val language = bookItem.volumeInfo.language.orDefault("Lingua sconosciuta")
+
                                 VolumeDet(
-                                    imageLinks = bookItem.volumeInfo.imageLinks,
-                                    title = bookItem.volumeInfo.title,
-                                    authors = bookItem.volumeInfo.authors,
-                                    language = bookItem.volumeInfo.language
+                                    imageLinks = imageLinks,
+                                    title = title,
+                                    authors = authors,
+                                    language = language
                                 )
                             }
                             //da qui inizia dettaglio libro
                             if (!newReleases.isNullOrEmpty()) {
-                                BookHolder.book = newReleases[0]
-                                val intent = Intent(requireContext(), DettaglioLibro::class.java)
-                                startActivity(intent)
+                                BooksHolder.books = newReleases
+                                val fragmentManager = requireActivity().supportFragmentManager
+                                val scopriFragment = ScopriGenere.newInstanceS(query)
+                                FragmentUtils.replaceFragment(
+                                    fragmentManager,
+                                    R.id.fragmentContainerView,
+                                    scopriFragment
+                                )
                             }
                             //qui finisce
 
@@ -106,6 +117,7 @@ class Scopri : Fragment() {
 
 
     }
+
     private fun orderedBooks(query:String, tipologia: String){
         // Chiamata per ottenere i nuovi libri
         val newReleasesCall = ApiServiceManager.apiService.getNewReleases(query, tipologia)
@@ -353,5 +365,9 @@ class Scopri : Fragment() {
             )
         }
 
+    }
+
+    inline fun <T> T?.orDefault(defaultValue: T): T {
+        return this ?: defaultValue
     }
 }
