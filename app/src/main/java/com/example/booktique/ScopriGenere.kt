@@ -149,16 +149,8 @@ class ScopriGenere : Fragment() {
                                 newBooksList.add(newBook)
                             }
 
-                            if (!newBooksList.isNullOrEmpty()) {
-                                BooksHolder.books = newBooksList
-                                val fragmentManager = requireActivity().supportFragmentManager
-                                val scopriFragment = ScopriGenere.newInstanceS(query)
-                                FragmentUtils.replaceFragment(
-                                    fragmentManager,
-                                    R.id.fragmentContainerView,
-                                    scopriFragment
-                                )
-                            }
+                            loadBooks(newBooksList)
+
                         }
                     } catch (e: JSONException) {
                         // Il parsing del JSON non è valido
