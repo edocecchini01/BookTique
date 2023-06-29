@@ -66,7 +66,6 @@ class ScopriGenere : Fragment() {
                     binding.genere.text = param
             }
         }
-
         return binding.root
     }
 

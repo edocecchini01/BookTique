@@ -112,8 +112,7 @@ class Scopri : Fragment() {
                                                     imageLinksObject.optString("smallThumbnail")
                                                 ImageLinks(smallThumbnail)
                                             } else {
-                                                val smallThumbnail =
-                                                    "android.resource://com.example.booktique/drawable/no_book_icon"
+                                                val smallThumbnail = "android.resource://com.example.booktique/drawable/no_book_icon"
                                                 ImageLinks(smallThumbnail)
                                             }
 
