@@ -27,6 +27,10 @@ import retrofit2.Call
 import retrofit2.Response
 import retrofit2.Callback
 import com.bumptech.glide.request.target.Target
+import okhttp3.ResponseBody
+import org.json.JSONException
+
+import org.json.JSONObject
 
 
 private lateinit var binding: FragmentScopriBinding
@@ -58,38 +62,83 @@ class Scopri : Fragment() {
             override fun onQueryTextSubmit(query: String): Boolean {
                 // Effettua la chiamata all'API
                 val newReleasesCall = ApiServiceManager.apiService.searchBooks(query)   //forse meglio usare getnewreleases con relevant come parametro oltre la query
-                newReleasesCall.enqueue(object : Callback<BookResponse> {
-                    override fun onResponse(call: Call<BookResponse>, response: Response<BookResponse>) {
+                newReleasesCall.enqueue(object : Callback<ResponseBody> {
+                    override fun onResponse(call: Call<ResponseBody>, response: Response<ResponseBody>) {
                         if (response.isSuccessful) {
                             Log.d("TAG", "Messaggio di debug")
 
                             val bookResponse = response.body()
                             Log.d("TAG", "bookResponse: $bookResponse")
-                            val newReleases =bookResponse?.items?.map { bookItem ->
-                                val imageLinks = bookItem.volumeInfo.imageLinks.orDefault(ImageLinks("android.resource://com.example.booktique/drawable/no_book_icon"))
-                                val title = bookItem.volumeInfo.title.orDefault("Titolo sconosciuto")
-                                val authors = bookItem.volumeInfo.authors.orDefault(listOf("Autore sconosciuto"))
-                                val language = bookItem.volumeInfo.language.orDefault("Lingua sconosciuta")
 
-                                VolumeDet(
-                                    imageLinks = imageLinks,
-                                    title = title,
-                                    authors = authors,
-                                    language = language
-                                )
+                            try {
+                                if (bookResponse != null) {
+                                    val jsonString = bookResponse.string()
+
+                                    val jsonObject = JSONObject(jsonString)
+                                    val itemsArray = jsonObject.getJSONArray("items")
+
+                                    val newBooksList = mutableListOf<VolumeDet>()
+
+                                    for (i in 0 until itemsArray.length()) {
+                                        val book = itemsArray.getJSONObject(i)
+                                        val volumeInfo = book.getJSONObject("volumeInfo")
+
+                                        var title = "Titolo non disponibile"
+                                        if (volumeInfo.has("title")) {
+                                            title = volumeInfo.optString("title")
+                                        }
+                                        val authorsList = mutableListOf<String>()
+                                        if (volumeInfo.has("authors")) {
+                                            val authorsArray = volumeInfo.optJSONArray("authors")
+                                            if (authorsArray != null) {
+                                                for (j in 0 until authorsArray.length()) {
+                                                    val author = authorsArray.getString(j)
+                                                    authorsList.add(author)
+                                                }
+                                            }
+                                        }
+                                        val authors = authorsList.toList()
+
+                                        var language = "Lingua non specificata"
+                                        if (volumeInfo.has("language")) {
+                                            language = volumeInfo.optString("language")
+                                        }
+
+                                        val imageLinks: ImageLinks =
+                                            if (volumeInfo.has("imageLinks")) {
+                                                val imageLinksObject =
+                                                    volumeInfo.getJSONObject("imageLinks")
+                                                val smallThumbnail =
+                                                    imageLinksObject.optString("smallThumbnail")
+                                                ImageLinks(smallThumbnail)
+                                            } else {
+                                                val smallThumbnail =
+                                                    "android.resource://com.example.booktique/drawable/no_book_icon"
+                                                ImageLinks(smallThumbnail)
+                                            }
+
+
+                                        val newBook =
+                                            VolumeDet(imageLinks, title, authors, language)
+                                        newBooksList.add(newBook)
+                                    }
+
+                                    if (!newBooksList.isNullOrEmpty()) {
+                                        BooksHolder.books = newBooksList
+                                        val fragmentManager = requireActivity().supportFragmentManager
+                                        val scopriFragment = ScopriGenere.newInstanceS(query)
+                                        FragmentUtils.replaceFragment(
+                                            fragmentManager,
+                                            R.id.fragmentContainerView,
+                                            scopriFragment
+                                        )
+                                    }
+                                }
+                            } catch (e: JSONException) {
+                                // Il parsing del JSON non è valido
+                                // Gestisci l'errore
+                                Log.e("JSON Parsing Error", "Errore nel parsing del JSON: ${e.message}")
                             }
-                            //da qui inizia dettaglio libro
-                            if (!newReleases.isNullOrEmpty()) {
-                                BooksHolder.books = newReleases
-                                val fragmentManager = requireActivity().supportFragmentManager
-                                val scopriFragment = ScopriGenere.newInstanceS(query)
-                                FragmentUtils.replaceFragment(
-                                    fragmentManager,
-                                    R.id.fragmentContainerView,
-                                    scopriFragment
-                                )
-                            }
-                            //qui finisce
 
                         } else {
                             val statusCode = response.code()
@@ -100,7 +149,7 @@ class Scopri : Fragment() {
                         }
                     }
 
-                    override fun onFailure(call: Call<BookResponse>, t: Throwable) {
+                    override fun onFailure(call: Call<ResponseBody>, t: Throwable) {
                         Log.d("TAG", "Messaggio di debug11111")
                         Log.e("TAG", "Errore nella chiamata API: ${t.message}", t)
 
@@ -120,65 +169,165 @@ class Scopri : Fragment() {
 
     private fun orderedBooks(query:String, tipologia: String){
         // Chiamata per ottenere i nuovi libri
-        val newReleasesCall = ApiServiceManager.apiService.getNewReleases(query, tipologia)
-        Log.d("ImageC", "imageUrl: $newReleasesCall")
+                val newReleasesCall = ApiServiceManager.apiService.getNewReleases(query,tipologia)   //forse meglio usare getnewreleases con relevant come parametro oltre la query
+                newReleasesCall.enqueue(object : Callback<ResponseBody> {
+                    override fun onResponse(call: Call<ResponseBody>, response: Response<ResponseBody>) {
+                        if (response.isSuccessful) {
+                            Log.d("TAG", "Messaggio di debug")
 
-        newReleasesCall.enqueue(object : Callback<BookResponse> {
-            override fun onResponse(call: Call<BookResponse>, response: Response<BookResponse>) {
-                if (response.isSuccessful) {
-                    Log.d("TAG", "Messaggio di debug")
+                            val bookResponse = response.body()
+                            Log.d("TAG", "bookResponse: $bookResponse")
 
-                    val bookResponse = response.body()
-                    Log.d("TAG", "bookResponse: $bookResponse")
-                    val newReleases =bookResponse?.items?.map { bookItem ->
-                        VolumeDet(
-                            imageLinks = bookItem.volumeInfo.imageLinks,
-                            title = bookItem.volumeInfo.title,
-                            authors = bookItem.volumeInfo.authors,
-                            language = bookItem.volumeInfo.language
-                        )
+                            try {
+                                if (bookResponse != null) {
+                                    val jsonString = bookResponse.string()
+
+                                    val jsonObject = JSONObject(jsonString)
+                                    val itemsArray = jsonObject.getJSONArray("items")
+
+                                    val newBooksList = mutableListOf<VolumeDet>()
+
+                                    for (i in 0 until itemsArray.length()) {
+                                        val book = itemsArray.getJSONObject(i)
+                                        val volumeInfo = book.getJSONObject("volumeInfo")
+
+                                        var title = "Titolo non disponibile"
+                                        if (volumeInfo.has("title")) {
+                                            title = volumeInfo.optString("title")
+                                        }
+                                        val authorsList = mutableListOf<String>()
+                                        if (volumeInfo.has("authors")) {
+                                            val authorsArray = volumeInfo.optJSONArray("authors")
+                                            if (authorsArray != null) {
+                                                for (j in 0 until authorsArray.length()) {
+                                                    val author = authorsArray.getString(j)
+                                                    authorsList.add(author)
+                                                }
+                                            }
+                                        }
+                                        val authors = authorsList.toList()
+
+                                        var language = "Lingua non specificata"
+                                        if (volumeInfo.has("language")) {
+                                            language = volumeInfo.optString("language")
+                                        }
+
+                                        val imageLinks: ImageLinks =
+                                            if (volumeInfo.has("imageLinks")) {
+                                                val imageLinksObject =
+                                                    volumeInfo.getJSONObject("imageLinks")
+                                                val smallThumbnail =
+                                                    imageLinksObject.optString("smallThumbnail")
+                                                ImageLinks(smallThumbnail)
+                                            } else {
+                                                val smallThumbnail =
+                                                    "android.resource://com.example.booktique/drawable/no_book_icon"
+                                                ImageLinks(smallThumbnail)
+                                            }
+
+
+                                        val newBook =
+                                            VolumeDet(imageLinks, title, authors, language)
+                                        newBooksList.add(newBook)
+                                    }
+
+                                    loadImagesIntoImageButtons(newBooksList, tipologia)
+                                }
+                            } catch (e: JSONException) {
+                                // Il parsing del JSON non è valido
+                                // Gestisci l'errore
+                                Log.e("JSON Parsing Error", "Errore nel parsing del JSON: ${e.message}")
+                            }
+
+                        } else {
+                            val statusCode = response.code()
+                            val errorMessage = response.message()
+                            Log.d("API Error", "Status Code: $statusCode")
+                            Log.d("API Error", "Error Message: $errorMessage")
+
+                        }
                     }
-                    loadImagesIntoImageButtons(newReleases, "newest")
 
-                } else {
-                    val statusCode = response.code()
-                    val errorMessage = response.message()
-                    Log.d("API Error", "Status Code: $statusCode")
-                    Log.d("API Error", "Error Message: $errorMessage")
+                    override fun onFailure(call: Call<ResponseBody>, t: Throwable) {
+                        Log.d("TAG", "Messaggio di debug11111")
+                        Log.e("TAG", "Errore nella chiamata API: ${t.message}", t)
 
-                }
-            }
-
-            override fun onFailure(call: Call<BookResponse>, t: Throwable) {
-                Log.d("TAG", "Messaggio di debug11111")
-                Log.e("TAG", "Errore nella chiamata API: ${t.message}", t)
-
-            }
-        })
+                    }
+                })
 
     }
 
     private fun relevantBooks(query:String, tipologia: String){
         // Chiamata per ottenere i nuovi libri
-        val newReleasesCall = ApiServiceManager.apiService.getNewReleases(query, tipologia)
-        Log.d("Image", "imageUrl: $newReleasesCall")
-
-        newReleasesCall.enqueue(object : Callback<BookResponse> {
-            override fun onResponse(call: Call<BookResponse>, response: Response<BookResponse>) {
+        val newReleasesCall = ApiServiceManager.apiService.getNewReleases(query,tipologia)   //forse meglio usare getnewreleases con relevant come parametro oltre la query
+        newReleasesCall.enqueue(object : Callback<ResponseBody> {
+            override fun onResponse(call: Call<ResponseBody>, response: Response<ResponseBody>) {
                 if (response.isSuccessful) {
                     Log.d("TAG", "Messaggio di debug")
 
                     val bookResponse = response.body()
                     Log.d("TAG", "bookResponse: $bookResponse")
-                    val newReleases =bookResponse?.items?.map { bookItem ->
-                        VolumeDet(
-                            imageLinks = bookItem.volumeInfo.imageLinks,
-                            title = bookItem.volumeInfo.title,
-                            authors = bookItem.volumeInfo.authors,
-                            language = bookItem.volumeInfo.language
-                        )
+
+                    try {
+                        if (bookResponse != null) {
+                            val jsonString = bookResponse.string()
+
+                            val jsonObject = JSONObject(jsonString)
+                            val itemsArray = jsonObject.getJSONArray("items")
+
+                            val newBooksList = mutableListOf<VolumeDet>()
+
+                            for (i in 0 until itemsArray.length()) {
+                                val book = itemsArray.getJSONObject(i)
+                                val volumeInfo = book.getJSONObject("volumeInfo")
+
+                                var title = "Titolo non disponibile"
+                                if (volumeInfo.has("title")) {
+                                    title = volumeInfo.optString("title")
+                                }
+                                val authorsList = mutableListOf<String>()
+                                if (volumeInfo.has("authors")) {
+                                    val authorsArray = volumeInfo.optJSONArray("authors")
+                                    if (authorsArray != null) {
+                                        for (j in 0 until authorsArray.length()) {
+                                            val author = authorsArray.getString(j)
+                                            authorsList.add(author)
+                                        }
+                                    }
+                                }
+                                val authors = authorsList.toList()
+
+                                var language = "Lingua non specificata"
+                                if (volumeInfo.has("language")) {
+                                    language = volumeInfo.optString("language")
+                                }
+
+                                val imageLinks: ImageLinks =
+                                    if (volumeInfo.has("imageLinks")) {
+                                        val imageLinksObject =
+                                            volumeInfo.getJSONObject("imageLinks")
+                                        val smallThumbnail =
+                                            imageLinksObject.optString("smallThumbnail")
+                                        ImageLinks(smallThumbnail)
+                                    } else {
+                                        val smallThumbnail =
+                                            "android.resource://com.example.booktique/drawable/no_book_icon"
+                                        ImageLinks(smallThumbnail)
+                                    }
+
+
+                                val newBook =
+                                    VolumeDet(imageLinks, title, authors, language)
+                                newBooksList.add(newBook)
+                            }
+
+                            loadImagesIntoImageButtons(newBooksList, tipologia)
+                        }
+                    } catch (e: JSONException) {
+                        // Il parsing del JSON non è valido
+                        // Gestisci l'errore
+                        Log.e("JSON Parsing Error", "Errore nel parsing del JSON: ${e.message}")
                     }
-                    loadImagesIntoImageButtons(newReleases, "relevance")
 
                 } else {
                     val statusCode = response.code()
@@ -189,7 +338,7 @@ class Scopri : Fragment() {
                 }
             }
 
-            override fun onFailure(call: Call<BookResponse>, t: Throwable) {
+            override fun onFailure(call: Call<ResponseBody>, t: Throwable) {
                 Log.d("TAG", "Messaggio di debug11111")
                 Log.e("TAG", "Errore nella chiamata API: ${t.message}", t)
 
