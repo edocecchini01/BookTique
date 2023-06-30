@@ -4,6 +4,9 @@ data class Utenti(
     val email: String,
     val password: String,
     val username: String,
+    val catalogo: Catalogo
+)
+data class Catalogo(
     val libriDaLeggere: List<LibriDaL>,
     val libriInCorso: List<LibriInC>,
     val libriLetti: List<LibriL>
