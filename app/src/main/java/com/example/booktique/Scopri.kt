@@ -115,10 +115,10 @@ class Scopri : Fragment() {
                                                 val smallThumbnail = "android.resource://com.example.booktique/drawable/no_book_icon"
                                                 ImageLinks(smallThumbnail)
                                             }
-
+                                        val id = book.optString("id")
 
                                         val newBook =
-                                            VolumeDet(imageLinks, title, authors, language)
+                                            VolumeDet(imageLinks, title, authors, language, id)
                                         newBooksList.add(newBook)
                                     }
 
@@ -223,10 +223,10 @@ class Scopri : Fragment() {
                                                     "android.resource://com.example.booktique/drawable/no_book_icon"
                                                 ImageLinks(smallThumbnail)
                                             }
-
+                                        val id = book.optString("id")
 
                                         val newBook =
-                                            VolumeDet(imageLinks, title, authors, language)
+                                            VolumeDet(imageLinks, title, authors, language, id)
                                         newBooksList.add(newBook)
                                     }
 
@@ -313,10 +313,10 @@ class Scopri : Fragment() {
                                             "android.resource://com.example.booktique/drawable/no_book_icon"
                                         ImageLinks(smallThumbnail)
                                     }
-
+                                val id = book.optString("id")
 
                                 val newBook =
-                                    VolumeDet(imageLinks, title, authors, language)
+                                    VolumeDet(imageLinks, title, authors, language, id)
                                 newBooksList.add(newBook)
                             }
 

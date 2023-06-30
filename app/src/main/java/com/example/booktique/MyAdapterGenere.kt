@@ -38,7 +38,7 @@ class MyAdapterGenere(private val listaLibri: ArrayList<VolumeDet>) :
             .load(currentItem.imageLinks.smallThumbnail)
             .into(holder.cover)
 
-        holder.titolo.text = abbreviaInfo(currentItem.title,25)
+        holder.titolo.text = abbreviaInfo(currentItem?.title ?: "",25)
 
         if (currentItem.authors.isNotEmpty()) {
             holder.autore.text = abbreviaInfo(currentItem.authors.joinToString(", "),25)

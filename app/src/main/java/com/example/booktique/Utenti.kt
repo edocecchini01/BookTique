@@ -12,22 +12,25 @@ data class Catalogo(
     val libriLetti: List<LibriL>
 )
 data class LibriDaL(
-    val titolo: String,
-    val copertina: String,
-    val autori: String
+    val titolo: String?="",
+    val copertina: String?="",
+    val autori: String?="",
+    val id: String?=""
 )
 data class LibriL(
-    val titolo: String,
-    val copertina: String,
-    val autori: String,
-    val recensione: String,
-    val valutazione: Int
+    val titolo: String?="",
+    val copertina: String?="",
+    val autori: String?="",
+    val recensione: String?="",
+    val valutazione: Int?=0,
+    val id: String?=""
 )
 data class LibriInC(
-    val titolo: String,
-    val copertina: String,
-    val autori: String,
-    val pagineTot: Int,
-    val paginaAtt: Int
+    val titolo: String?="",
+    val copertina: String?="",
+    val autori: String?="",
+    val pagineTot: Int?=0,
+    val paginaAtt: Int?=0,
+    val id: String?=""
 )
 
