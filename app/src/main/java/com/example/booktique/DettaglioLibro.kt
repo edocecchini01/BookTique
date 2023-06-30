@@ -11,10 +11,10 @@ import com.example.booktique.databinding.ActivityMainBinding
 import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.FirebaseDatabase
 
-
+private lateinit var binding: ActivityDettaglioLibroBinding
+private lateinit var database: DatabaseReference
 class DettaglioLibro : AppCompatActivity() {
-    private lateinit var binding: ActivityDettaglioLibroBinding
-    private lateinit var database: DatabaseReference
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityDettaglioLibroBinding.inflate(layoutInflater)
@@ -32,22 +32,23 @@ class DettaglioLibro : AppCompatActivity() {
             Glide.with(this)
                 .load(book.imageLinks.smallThumbnail)
                 .into(imageView)
-            
+
         }
         aggiungiLibro()
 
     }
 
-    private fun aggiungiLibro(){
+
+    fun aggiungiLibro() {
         Log.d("TAG", "Messaggio di debug")
         binding.buttonAggiungi.setOnClickListener {
             Log.d("TAG", "Messaggio di debug")
             database = FirebaseDatabase.getInstance().getReference("Utenti").child("user1")
 
             val libroLeg = LibriDaL(
-                binding.textView11.toString(),
+                binding.textView11.text.toString(),
                 binding.imageView3.toString(),
-                binding.textView9.toString()
+                binding.textView9.text.toString()
             )
 
             val libriRef = database.child("DaLeggere")

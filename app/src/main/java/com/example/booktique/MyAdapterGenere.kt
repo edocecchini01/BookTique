@@ -11,6 +11,7 @@ import androidx.core.content.ContentProviderCompat.requireContext
 import androidx.core.content.ContextCompat.startActivity
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
+import com.google.firebase.database.FirebaseDatabase
 
 class MyAdapterGenere(private val listaLibri: ArrayList<VolumeDet>) :
     RecyclerView.Adapter<MyAdapterGenere.MyViewHolder>() {
@@ -20,6 +21,7 @@ class MyAdapterGenere(private val listaLibri: ArrayList<VolumeDet>) :
         val cover : ImageButton = itemView.findViewById(R.id.coverSG)
         val titolo : TextView = itemView.findViewById(R.id.titoloSG)
         val autore : TextView = itemView.findViewById(R.id.autoreSG)
+
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MyViewHolder {
@@ -63,4 +65,5 @@ class MyAdapterGenere(private val listaLibri: ArrayList<VolumeDet>) :
     override fun getItemCount(): Int {
         return listaLibri.size
     }
+
 }
