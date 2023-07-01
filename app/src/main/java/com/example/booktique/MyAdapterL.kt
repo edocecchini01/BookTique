@@ -16,6 +16,8 @@ class MyAdapterL (private val listaLibri : ArrayList<Libro>) :
     interface onItemClickListener{
         fun onItemClick(position: Int)
         fun hideShow(element: LinearLayout, comment : ImageButton)
+
+        fun likeDislike(like: ImageButton, dislike : ImageButton)
     }
 
     fun setOnCLickItemListener(listener : onItemClickListener){
@@ -36,6 +38,11 @@ class MyAdapterL (private val listaLibri : ArrayList<Libro>) :
 
             itemView.findViewById<ImageButton>(R.id.commentL).setOnClickListener {
                 listener.hideShow(itemView.findViewById(R.id.hideLayoutL), itemView.findViewById(R.id.commentL))
+            }
+
+            //like
+            itemView.findViewById<ImageButton>(R.id.likeL).setOnClickListener {
+                listener.likeDislike(itemView.findViewById(R.id.likeL),itemView.findViewById(R.id.dislikeL))
             }
 
         }

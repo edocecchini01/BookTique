@@ -73,6 +73,12 @@ class CatalogoLetti : Fragment() {
 
             }
 
+            override fun likeDislike(like: ImageButton, dislike: ImageButton) {
+                val btnLike = like
+                val btnDislike = dislike
+                //andrà modificato con il campo del database
+            }
+
         })
 
     }
