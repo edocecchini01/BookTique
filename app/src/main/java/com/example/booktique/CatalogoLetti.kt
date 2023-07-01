@@ -1,10 +1,13 @@
 package com.example.booktique
 
+import android.animation.ObjectAnimator
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageButton
+import android.widget.LinearLayout
 import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -51,6 +54,26 @@ class CatalogoLetti : Fragment() {
 
         adapter = MyAdapterL(listaLibri)
         recyclerView.adapter = adapter
+        adapter.setOnCLickItemListener(object : MyAdapterL.onItemClickListener{
+            override fun onItemClick(position: Int) {
+
+            }
+
+            override fun hideShow(element: LinearLayout, comment: ImageButton) {
+                val linearL = element
+                val btn = comment
+                if(linearL.visibility == View.GONE) {
+                    linearL.visibility = View.VISIBLE
+                    btn.setBackgroundResource(R.drawable.comment_filled_icon)
+                }
+                else {
+                    linearL.visibility = View.GONE
+                    btn.setBackgroundResource(R.drawable.comment_icon)
+                }
+
+            }
+
+        })
 
     }
 

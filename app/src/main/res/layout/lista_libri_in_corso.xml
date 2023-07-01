@@ -3,17 +3,20 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="150dp">
+    android:layout_height="wrap_content"
+    android:background="@drawable/box_recyclerview"
+    android:paddingTop="10dp"
+    android:paddingBottom="10dp">
 
     <ImageButton
         android:id="@+id/coverIC"
         android:layout_width="88dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
-        android:layout_marginTop="8dp"
         android:adjustViewBounds="true"
-        android:scaleType="fitCenter"
         android:background="?attr/selectableItemBackgroundBorderless"
+        android:scaleType="fitCenter"
+        app:layout_constraintBottom_toTopOf="@+id/hideLayout"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         tools:srcCompat="@tools:sample/avatars" />
@@ -22,12 +25,13 @@
         android:id="@+id/genere_labelDL"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="20dp"
-        android:layout_marginTop="16dp"
+        android:layout_marginTop="12dp"
         android:layout_marginEnd="81dp"
         android:fontFamily="@font/lora_bold_italic"
         android:text="Genere"
+        android:textColor="@color/gray"
         app:layout_constraintEnd_toStartOf="@+id/downIC"
+        app:layout_constraintHorizontal_bias="0.166"
         app:layout_constraintStart_toEndOf="@+id/coverIC"
         app:layout_constraintTop_toBottomOf="@+id/titoloIC" />
 
@@ -39,6 +43,7 @@
         android:layout_marginTop="16dp"
         android:fontFamily="@font/lora_bold_italic"
         android:text="Titolo"
+        android:textColor="@color/gray"
         app:layout_constraintEnd_toStartOf="@+id/downIC"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toEndOf="@+id/coverIC"
@@ -48,14 +53,14 @@
         android:id="@+id/deleteIC"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginEnd="25dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="2dp"
         android:background="?attr/selectableItemBackgroundBorderless"
-        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintBottom_toTopOf="@+id/hideLayout"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="1.0"
-        app:layout_constraintStart_toEndOf="@+id/downIC"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.504"
+        app:layout_constraintHorizontal_bias="0.851"
+        app:layout_constraintStart_toEndOf="@+id/genere_labelDL"
+        app:layout_constraintTop_toBottomOf="@+id/downIC"
         app:srcCompat="@drawable/delete_icon" />
 
     <TextView
@@ -64,8 +69,10 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="20dp"
         android:layout_marginTop="4dp"
+        android:layout_marginBottom="10dp"
         android:fontFamily="sans-serif"
         android:text="TextView"
+        android:textColor="@color/gray"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@+id/downIC"
         app:layout_constraintHorizontal_bias="0.0"
@@ -77,12 +84,12 @@
         android:id="@+id/downIC"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="128dp"
+        android:layout_marginEnd="32dp"
         android:background="?attr/selectableItemBackgroundBorderless"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/genere_labelDL"
+        app:layout_constraintBottom_toTopOf="@+id/hideLayout"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.504"
+        app:layout_constraintVertical_bias="0.245"
         app:srcCompat="@drawable/nav_down_icon" />
 
     <TextView
@@ -93,9 +100,54 @@
         android:layout_marginTop="8dp"
         android:fontFamily="sans-serif"
         android:text="TextView"
+        android:textColor="@color/gray"
         app:layout_constraintEnd_toStartOf="@+id/downIC"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toEndOf="@+id/coverIC"
         app:layout_constraintTop_toBottomOf="@+id/titolo_labelDL" />
+
+    <LinearLayout
+        android:id="@+id/hideLayout"
+        android:layout_width="match_parent"
+        android:layout_height="70dp"
+        android:layout_marginStart="1dp"
+        android:layout_marginEnd="1dp"
+        android:layout_marginBottom="1dp"
+        android:gravity="center"
+        android:orientation="horizontal"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/genereIC"
+        app:layout_constraintVertical_bias="1.0">
+
+        <TextView
+            android:id="@+id/textView16"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:text="0"
+            android:textColor="@color/gray" />
+
+        <SeekBar
+            android:id="@+id/seekBar2"
+            android:layout_width="200dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:progressTint="@color/red" />
+
+        <TextView
+            android:id="@+id/textView17"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:text="30"
+            android:textColor="@color/gray" />
+    </LinearLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
