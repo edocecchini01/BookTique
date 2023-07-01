@@ -6,8 +6,9 @@ import android.view.ViewGroup
 import android.widget.ImageButton
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
+import com.bumptech.glide.Glide
 
-class MyAdapterDL(private val listaLibri : ArrayList<Libro>) :
+class MyAdapterDL(private val listaLibri : ArrayList<LibriDaL>) :
     RecyclerView.Adapter<MyAdapterDL.MyViewHolder>() {
 
     class MyViewHolder(itemView : View) : RecyclerView.ViewHolder(itemView){
@@ -28,9 +29,24 @@ class MyAdapterDL(private val listaLibri : ArrayList<Libro>) :
 
     override fun onBindViewHolder(holder: MyViewHolder, position: Int) {
         val currentItem = listaLibri[position]
-        holder.cover.setImageResource(currentItem.cover)
-        holder.titolo.text = currentItem.titolo
-        holder.genere.text = currentItem.genere
+
+        Glide.with(holder.itemView.context)
+            .load(currentItem.copertina)
+            .into(holder.cover)
+
+        holder.titolo.text = abbreviaInfo(currentItem?.titolo ?: "",25)
+
+        holder.genere.text = "Genere"
+    }
+
+    //fattorizzare
+    fun abbreviaInfo(stringa: String, lunghezzaMassima: Int): String {
+        return if (stringa.length <= lunghezzaMassima) {
+            stringa
+        } else {
+            val sottostringa = stringa.take(lunghezzaMassima)
+            "$sottostringa..."
+        }
     }
 
 

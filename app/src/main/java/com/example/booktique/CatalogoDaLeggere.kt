@@ -10,13 +10,18 @@ import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.booktique.databinding.FragmentCatalogoDaLeggereBinding
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.database.DataSnapshot
+import com.google.firebase.database.DatabaseError
+import com.google.firebase.database.FirebaseDatabase
+import com.google.firebase.database.ValueEventListener
 
 class CatalogoDaLeggere : Fragment() {
 
     private lateinit var binding: FragmentCatalogoDaLeggereBinding
     private lateinit var recyclerView : RecyclerView
     private lateinit var adapter: MyAdapterDL
-    private lateinit var listaLibri: ArrayList<Libro>
+    private lateinit var listaLibri: ArrayList<LibriDaL>
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
@@ -35,31 +40,6 @@ class CatalogoDaLeggere : Fragment() {
         // Inizializza la lista dei libri
         listaLibri = ArrayList()
 
-        // Crea un oggetto Libro di prova
-        val libro1 = Libro(
-            cover = R.drawable.cover1,
-            titolo = "Il signore degli anelli",
-            genere = "Fantasy",
-            autore = "J.R.R. Tolkien",
-            nPagine = 1178,
-            Isbn = 9788804668235,
-            dettagli = "Una grande epopea fantasy ambientata nella Terra di Mezzo."
-        )
-
-        val libro2 = Libro(
-            cover = R.drawable.cover1,
-            titolo = "Madonna mia",
-            genere = "Horror",
-            autore = "J.R.R. Tolkien",
-            nPagine = 300,
-            Isbn = 9789804668235,
-            dettagli = "Una grande epopea fantasy ambientata nella Terra di Mezzo."
-        )
-
-        // Aggiungi il libro alla lista dei libri
-        listaLibri.add(libro1)
-        listaLibri.add(libro2)
-
         recyclerView = view.findViewById(R.id.lista_libri_leggere)
         recyclerView.layoutManager = LinearLayoutManager(requireContext())
         recyclerView.setHasFixedSize(true)
@@ -67,6 +47,61 @@ class CatalogoDaLeggere : Fragment() {
 
         adapter = MyAdapterDL(listaLibri)
         recyclerView.adapter = adapter
+
+        checkBookCatalogo()
+    }
+
+    //va fattorizzato
+    private fun checkBookCatalogo() {
+        if (FirebaseAuth.getInstance().currentUser != null) {
+            val cUser = FirebaseAuth.getInstance().currentUser!!
+            Log.d("TAG", "Sono :")
+            val database =
+                FirebaseDatabase.getInstance("https://booktique-87881-default-rtdb.europe-west1.firebasedatabase.app/")
+            val usersRef = database.reference.child("Utenti")
+            val childRef = usersRef.child(cUser.uid)
+            val catalogoRef = childRef.child("Catalogo")
+            val daLeggereRef = catalogoRef.child("DaLeggere")
+            /*
+            val lettiRef = catalogoRef.child("Letti")
+            val inCorsoRef = catalogoRef.child("InCorso")
+
+             */
+
+            daLeggereRef.addValueEventListener(object : ValueEventListener {
+                override fun onDataChange(snapshot: DataSnapshot) {
+                    val daLeggereBooks = arrayListOf<LibriDaL>()
+                    if (snapshot.exists()) {
+                        for (bookSnapshot in snapshot.children) {
+                            val libriDaL = bookSnapshot.getValue(LibriDaL::class.java)
+                            Log.d("TAG", "VolumeDet : $libriDaL")
+                            daLeggereBooks.add(libriDaL!!)
+
+                        }
+                    }
+
+                    // Richiama la funzione per i libri "DaLeggere"
+
+                    loadBooks(daLeggereBooks)
+
+                }
+
+                override fun onCancelled(error: DatabaseError) {
+                    // Gestisci eventuali errori nella lettura dei dati
+                    Log.e("TAG", "Errore nel recupero dei dati", error.toException())
+                }
+            })
+        }
+    }
+
+    private fun loadBooks(books: List<LibriDaL>?){
+        if (books != null) {
+            listaLibri.addAll(books)
+            Log.d("TAG","LIBRI: $listaLibri" )
+            adapter = MyAdapterDL(listaLibri)
+            Log.d("TAG","LIBRI:11: $listaLibri" )
+            recyclerView.adapter = adapter
+        }
     }
 
 }
