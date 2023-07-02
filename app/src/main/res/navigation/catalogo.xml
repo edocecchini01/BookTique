@@ -14,6 +14,12 @@
         <action
             android:id="@+id/action_catalogoHome_to_scopri"
             app:destination="@id/scopri" />
+        <action
+            android:id="@+id/action_catalogoHome_to_catalogoInCorso"
+            app:destination="@id/catalogoInCorso" />
+        <action
+            android:id="@+id/action_catalogoHome_to_catalogoLetti"
+            app:destination="@id/catalogoLetti" />
     </fragment>
     <fragment
         android:id="@+id/catalogoDaLeggere"
@@ -58,5 +64,15 @@
             android:id="@+id/action_scopriGenere_to_scopri"
             app:destination="@id/scopri" />
     </fragment>
+    <fragment
+        android:id="@+id/catalogoInCorso"
+        android:name="com.example.booktique.CatalogoInCorso"
+        android:label="CatalogoInCorso"
+        tools:layout="@layout/fragment_catalogo_in_corso"/>
+    <fragment
+        android:id="@+id/catalogoLetti"
+        android:name="com.example.booktique.CatalogoLetti"
+        android:label="CatalogoLetti"
+        tools:layout="@layout/fragment_catalogo_letti"/>
 
 </navigation>

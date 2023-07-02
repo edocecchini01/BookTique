@@ -9,6 +9,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageButton
+import android.widget.Toast
 import androidx.core.content.ContextCompat
 import androidx.databinding.DataBindingUtil
 import androidx.navigation.fragment.NavHostFragment
@@ -45,7 +46,7 @@ class CatalogoHome : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        
+
         val fragment = requireActivity().supportFragmentManager.findFragmentById(R.id.fragmentContainerView)
 
         if (fragment is NavHostFragment) {
@@ -53,9 +54,18 @@ class CatalogoHome : Fragment() {
             binding.daLeggereLabel.setOnClickListener {
                 navController.navigate(R.id.action_catalogoHome_to_catalogoDaLeggere)
             }
+            binding.inCorsoLabel.setOnClickListener {
+                navController.navigate(R.id.action_catalogoHome_to_catalogoInCorso)
+            }
+            binding.lettiLabel.setOnClickListener {
+                navController.navigate(R.id.action_catalogoHome_to_catalogoLetti)
+            }
         } else {
-            // Il frammento corrente non è un'istanza di NavHostFragment
-            // Gestisci l'errore o il flusso alternativo
+            Toast.makeText(
+                requireContext(),
+                "Errore nella navigazione!",
+                Toast.LENGTH_SHORT,
+            ).show()
         }
 
         //val navHostFragment = requireActivity().supportFragmentManager.findFragmentById(R.id.fragmentContainerView) as NavHostFragment
