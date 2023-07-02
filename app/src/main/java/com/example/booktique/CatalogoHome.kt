@@ -11,7 +11,7 @@ import android.view.ViewGroup
 import android.widget.ImageButton
 import androidx.core.content.ContextCompat
 import androidx.databinding.DataBindingUtil
-import androidx.navigation.Navigation
+import androidx.navigation.fragment.NavHostFragment
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.DataSource
 import com.bumptech.glide.load.engine.GlideException
@@ -45,10 +45,22 @@ class CatalogoHome : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        binding.daLeggereLabel.setOnClickListener {
-            Navigation.findNavController(view)
-                .navigate(R.id.action_catalogoHome_to_catalogoDaLeggere)
+        
+        val fragment = requireActivity().supportFragmentManager.findFragmentById(R.id.fragmentContainerView)
+
+        if (fragment is NavHostFragment) {
+            val navController = fragment.navController
+            binding.daLeggereLabel.setOnClickListener {
+                navController.navigate(R.id.action_catalogoHome_to_catalogoDaLeggere)
+            }
+        } else {
+            // Il frammento corrente non è un'istanza di NavHostFragment
+            // Gestisci l'errore o il flusso alternativo
         }
+
+        //val navHostFragment = requireActivity().supportFragmentManager.findFragmentById(R.id.fragmentContainerView) as NavHostFragment
+        //val navController = navHostFragment.navController
+
         checkBookCatalogo()
 
         if (FirebaseAuth.getInstance().currentUser != null) {
