@@ -7,8 +7,9 @@ import android.widget.ImageButton
 import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
+import com.bumptech.glide.Glide
 
-class MyAdapterL (private val listaLibri : ArrayList<Libro>) :
+class MyAdapterL (private val listaLibri : ArrayList<LibriL>) :
     RecyclerView.Adapter<MyAdapterL.MyViewHolder>() {
 
     private lateinit var bListener : onItemClickListener
@@ -56,9 +57,12 @@ class MyAdapterL (private val listaLibri : ArrayList<Libro>) :
 
     override fun onBindViewHolder(holder: MyViewHolder, position: Int) {
         val currentItem = listaLibri[position]
-        holder.cover.setImageResource(currentItem.cover)
+
+        Glide.with(holder.itemView.context)
+            .load(currentItem.copertina)
+            .into(holder.cover)
         holder.titolo.text = currentItem.titolo
-        holder.genere.text = currentItem.genere
+        holder.genere.text = "Genere"
     }
 
     override fun getItemCount(): Int {

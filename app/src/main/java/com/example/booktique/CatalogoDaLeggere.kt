@@ -28,9 +28,6 @@ class CatalogoDaLeggere : Fragment() {
             binding = DataBindingUtil.inflate<FragmentCatalogoDaLeggereBinding>(inflater,
             R.layout.fragment_catalogo_da_leggere,container,false)
 
-        recyclerView = binding.listaLibriLeggere
-        recyclerView.layoutManager = LinearLayoutManager(requireContext())
-
         return binding.root
     }
 
@@ -40,7 +37,7 @@ class CatalogoDaLeggere : Fragment() {
         // Inizializza la lista dei libri
         listaLibri = ArrayList()
 
-        recyclerView = view.findViewById(R.id.lista_libri_leggere)
+        recyclerView = binding.listaLibriLeggere
         recyclerView.layoutManager = LinearLayoutManager(requireContext())
         recyclerView.setHasFixedSize(true)
 

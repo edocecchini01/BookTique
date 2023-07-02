@@ -29,7 +29,7 @@ class MainActivity : AppCompatActivity() {
             when (menuItem.itemId) {
                 R.id.catalogoPulsante -> navController.navigate(R.id.catalogoHome)
                 R.id.scopriPulsante -> navController.navigate(R.id.scopri)
-                R.id.impostazioniPulsante -> navController.navigate(R.id.catalogoDaLeggere)
+                R.id.impostazioniPulsante -> navController.navigate(R.id.impostazioni)
             }
             true
         }

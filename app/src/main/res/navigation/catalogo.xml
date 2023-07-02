@@ -20,6 +20,9 @@
         <action
             android:id="@+id/action_catalogoHome_to_catalogoLetti"
             app:destination="@id/catalogoLetti" />
+        <action
+            android:id="@+id/action_catalogoHome_to_impostazioni"
+            app:destination="@id/impostazioni" />
     </fragment>
     <fragment
         android:id="@+id/catalogoDaLeggere"
@@ -74,5 +77,9 @@
         android:name="com.example.booktique.CatalogoLetti"
         android:label="CatalogoLetti"
         tools:layout="@layout/fragment_catalogo_letti"/>
+    <fragment
+        android:id="@+id/impostazioni"
+        android:name="com.example.booktique.Impostazioni"
+        android:label="Impostazioni" />
 
 </navigation>

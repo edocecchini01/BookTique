@@ -34,7 +34,7 @@
                     android:layout_marginBottom="12dp"
                     android:layout_marginStart="7dp"
                     android:fontFamily="@font/lora_bold_italic"
-                    android:text="Da leggere"
+                    android:text="Da leggere >"
                     android:textColor="@color/red"
                     android:textSize="17dp" />
 
@@ -118,6 +118,98 @@
                     </LinearLayout>
                 </HorizontalScrollView>
 
+
+                <TextView
+                    android:id="@+id/in_corso_label"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="12dp"
+                    android:layout_marginStart="7dp"
+                    android:fontFamily="@font/lora_bold_italic"
+                    android:text="In corso >"
+                    android:textColor="@color/red"
+                    android:textSize="17dp" />
+
+                <HorizontalScrollView
+                    android:id="@+id/horizontalScrollView"
+                    android:layout_width="410dp"
+                    android:layout_height="140dp"
+                    android:layout_marginBottom="28dp"
+                    android:background="#80FFBF9B">
+
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent">
+
+                        <ImageButton
+                            android:id="@+id/book_in_c1"
+                            android:layout_width="88dp"
+                            android:layout_height="match_parent"
+                            android:layout_gravity="center"
+                            android:layout_marginStart="30dp"
+                            android:layout_marginEnd="35dp"
+                            android:background="?attr/selectableItemBackgroundBorderless"
+                            android:contentDescription=""
+                            android:padding="8dp"
+                            android:src="@drawable/bookmark_book_icon" />
+
+                        <ImageButton
+                            android:id="@+id/book_in_c2"
+                            android:layout_width="88dp"
+                            android:layout_height="match_parent"
+                            android:layout_gravity="center"
+                            android:layout_marginEnd="35dp"
+                            android:background="?attr/selectableItemBackgroundBorderless"
+                            android:contentDescription=""
+                            android:padding="8dp"
+                            android:src="@drawable/bookmark_book_icon" />
+
+                        <ImageButton
+                            android:id="@+id/book_in_c3"
+                            android:layout_width="88dp"
+                            android:layout_height="match_parent"
+                            android:layout_gravity="center"
+                            android:layout_marginEnd="35dp"
+                            android:background="?attr/selectableItemBackgroundBorderless"
+                            android:contentDescription=""
+                            android:padding="8dp"
+                            android:src="@drawable/bookmark_book_icon" />
+
+                        <ImageButton
+                            android:id="@+id/book_in_c4"
+                            android:layout_width="88dp"
+                            android:layout_height="match_parent"
+                            android:layout_gravity="center"
+                            android:layout_marginEnd="35dp"
+                            android:background="?attr/selectableItemBackgroundBorderless"
+                            android:contentDescription=""
+                            android:padding="8dp"
+                            android:src="@drawable/bookmark_book_icon" />
+
+                        <ImageButton
+                            android:id="@+id/book_in_c5"
+                            android:layout_width="88dp"
+                            android:layout_height="match_parent"
+                            android:layout_gravity="center"
+                            android:layout_marginEnd="35dp"
+                            android:background="?attr/selectableItemBackgroundBorderless"
+                            android:contentDescription=""
+                            android:padding="8dp"
+                            android:src="@drawable/bookmark_book_icon" />
+
+                        <ImageButton
+                            android:id="@+id/book_in_c6"
+                            android:layout_width="88dp"
+                            android:layout_height="match_parent"
+                            android:layout_gravity="center"
+                            android:layout_marginEnd="35dp"
+                            android:background="?attr/selectableItemBackgroundBorderless"
+                            android:contentDescription=""
+                            android:padding="8dp"
+                            android:src="@drawable/bookmark_book_icon" />
+                    </LinearLayout>
+                </HorizontalScrollView>
+
                 <TextView
                     android:id="@+id/letti_label"
                     android:layout_width="wrap_content"
@@ -125,7 +217,7 @@
                     android:layout_marginBottom="12dp"
                     android:layout_marginStart="7dp"
                     android:fontFamily="@font/lora_bold_italic"
-                    android:text="Letti"
+                    android:text="Letti >"
                     android:textColor="@color/red"
                     android:textSize="17dp" />
 
@@ -211,96 +303,6 @@
                     </LinearLayout>
                 </HorizontalScrollView>
 
-                <TextView
-                    android:id="@+id/in_corso_label"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginBottom="12dp"
-                    android:layout_marginStart="7dp"
-                    android:fontFamily="@font/lora_bold_italic"
-                    android:text="In corso"
-                    android:textColor="@color/red"
-                    android:textSize="17dp" />
-
-                <HorizontalScrollView
-                    android:id="@+id/horizontalScrollView"
-                    android:layout_width="410dp"
-                    android:layout_height="140dp"
-                    android:layout_marginBottom="28dp"
-                    android:background="#80FFBF9B">
-
-                    <LinearLayout
-                        android:layout_width="wrap_content"
-                        android:layout_height="match_parent">
-
-                        <ImageButton
-                            android:id="@+id/book_in_c1"
-                            android:layout_width="88dp"
-                            android:layout_height="match_parent"
-                            android:layout_gravity="center"
-                            android:layout_marginStart="30dp"
-                            android:layout_marginEnd="35dp"
-                            android:background="?attr/selectableItemBackgroundBorderless"
-                            android:contentDescription=""
-                            android:padding="8dp"
-                            android:src="@drawable/bookmark_book_icon" />
-
-                        <ImageButton
-                            android:id="@+id/book_in_c2"
-                            android:layout_width="88dp"
-                            android:layout_height="match_parent"
-                            android:layout_gravity="center"
-                            android:layout_marginEnd="35dp"
-                            android:background="?attr/selectableItemBackgroundBorderless"
-                            android:contentDescription=""
-                            android:padding="8dp"
-                            android:src="@drawable/bookmark_book_icon" />
-
-                        <ImageButton
-                            android:id="@+id/book_in_c3"
-                            android:layout_width="88dp"
-                            android:layout_height="match_parent"
-                            android:layout_gravity="center"
-                            android:layout_marginEnd="35dp"
-                            android:background="?attr/selectableItemBackgroundBorderless"
-                            android:contentDescription=""
-                            android:padding="8dp"
-                            android:src="@drawable/bookmark_book_icon" />
-
-                        <ImageButton
-                            android:id="@+id/book_in_c4"
-                            android:layout_width="88dp"
-                            android:layout_height="match_parent"
-                            android:layout_gravity="center"
-                            android:layout_marginEnd="35dp"
-                            android:background="?attr/selectableItemBackgroundBorderless"
-                            android:contentDescription=""
-                            android:padding="8dp"
-                            android:src="@drawable/bookmark_book_icon" />
-
-                        <ImageButton
-                            android:id="@+id/book_in_c5"
-                            android:layout_width="88dp"
-                            android:layout_height="match_parent"
-                            android:layout_gravity="center"
-                            android:layout_marginEnd="35dp"
-                            android:background="?attr/selectableItemBackgroundBorderless"
-                            android:contentDescription=""
-                            android:padding="8dp"
-                            android:src="@drawable/bookmark_book_icon" />
-
-                        <ImageButton
-                            android:id="@+id/book_in_c6"
-                            android:layout_width="88dp"
-                            android:layout_height="match_parent"
-                            android:layout_gravity="center"
-                            android:layout_marginEnd="35dp"
-                            android:background="?attr/selectableItemBackgroundBorderless"
-                            android:contentDescription=""
-                            android:padding="8dp"
-                            android:src="@drawable/bookmark_book_icon" />
-                    </LinearLayout>
-                </HorizontalScrollView>
             </LinearLayout>
         </ScrollView>
 
