@@ -54,10 +54,8 @@ class CatalogoDaLeggere : Fragment() {
         adapter = MyAdapterDL(listaLibri)
         recyclerView.adapter = adapter
 
-        checkBookCatalogo()
-
-        if(isRecyclerViewPopulated) {
-            adapter.setOnCLickItemListener(object : MyAdapterDL.onItemClickListener {
+        Log.d("TAG", "ADAPTER")
+        adapter.setOnCLickItemListener(object : MyAdapterDL.onItemClickListener {
                 override fun onItemClick(position: Int) {
 
                 }
@@ -101,8 +99,9 @@ class CatalogoDaLeggere : Fragment() {
 
             })
 
+        checkBookCatalogo()
+
         }
-    }
     //va fattorizzato
     private fun checkBookCatalogo() {
         if (FirebaseAuth.getInstance().currentUser != null) {
@@ -149,11 +148,7 @@ class CatalogoDaLeggere : Fragment() {
     private fun loadBooks(books: List<LibriDaL>?){
         if (books != null) {
             listaLibri.addAll(books)
-            Log.d("TAG","LIBRI: $listaLibri" )
-            adapter = MyAdapterDL(listaLibri)
-            Log.d("TAG","LIBRI:11: $listaLibri" )
-            recyclerView.adapter = adapter
-            isRecyclerViewPopulated = true
+            adapter.notifyDataSetChanged()
         }
     }
 

@@ -1,5 +1,6 @@
 package com.example.booktique
 
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -30,6 +31,7 @@ class MyAdapterDL(private val listaLibri : ArrayList<LibriDaL>) :
         val titolo : TextView = itemView.findViewById(R.id.titoloDL)
         val autore : TextView = itemView.findViewById(R.id.autoreDL)
 
+
         init {
 
             itemView.setOnClickListener {
@@ -41,10 +43,13 @@ class MyAdapterDL(private val listaLibri : ArrayList<LibriDaL>) :
             }
 
         }
+
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MyViewHolder {
         val itemView = LayoutInflater.from(parent.context).inflate(R.layout.lista_libri_da_leggere,parent,false)
+        val flag = ::bListener.isInitialized
+        Log.d("MIAO", "$flag")
         return MyViewHolder(itemView,bListener)
     }
 
