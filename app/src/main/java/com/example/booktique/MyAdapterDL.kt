@@ -18,7 +18,7 @@ class MyAdapterDL(private val listaLibri : ArrayList<LibriDaL>) :
 
     interface onItemClickListener{
         fun onItemClick(position: Int)
-        fun moveBook(spinner: Spinner, send : ImageButton)
+        fun moveBook(send : ImageButton)
     }
 
     fun setOnCLickItemListener(listener: onItemClickListener){
@@ -39,7 +39,7 @@ class MyAdapterDL(private val listaLibri : ArrayList<LibriDaL>) :
             }
 
             itemView.findViewById<ImageButton>(R.id.sendDL).setOnClickListener {
-                listener.moveBook(itemView.findViewById(R.id.spinnerDL),itemView.findViewById(R.id.sendDL))
+                listener.moveBook(itemView.findViewById(R.id.sendDL))
             }
 
         }

@@ -9,9 +9,11 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
+import android.widget.Button
 import android.widget.ImageButton
 import android.widget.Spinner
 import android.widget.Toast
+import androidx.appcompat.app.AlertDialog
 import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -30,7 +32,6 @@ class CatalogoDaLeggere : Fragment() {
     private lateinit var listaLibri: ArrayList<LibriDaL>
     private lateinit var select: Spinner
     private val sezioni = arrayListOf("In corso","Letti")
-    private var isRecyclerViewPopulated = false
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
@@ -60,40 +61,39 @@ class CatalogoDaLeggere : Fragment() {
 
                 }
 
-                override fun moveBook(spinner: Spinner, send: ImageButton) {
-                    select = spinner
+                override fun moveBook(send: ImageButton) {
                     val btn = send
-                    val arrayAdapter = ArrayAdapter<String>(
-                        requireContext(),
-                        android.R.layout.simple_spinner_dropdown_item
-                    )
-                    select.adapter = arrayAdapter
-                    arrayAdapter.addAll(sezioni)
-                    select.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
-                        override fun onItemSelected(
-                            parent: AdapterView<*>?,
-                            view: View?,
-                            position: Int,
-                            id: Long
-                        ) {
-                            val selectedItem = parent?.getItemAtPosition(position).toString()
-                        }
 
-                        override fun onNothingSelected(parent: AdapterView<*>?) {
-                            Toast.makeText(
-                                requireContext(),
-                                "Seleziona una sezione!",
-                                Toast.LENGTH_SHORT,
-                            ).show()
-                        }
-
-                    }
                     btn.setOnClickListener {
-                        if (select.visibility == View.INVISIBLE) {
-                            select.visibility = View.VISIBLE
-                        } else {
-                            select.visibility = View.INVISIBLE
+                        var dialog: AlertDialog? = null
+                        val builder = AlertDialog.Builder(requireContext())
+                        val dialogView = layoutInflater.inflate(R.layout.move_spinner, null)
+                        select = dialogView.findViewById<Spinner>(R.id.spinner)
+                        val btnConfirm = dialogView.findViewById<Button>(R.id.btn_confirm)
+                        val btnCancel = dialogView.findViewById<Button>(R.id.btn_cancel)
+                        builder.setView(dialogView)
+
+                        val arrayAdapter = ArrayAdapter<String>(
+                            requireContext(),
+                            android.R.layout.simple_spinner_dropdown_item
+                        )
+                        select.adapter = arrayAdapter
+                        arrayAdapter.addAll(sezioni)
+
+                        btnConfirm.setOnClickListener {
+                            // Verifica se è stato selezionato un elemento
+                            if (select.selectedItem != null) {
+                                val selectedItem = select.selectedItem.toString()
+                                //moveItem(selectedItem)
+                            } else {
+                                Toast.makeText(requireContext(), "Seleziona un elemento!", Toast.LENGTH_SHORT).show()
+                            }
+                            // Chiudi il dialog
+                            dialog?.dismiss()
                         }
+
+                        dialog = builder.create()
+                        dialog?.show()
                     }
                 }
 
@@ -150,6 +150,33 @@ class CatalogoDaLeggere : Fragment() {
             listaLibri.addAll(books)
             adapter.notifyDataSetChanged()
         }
+    }
+
+    private fun moveBooks(book : LibriDaL) {
+        if (FirebaseAuth.getInstance().currentUser != null) {
+            val cUser = FirebaseAuth.getInstance().currentUser!!
+            val database =
+                FirebaseDatabase.getInstance("https://booktique-87881-default-rtdb.europe-west1.firebasedatabase.app/")
+            val usersRef = database.reference.child("Utenti")
+            val childRef = usersRef.child(cUser.uid)
+            val catalogoRef = childRef.child("Catalogo")
+            val daLeggereRef = catalogoRef.child("DaLeggere")
+            //val daLeggereElement = daLeggereRef.child()
+            val inCorsoRef = catalogoRef.child("InCorso")
+            val lettiRef = catalogoRef.child("Letti")
+
+            daLeggereRef.addListenerForSingleValueEvent(object : ValueEventListener{
+                override fun onDataChange(snapshot: DataSnapshot) {
+
+                }
+
+                override fun onCancelled(error: DatabaseError) {
+                    TODO("Not yet implemented")
+                }
+
+            })
+        }
+
     }
 
 }

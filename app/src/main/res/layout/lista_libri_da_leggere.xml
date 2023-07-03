@@ -12,8 +12,8 @@
         android:layout_marginStart="16dp"
         android:layout_marginTop="8dp"
         android:adjustViewBounds="true"
-        android:scaleType="fitCenter"
         android:background="?attr/selectableItemBackgroundBorderless"
+        android:scaleType="fitCenter"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         tools:srcCompat="@tools:sample/avatars" />
@@ -23,11 +23,13 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="20dp"
-        android:layout_marginTop="16dp"
+        android:layout_marginTop="12dp"
         android:layout_marginEnd="81dp"
         android:fontFamily="@font/lora_bold_italic"
         android:text="Autore"
+        android:textColor="@color/gray"
         app:layout_constraintEnd_toStartOf="@+id/sendDL"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toEndOf="@+id/coverDL"
         app:layout_constraintTop_toBottomOf="@+id/titoloDL" />
 
@@ -39,24 +41,11 @@
         android:layout_marginTop="16dp"
         android:fontFamily="@font/lora_bold_italic"
         android:text="Titolo"
+        android:textColor="@color/gray"
         app:layout_constraintEnd_toStartOf="@+id/sendDL"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toEndOf="@+id/coverDL"
         app:layout_constraintTop_toTopOf="parent" />
-
-    <ImageButton
-        android:id="@+id/deleteDL"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginEnd="25dp"
-        android:background="?attr/selectableItemBackgroundBorderless"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="1.0"
-        app:layout_constraintStart_toEndOf="@+id/sendDL"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.504"
-        app:srcCompat="@drawable/delete_icon" />
 
     <TextView
         android:id="@+id/autoreDL"
@@ -66,6 +55,7 @@
         android:layout_marginTop="4dp"
         android:fontFamily="sans-serif"
         android:text="TextView"
+        android:textColor="@color/gray"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@+id/sendDL"
         app:layout_constraintHorizontal_bias="0.0"
@@ -75,28 +65,16 @@
 
     <ImageButton
         android:id="@+id/sendDL"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="128dp"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:layout_marginEnd="32dp"
         android:background="?attr/selectableItemBackgroundBorderless"
+        android:scaleType="fitCenter"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/autore_labelDL"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.504"
+        app:layout_constraintVertical_bias="0.509"
         app:srcCompat="@drawable/send_icon" />
-
-    <Spinner
-        android:id="@+id/spinnerDL"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
-        android:visibility="invisible"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="@+id/sendDL"
-        app:layout_constraintHorizontal_bias="0.417"
-        app:layout_constraintStart_toStartOf="@+id/sendDL"
-        app:layout_constraintTop_toBottomOf="@+id/sendDL"
-        app:layout_constraintVertical_bias="0.172" />
 
     <TextView
         android:id="@+id/titoloDL"
@@ -106,6 +84,7 @@
         android:layout_marginTop="8dp"
         android:fontFamily="sans-serif"
         android:text="TextView"
+        android:textColor="@color/gray"
         app:layout_constraintEnd_toStartOf="@+id/sendDL"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toEndOf="@+id/coverDL"

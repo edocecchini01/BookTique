@@ -6,11 +6,14 @@ object BookHolder {
 object BooksHolder {
     var books: List<VolumeDet>? = null
 }
+
 /*
 object LibriInc{
     var libroInc: LibriInC?= null
 }
 
 object LibriLetti{
-    var libroLetto: LibriLetti ?= null
-}*/
+    var libroLetto: LibriL?= null
+}
+
+ */
