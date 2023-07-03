@@ -1,11 +1,17 @@
 package com.example.booktique
 
+import android.animation.ObjectAnimator
 import android.os.Bundle
 import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.AdapterView
+import android.widget.ArrayAdapter
+import android.widget.ImageButton
+import android.widget.Spinner
+import android.widget.Toast
 import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -22,6 +28,9 @@ class CatalogoDaLeggere : Fragment() {
     private lateinit var recyclerView : RecyclerView
     private lateinit var adapter: MyAdapterDL
     private lateinit var listaLibri: ArrayList<LibriDaL>
+    private lateinit var select: Spinner
+    private val sezioni = arrayListOf("In corso","Letti")
+    private var isRecyclerViewPopulated = false
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
@@ -46,8 +55,54 @@ class CatalogoDaLeggere : Fragment() {
         recyclerView.adapter = adapter
 
         checkBookCatalogo()
-    }
 
+        if(isRecyclerViewPopulated) {
+            adapter.setOnCLickItemListener(object : MyAdapterDL.onItemClickListener {
+                override fun onItemClick(position: Int) {
+
+                }
+
+                override fun moveBook(spinner: Spinner, send: ImageButton) {
+                    select = spinner
+                    val btn = send
+                    val arrayAdapter = ArrayAdapter<String>(
+                        requireContext(),
+                        android.R.layout.simple_spinner_dropdown_item
+                    )
+                    select.adapter = arrayAdapter
+                    arrayAdapter.addAll(sezioni)
+                    select.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
+                        override fun onItemSelected(
+                            parent: AdapterView<*>?,
+                            view: View?,
+                            position: Int,
+                            id: Long
+                        ) {
+                            val selectedItem = parent?.getItemAtPosition(position).toString()
+                        }
+
+                        override fun onNothingSelected(parent: AdapterView<*>?) {
+                            Toast.makeText(
+                                requireContext(),
+                                "Seleziona una sezione!",
+                                Toast.LENGTH_SHORT,
+                            ).show()
+                        }
+
+                    }
+                    btn.setOnClickListener {
+                        if (select.visibility == View.INVISIBLE) {
+                            select.visibility = View.VISIBLE
+                        } else {
+                            select.visibility = View.INVISIBLE
+                        }
+                    }
+                }
+
+            })
+
+        }
+    }
     //va fattorizzato
     private fun checkBookCatalogo() {
         if (FirebaseAuth.getInstance().currentUser != null) {
@@ -98,6 +153,7 @@ class CatalogoDaLeggere : Fragment() {
             adapter = MyAdapterDL(listaLibri)
             Log.d("TAG","LIBRI:11: $listaLibri" )
             recyclerView.adapter = adapter
+            isRecyclerViewPopulated = true
         }
     }
 
