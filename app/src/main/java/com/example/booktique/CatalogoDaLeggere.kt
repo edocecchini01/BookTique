@@ -88,6 +88,7 @@ class CatalogoDaLeggere : Fragment() {
                                 val selectedItem = select.selectedItem.toString()
                                 if (bookId != null) {
                                     moveBooks(bookId)
+                                    adapter.notifyDataSetChanged()
                                 }
                             } else {
                                 Toast.makeText(requireContext(), "Seleziona un elemento!", Toast.LENGTH_SHORT).show()
