@@ -61,10 +61,12 @@ class CatalogoDaLeggere : Fragment() {
 
                 }
 
-                override fun moveBook(send: ImageButton) {
+                override fun moveBook(send: ImageButton, position: Int) {
                     val btn = send
 
                     btn.setOnClickListener {
+                        val bookPos = position
+                        val bookId = getIdPos(bookPos)
                         var dialog: AlertDialog? = null
                         val builder = AlertDialog.Builder(requireContext())
                         val dialogView = layoutInflater.inflate(R.layout.move_spinner, null)
@@ -84,7 +86,9 @@ class CatalogoDaLeggere : Fragment() {
                             // Verifica se è stato selezionato un elemento
                             if (select.selectedItem != null) {
                                 val selectedItem = select.selectedItem.toString()
-                                //moveItem(selectedItem)
+                                if (bookId != null) {
+                                    moveBooks(bookId)
+                                }
                             } else {
                                 Toast.makeText(requireContext(), "Seleziona un elemento!", Toast.LENGTH_SHORT).show()
                             }
@@ -152,7 +156,7 @@ class CatalogoDaLeggere : Fragment() {
         }
     }
 
-    private fun moveBooks(book : LibriDaL) {
+    private fun moveBooks(bookId : String) {
         if (FirebaseAuth.getInstance().currentUser != null) {
             val cUser = FirebaseAuth.getInstance().currentUser!!
             val database =
@@ -161,13 +165,16 @@ class CatalogoDaLeggere : Fragment() {
             val childRef = usersRef.child(cUser.uid)
             val catalogoRef = childRef.child("Catalogo")
             val daLeggereRef = catalogoRef.child("DaLeggere")
-            //val daLeggereElement = daLeggereRef.child()
             val inCorsoRef = catalogoRef.child("InCorso")
             val lettiRef = catalogoRef.child("Letti")
 
-            daLeggereRef.addListenerForSingleValueEvent(object : ValueEventListener{
+            daLeggereRef.child(bookId).addListenerForSingleValueEvent(object : ValueEventListener{
                 override fun onDataChange(snapshot: DataSnapshot) {
-
+                    val libro = snapshot.getValue(LibriDaL::class.java)
+                    if(libro != null){
+                        inCorsoRef.child(bookId).setValue(libro)
+                        daLeggereRef.child(bookId).removeValue()
+                    }
                 }
 
                 override fun onCancelled(error: DatabaseError) {
@@ -177,6 +184,14 @@ class CatalogoDaLeggere : Fragment() {
             })
         }
 
+    }
+
+    private fun getIdPos(position : Int): String? {
+        if(listaLibri.isNotEmpty()){
+            val bookId = listaLibri[position].id
+            return bookId
+        }
+        return null
     }
 
 }

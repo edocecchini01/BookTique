@@ -18,7 +18,7 @@ class MyAdapterDL(private val listaLibri : ArrayList<LibriDaL>) :
 
     interface onItemClickListener{
         fun onItemClick(position: Int)
-        fun moveBook(send : ImageButton)
+        fun moveBook(send : ImageButton, position: Int)
     }
 
     fun setOnCLickItemListener(listener: onItemClickListener){
@@ -30,6 +30,7 @@ class MyAdapterDL(private val listaLibri : ArrayList<LibriDaL>) :
         val cover : ImageButton = itemView.findViewById(R.id.coverDL)
         val titolo : TextView = itemView.findViewById(R.id.titoloDL)
         val autore : TextView = itemView.findViewById(R.id.autoreDL)
+        val btnSend : ImageButton = itemView.findViewById(R.id.sendDL)
 
 
         init {
@@ -39,7 +40,7 @@ class MyAdapterDL(private val listaLibri : ArrayList<LibriDaL>) :
             }
 
             itemView.findViewById<ImageButton>(R.id.sendDL).setOnClickListener {
-                listener.moveBook(itemView.findViewById(R.id.sendDL))
+                listener.moveBook(itemView.findViewById(R.id.sendDL),bindingAdapterPosition)
             }
 
         }
@@ -67,6 +68,7 @@ class MyAdapterDL(private val listaLibri : ArrayList<LibriDaL>) :
         holder.titolo.text = abbreviaInfo(currentItem?.titolo ?: "",25)
 
         holder.autore.text = abbreviaInfo(currentItem?.autori ?: "",25)
+
     }
 
     //fattorizzare
