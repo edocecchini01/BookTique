@@ -7,9 +7,15 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ArrayAdapter
+import android.widget.Button
 import android.widget.ImageButton
 import android.widget.LinearLayout
+import android.widget.Spinner
+import android.widget.Toast
+import androidx.appcompat.app.AlertDialog
 import androidx.databinding.DataBindingUtil
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.booktique.databinding.FragmentCatalogoInCorsoBinding
@@ -24,6 +30,9 @@ class CatalogoInCorso : Fragment() {
     private lateinit var recyclerView : RecyclerView
     private lateinit var adapter: MyAdapterIC
     private lateinit var listaLibri: ArrayList<LibriInC>
+    private lateinit var select: Spinner
+    private val sezioni = arrayListOf("Letti","Da Leggere")
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?): View? {
@@ -44,11 +53,53 @@ class CatalogoInCorso : Fragment() {
 
         adapter = MyAdapterIC(listaLibri)
         recyclerView.adapter = adapter
-        checkBookCatalogo()
+
 
         adapter.setOnCLickItemListener(object : MyAdapterIC.onItemClickListener{
             override fun onItemClick(position: Int) {
 
+            }
+
+            override fun moveBook(send: ImageButton, position: Int) {
+                val btn = send
+
+                btn.setOnClickListener {
+                    val bookPos = position
+                    val bookId = getIdPos(bookPos)
+                    var dialog: AlertDialog? = null
+                    val builder = AlertDialog.Builder(requireContext())
+                    val dialogView = layoutInflater.inflate(R.layout.move_spinner, null)
+                    select = dialogView.findViewById<Spinner>(R.id.spinner)
+                    val btnConfirm = dialogView.findViewById<Button>(R.id.btn_confirm)
+                    val btnCancel = dialogView.findViewById<Button>(R.id.btn_cancel)
+                    builder.setView(dialogView)
+
+                    val arrayAdapter = ArrayAdapter<String>(
+                        requireContext(),
+                        android.R.layout.simple_spinner_dropdown_item
+                    )
+                    select.adapter = arrayAdapter
+                    arrayAdapter.addAll(sezioni)
+
+                    btnConfirm.setOnClickListener {
+                        // Verifica se è stato selezionato un elemento
+                        if (select.selectedItem != null) {
+                            val selectedItem = select.selectedItem.toString()
+                            if (bookId != null) {
+                                Log.d("TAG", "idLibro: $bookId")
+                                moveBooks(bookId)
+                                adapter.notifyDataSetChanged()
+                            }
+                        } else {
+                            Toast.makeText(requireContext(), "Seleziona un elemento!", Toast.LENGTH_SHORT).show()
+                        }
+                        // Chiudi il dialog
+                        dialog?.dismiss()
+                    }
+
+                    dialog = builder.create()
+                    dialog?.show()
+                }
             }
 
             override fun hideShow(element: LinearLayout, arrow : ImageButton) {
@@ -66,9 +117,12 @@ class CatalogoInCorso : Fragment() {
                     rotateAnimation.start()
                     linearL.visibility = View.GONE
                 }
+
+
             }
 
         })
+        checkBookCatalogo()
     }
 
     private fun checkBookCatalogo() {
@@ -117,11 +171,63 @@ class CatalogoInCorso : Fragment() {
     private fun loadBooks(books: List<LibriInC>?){
         if (books != null) {
             listaLibri.addAll(books)
-            Log.d("TAG","LIBRI: $listaLibri" )
-            adapter = MyAdapterIC(listaLibri)
-            Log.d("TAG","LIBRI:11: $listaLibri" )
-            recyclerView.adapter = adapter
+            adapter.notifyDataSetChanged()
         }
+    }
+
+    private fun getIdPos(position : Int): String? {
+        if(listaLibri.isNotEmpty()){
+            val bookId = listaLibri[position].id
+            return bookId
+        }
+        return null
+    }
+
+    private fun moveBooks(bookId : String) {
+        if (FirebaseAuth.getInstance().currentUser != null) {
+            val cUser = FirebaseAuth.getInstance().currentUser!!
+            val database =
+                FirebaseDatabase.getInstance("https://booktique-87881-default-rtdb.europe-west1.firebasedatabase.app/")
+            val usersRef = database.reference.child("Utenti")
+            val childRef = usersRef.child(cUser.uid)
+            val catalogoRef = childRef.child("Catalogo")
+            val daLeggereRef = catalogoRef.child("DaLeggere")
+            val inCorsoRef = catalogoRef.child("InCorso")
+            val lettiRef = catalogoRef.child("Letti")
+
+            Log.d("TAG", "bookId: $bookId")
+
+            inCorsoRef.addListenerForSingleValueEvent(object : ValueEventListener {
+                override fun onDataChange(dataSnapshot: DataSnapshot) {
+                    for (childSnapshot in dataSnapshot.children) {
+                        val libro = childSnapshot.getValue(LibriDaL::class.java)
+
+                        if (libro != null && libro.id == bookId) {
+
+                            // Hai individuato il libro desiderato
+                            Log.d("Libro","Libro trovato: $libro")
+                            lettiRef.child(bookId).setValue(libro)
+                            val libroRef = childSnapshot.ref
+                            Log.d("Libro","Libro da eliminare: $libro")
+                            libroRef.removeValue()
+
+
+                            val navController = findNavController()
+                            navController.navigate(R.id.action_catalogoInCorso_to_catalogoHome)
+
+
+                            break
+                        }
+                    }
+                }
+
+                override fun onCancelled(error: DatabaseError) {
+                    TODO("Not yet implemented")
+                }
+
+            })
+        }
+
     }
 
 

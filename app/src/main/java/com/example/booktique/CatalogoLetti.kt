@@ -7,8 +7,13 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ArrayAdapter
+import android.widget.Button
 import android.widget.ImageButton
 import android.widget.LinearLayout
+import android.widget.Spinner
+import android.widget.Toast
+import androidx.appcompat.app.AlertDialog
 import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -25,6 +30,8 @@ class CatalogoLetti : Fragment() {
     private lateinit var recyclerView : RecyclerView
     private lateinit var adapter: MyAdapterL
     private lateinit var listaLibri: ArrayList<LibriL>
+    private lateinit var select: Spinner
+    private val sezioni = arrayListOf("Da Leggere","Letti")
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -47,7 +54,7 @@ class CatalogoLetti : Fragment() {
 
         adapter = MyAdapterL(listaLibri)
         recyclerView.adapter = adapter
-        checkBookCatalogo()
+
 
         adapter.setOnCLickItemListener(object : MyAdapterL.onItemClickListener{
             override fun onItemClick(position: Int) {
@@ -75,6 +82,8 @@ class CatalogoLetti : Fragment() {
             }
 
         })
+
+        checkBookCatalogo()
 
     }
 
@@ -123,11 +132,16 @@ class CatalogoLetti : Fragment() {
     private fun loadBooks(books: List<LibriL>?){
         if (books != null) {
             listaLibri.addAll(books)
-            Log.d("TAG","LIBRI: $listaLibri" )
-            adapter = MyAdapterL(listaLibri)
-            Log.d("TAG","LIBRI:11: $listaLibri" )
-            recyclerView.adapter = adapter
+            adapter.notifyDataSetChanged()
         }
+    }
+
+    private fun getIdPos(position : Int): String? {
+        if(listaLibri.isNotEmpty()){
+            val bookId = listaLibri[position].id
+            return bookId
+        }
+        return null
     }
 
 }

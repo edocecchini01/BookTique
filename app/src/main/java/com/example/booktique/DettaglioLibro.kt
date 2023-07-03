@@ -17,6 +17,7 @@ import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.ValueEventListener
+import androidx.databinding.DataBindingUtil
 
 
 private lateinit var database: DatabaseReference
@@ -25,6 +26,7 @@ class DettaglioLibro : AppCompatActivity() {
     private lateinit var binding: ActivityDettaglioLibroBinding
     private lateinit var cUser : FirebaseUser
     private val book = BookHolder.book
+    private val libroIncorso = BookHolder.libroInc
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -32,9 +34,10 @@ class DettaglioLibro : AppCompatActivity() {
         setContentView(binding.root)
 
 
-
-
         if (book != null) {
+            Log.d("TAG", "Sono $libroIncorso")
+
+
             // Utilizza l'oggetto 'book' per impostare i valori nelle TextView e nell'ImageView
             findViewById<TextView>(R.id.textView11).text = book.title
             findViewById<TextView>(R.id.textView9).text = book.authors[0]
@@ -47,11 +50,30 @@ class DettaglioLibro : AppCompatActivity() {
 
             checkBookAdded()
 
+            binding.buttonAggiungi.setOnClickListener {
+                aggiungiLibro()
+            }
+
+        }else if (libroIncorso!=null){
+            val imageView = findViewById<ImageView>(R.id.imageView3)
+            Glide.with(this)
+                .load(libroIncorso.copertina)
+                .into(imageView)
+
+            Log.d("TAG", "Sono qui $libroIncorso")
+
+            val fragmentManager = supportFragmentManager
+            val fragmentTransaction = fragmentManager.beginTransaction()
+
+            // Crea una nuova istanza del tuo fragment sostitutivo
+            val nuovoFragment = DettaglioLibroInCorso.newInstance(libroIncorso)
+
+            // Esegui la transazione del fragment sostitutivo
+            fragmentTransaction.replace(R.id.fragmentContainerView, nuovoFragment)
+            fragmentTransaction.commit()
         }
 
-        binding.buttonAggiungi.setOnClickListener {
-            aggiungiLibro()
-        }
+
     }
 
     private fun aggiungiLibro(){

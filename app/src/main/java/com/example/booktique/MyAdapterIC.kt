@@ -16,6 +16,8 @@ class MyAdapterIC(private val listaLibri : ArrayList<LibriInC>) :
     interface onItemClickListener{
         fun onItemClick(position: Int)
         fun hideShow(element: LinearLayout, arrow : ImageButton)
+
+        fun moveBook(send : ImageButton, position: Int)
     }
 
     fun setOnCLickItemListener(listener : onItemClickListener){
@@ -37,7 +39,9 @@ class MyAdapterIC(private val listaLibri : ArrayList<LibriInC>) :
             itemView.findViewById<ImageButton>(R.id.downIC).setOnClickListener {
                 listener.hideShow(itemView.findViewById(R.id.hideLayout), itemView.findViewById(R.id.downIC))
             }
-
+            itemView.findViewById<ImageButton>(R.id.deleteIC).setOnClickListener {
+                listener.moveBook(itemView.findViewById(R.id.deleteIC), bindingAdapterPosition)
+            }
         }
     }
 

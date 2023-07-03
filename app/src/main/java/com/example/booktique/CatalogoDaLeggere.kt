@@ -15,6 +15,7 @@ import android.widget.Spinner
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.databinding.DataBindingUtil
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.booktique.databinding.FragmentCatalogoDaLeggereBinding
@@ -87,6 +88,7 @@ class CatalogoDaLeggere : Fragment() {
                             if (select.selectedItem != null) {
                                 val selectedItem = select.selectedItem.toString()
                                 if (bookId != null) {
+                                    Log.d("TAG", "idLibro: $bookId")
                                     moveBooks(bookId)
                                     adapter.notifyDataSetChanged()
                                 }
@@ -169,12 +171,29 @@ class CatalogoDaLeggere : Fragment() {
             val inCorsoRef = catalogoRef.child("InCorso")
             val lettiRef = catalogoRef.child("Letti")
 
-            daLeggereRef.child(bookId).addListenerForSingleValueEvent(object : ValueEventListener{
-                override fun onDataChange(snapshot: DataSnapshot) {
-                    val libro = snapshot.getValue(LibriDaL::class.java)
-                    if(libro != null){
-                        inCorsoRef.child(bookId).setValue(libro)
-                        daLeggereRef.child(bookId).removeValue()
+            Log.d("TAG", "bookId: $bookId")
+
+            daLeggereRef.addListenerForSingleValueEvent(object : ValueEventListener {
+                override fun onDataChange(dataSnapshot: DataSnapshot) {
+                    for (childSnapshot in dataSnapshot.children) {
+                        val libro = childSnapshot.getValue(LibriDaL::class.java)
+
+                        if (libro != null && libro.id == bookId) {
+
+                            // Hai individuato il libro desiderato
+                            Log.d("Libro","Libro trovato: $libro")
+                            inCorsoRef.child(bookId).setValue(libro)
+                            val libroRef = childSnapshot.ref
+                            Log.d("Libro","Libro da eliminare: $libro")
+                            libroRef.removeValue()
+
+
+                            val navController = findNavController()
+                            navController.navigate(R.id.action_catalogoDaLeggere_to_catalogoHome)
+
+
+                            break
+                        }
                     }
                 }
 

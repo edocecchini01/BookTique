@@ -41,4 +41,6 @@ class DettaglioLibroDaLeggere : Fragment() {
 
     }
 
+
+
 }

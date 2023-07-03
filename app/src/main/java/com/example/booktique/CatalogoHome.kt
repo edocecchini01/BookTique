@@ -106,11 +106,11 @@ class CatalogoHome : Fragment() {
             val childRef = usersRef.child(cUser.uid)
             val catalogoRef = childRef.child("Catalogo")
             val daLeggereRef = catalogoRef.child("DaLeggere")
-            /*
+
             val lettiRef = catalogoRef.child("Letti")
             val inCorsoRef = catalogoRef.child("InCorso")
 
-             */
+
 
             daLeggereRef.addValueEventListener(object : ValueEventListener {
                 override fun onDataChange(snapshot: DataSnapshot) {
@@ -126,7 +126,7 @@ class CatalogoHome : Fragment() {
 
                     // Richiama la funzione per i libri "DaLeggere"
 
-                        loadImagesIntoImageButtonsCatalogo(daLeggereBooks, "daLeggere")
+                        loadImagesIntoImageButtonsDaLeggere(daLeggereBooks)
 
                 }
 
@@ -135,22 +135,20 @@ class CatalogoHome : Fragment() {
                     Log.e("TAG", "Errore nel recupero dei dati", error.toException())
                 }
             })
-            /*
+
 
             lettiRef.addListenerForSingleValueEvent(object : ValueEventListener {
                 override fun onDataChange(snapshot: DataSnapshot) {
-                    val lettiBooks = mutableListOf<LibriDaL>()
+                    val lettiBooks = mutableListOf<LibriL>()
                     if (snapshot.exists()) {
                         for (bookSnapshot in snapshot.children) {
-                            val volumeDet = bookSnapshot.getValue(LibriDaL::class.java)
-                            volumeDet?.let {
-                                lettiBooks.add(it)
-                            }
+                            val LibriL = bookSnapshot.getValue(LibriL::class.java)
+                            lettiBooks.add(LibriL!!)
                         }
                     }
 
 
-                    loadImagesIntoImageButtonsCatalogo(lettiBooks, "Letti")
+                    loadImagesIntoImageButtonsLetti(lettiBooks)
                 }
 
                 override fun onCancelled(error: DatabaseError) {
@@ -160,68 +158,48 @@ class CatalogoHome : Fragment() {
             })
 
 
-            inCorsoRef.addListenerForSingleValueEvent(object : ValueEventListener {
+            inCorsoRef.addValueEventListener(object : ValueEventListener {
                 override fun onDataChange(snapshot: DataSnapshot) {
-                    val inCorsoBooks = mutableListOf<LibriDaL>()
+                    val inCorsoBooks = arrayListOf<LibriInC>()
                     if (snapshot.exists()) {
                         for (bookSnapshot in snapshot.children) {
-                            val volumeDet = bookSnapshot.getValue(LibriDaL::class.java)
-                            volumeDet?.let {
-                                inCorsoBooks.add(it)
-                            }
+                            val libriInC = bookSnapshot.getValue(LibriInC::class.java)
+                            Log.d("TAG", "VolumeDet : $libriInC")
+                            inCorsoBooks.add(libriInC!!)
+
                         }
                     }
 
-                    // Richiama la funzione per i libri "InCorso"
-                    loadImagesIntoImageButtonsCatalogo(inCorsoBooks, "InCorso")
+                    // Richiama la funzione per i libri "DaLeggere"
+
+                    loadImagesIntoImageButtonsInCorso(inCorsoBooks)
+
                 }
 
                 override fun onCancelled(error: DatabaseError) {
-
+                    // Gestisci eventuali errori nella lettura dei dati
                     Log.e("TAG", "Errore nel recupero dei dati", error.toException())
                 }
             })
 
-             */
-        }
-
 
         }
 
 
+        }
 
-    private fun loadImagesIntoImageButtonsCatalogo(books: List<LibriDaL>?, tipologia: String) {
-        val imageButtons = listOf(
-            binding.bookLetti1,
-            binding.bookLetti2,
-            binding.bookLetti3,
-            binding.bookLetti4,
-            binding.bookLetti5,
-            binding.bookLetti6,
 
-        )
 
-        val targetButtons = if (tipologia == "daLeggere") {
-            imageButtons
-        } else if (tipologia == "Letti") {
+    private fun loadImagesIntoImageButtonsDaLeggere(books: List<LibriDaL>?) {
+        val imageButtons =
             listOf(
-                binding.bookLeggere1,
-                binding.bookLeggere2,
-                binding.bookLeggere3,
-                binding.bookLeggere4,
-                binding.bookLeggere5,
-                binding.bookLeggere6
+                binding.bookLetti1,
+                binding.bookLetti2,
+                binding.bookLetti3,
+                binding.bookLetti4,
+                binding.bookLetti5,
+                binding.bookLetti6
             )
-        } else {
-            listOf(
-                binding.bookInC1,
-                binding.bookInC2,
-                binding.bookInC3,
-                binding.bookInC4,
-                binding.bookInC5,
-                binding.bookInC6
-            )
-        }
 
         // Verifica che la lista dei libri non sia nulla e contenga almeno 6 elementi
         if (books != null ) {
@@ -262,7 +240,126 @@ class CatalogoHome : Fragment() {
                             }
                         })
 
-                        .into(targetButtons[i])
+                        .into(imageButtons[i])
+
+                    //setupImageButtonClickListener(book, targetButtons[i])
+
+                }
+            }
+        }
+    }
+
+
+    private fun loadImagesIntoImageButtonsInCorso(books: List<LibriInC>?) {
+        val imageButtons = listOf(
+                binding.bookInC1,
+                binding.bookInC2,
+                binding.bookInC3,
+                binding.bookInC4,
+                binding.bookInC5,
+                binding.bookInC6
+            )
+
+
+        // Verifica che la lista dei libri non sia nulla e contenga almeno 6 elementi
+        if (books != null ) {
+            for (i in 0 until minOf(books.size, 6)) {
+                val book = books[i]
+                val imageUrl = book.copertina
+                Log.d("Image", "imageUrl: $imageUrl")
+                if (!imageUrl.isNullOrEmpty()) {
+                    Glide.with(binding.root.context)
+                        .load(imageUrl)
+                        .listener(object : RequestListener<Drawable> {
+                            override fun onLoadFailed(
+                                e: GlideException?,
+                                model: Any?,
+                                target: Target<Drawable>?,
+                                isFirstResource: Boolean
+                            ): Boolean {
+                                e?.let {
+                                    // Ottieni la lista delle cause radice dell'eccezione
+                                    val rootCauses = e.rootCauses
+                                    for (cause in rootCauses) {
+                                        // Stampa le informazioni sulla causa dell'errore
+                                        Log.e("Glide1", "Root cause: ${cause.message}")
+                                    }
+                                }
+                                return false
+                            }
+
+                            override fun onResourceReady(
+                                resource: Drawable?,
+                                model: Any?,
+                                target: Target<Drawable>?,
+                                dataSource: DataSource?,
+                                isFirstResource: Boolean
+                            ): Boolean {
+                                // L'immagine è stata caricata con successo
+                                return false
+                            }
+                        })
+
+                        .into(imageButtons[i])
+
+                    setupImageButtonClickListener(book, imageButtons[i])
+
+                }
+            }
+        }
+    }
+
+    private fun loadImagesIntoImageButtonsLetti (books: List<LibriL>?) {
+        val imageButtons =
+            listOf(
+                binding.bookLeggere1,
+                binding.bookLeggere2,
+                binding.bookLeggere3,
+                binding.bookLeggere4,
+                binding.bookLeggere5,
+                binding.bookLeggere6
+            )
+
+        // Verifica che la lista dei libri non sia nulla e contenga almeno 6 elementi
+        if (books != null ) {
+            for (i in 0 until minOf(books.size, 6)) {
+                val book = books[i]
+                val imageUrl = book.copertina
+                Log.d("Image", "imageUrl: $imageUrl")
+                if (!imageUrl.isNullOrEmpty()) {
+                    Glide.with(binding.root.context)
+                        .load(imageUrl)
+                        .listener(object : RequestListener<Drawable> {
+                            override fun onLoadFailed(
+                                e: GlideException?,
+                                model: Any?,
+                                target: Target<Drawable>?,
+                                isFirstResource: Boolean
+                            ): Boolean {
+                                e?.let {
+                                    // Ottieni la lista delle cause radice dell'eccezione
+                                    val rootCauses = e.rootCauses
+                                    for (cause in rootCauses) {
+                                        // Stampa le informazioni sulla causa dell'errore
+                                        Log.e("Glide1", "Root cause: ${cause.message}")
+                                    }
+                                }
+                                return false
+                            }
+
+                            override fun onResourceReady(
+                                resource: Drawable?,
+                                model: Any?,
+                                target: Target<Drawable>?,
+                                dataSource: DataSource?,
+                                isFirstResource: Boolean
+                            ): Boolean {
+                                // L'immagine è stata caricata con successo
+                                return false
+                            }
+                        })
+
+                        .into(imageButtons[i])
 
                     //setupImageButtonClickListener(book, targetButtons[i])
 
@@ -273,9 +370,14 @@ class CatalogoHome : Fragment() {
 
 
 
-    private fun setupImageButtonClickListener(book: LibriDaL, imageButton: ImageButton) {
+    private fun setupImageButtonClickListener(book: LibriInC, imageButton: ImageButton) {
         imageButton.setOnClickListener {
-
+            BookHolder.libroInc = book
+            val fragmentManager = requireActivity().supportFragmentManager
+            val scopriFragment = DettaglioLibroInCorso.newInstance(book)
+            fragmentManager.beginTransaction()
+                .replace(R.id.fragmentContainerView, scopriFragment)
+                .commit()
         }
     }
 

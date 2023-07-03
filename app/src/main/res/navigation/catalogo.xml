@@ -32,6 +32,9 @@
         <action
             android:id="@+id/action_catalogoDaLeggere_to_dettaglioLibroDaLeggere"
             app:destination="@id/dettaglioLibroDaLeggere" />
+        <action
+            android:id="@+id/action_catalogoDaLeggere_to_catalogoHome"
+            app:destination="@id/catalogoHome" />
     </fragment>
     <fragment
         android:id="@+id/scopri"
@@ -75,12 +78,20 @@
         android:id="@+id/catalogoInCorso"
         android:name="com.example.booktique.CatalogoInCorso"
         android:label="CatalogoInCorso"
-        tools:layout="@layout/fragment_catalogo_in_corso"/>
+        tools:layout="@layout/fragment_catalogo_in_corso">
+        <action
+            android:id="@+id/action_catalogoInCorso_to_catalogoHome"
+            app:destination="@id/catalogoHome" />
+    </fragment>
     <fragment
         android:id="@+id/catalogoLetti"
         android:name="com.example.booktique.CatalogoLetti"
         android:label="CatalogoLetti"
-        tools:layout="@layout/fragment_catalogo_letti"/>
+        tools:layout="@layout/fragment_catalogo_letti">
+        <action
+            android:id="@+id/action_catalogoLetti_to_catalogoHome"
+            app:destination="@id/catalogoHome" />
+    </fragment>
     <fragment
         android:id="@+id/impostazioni"
         android:name="com.example.booktique.Impostazioni"
