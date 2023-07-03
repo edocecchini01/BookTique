@@ -91,6 +91,7 @@ class CatalogoInCorso : Fragment() {
                 override fun onDataChange(snapshot: DataSnapshot) {
                     val inCorsoBooks = arrayListOf<LibriInC>()
                     if (snapshot.exists()) {
+                        Log.d("TAG", "VolumeDet : $inCorsoBooks")
                         for (bookSnapshot in snapshot.children) {
                             val LibriInC = bookSnapshot.getValue(LibriInC::class.java)
                             Log.d("TAG", "VolumeDet : $LibriInC")

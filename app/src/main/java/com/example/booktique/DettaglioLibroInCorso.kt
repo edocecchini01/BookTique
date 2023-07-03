@@ -18,7 +18,7 @@ import com.google.firebase.auth.FirebaseUser
 class DettaglioLibroInCorso : Fragment() {
     private lateinit var binding: FragmentDettaglioLibroInCorsoBinding
     private lateinit var cUser : FirebaseUser
-    private val book = LibriInc
+
 
 
     override fun onCreateView(
