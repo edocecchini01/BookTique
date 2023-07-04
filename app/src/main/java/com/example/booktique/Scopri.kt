@@ -1,6 +1,7 @@
 package com.example.booktique
 
 import android.content.Intent
+import android.graphics.Color
 import android.graphics.drawable.Drawable
 import android.os.Bundle
 import android.util.Log
@@ -461,10 +462,16 @@ class Scopri : Fragment() {
 
     }
 
+    override fun onResume() {
+        super.onResume()
+        binding.button1.setBackgroundColor(Color.parseColor("#B46060"))
+        binding.button1.setTextColor(Color.parseColor("#FFF4E0"))
+    }
+
     private fun perTeButton(){
         binding.buttonPerTe.setOnClickListener {
-            val fragmentManager = requireActivity().supportFragmentManager
-            FragmentUtils.replaceFragment(fragmentManager, R.id.fragmentContainerView, ScopriPerTe())
+            val navController = findNavController()
+            navController.navigate(R.id.action_scopri_to_scopriPerTe)
         }
     }
 

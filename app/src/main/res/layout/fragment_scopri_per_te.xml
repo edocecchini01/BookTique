@@ -41,13 +41,13 @@
                     android:background="#C6C6C6"
                     android:queryHint="Cerca"
                     android:theme="@style/ThemeOverlay.AppCompat.Light"
-                    app:layout_constraintBottom_toTopOf="@+id/buttonPerte1"
+                    app:layout_constraintBottom_toTopOf="@+id/buttonPerte"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
 
                 <Button
-                    android:id="@+id/buttonPerte"
+                    android:id="@+id/buttonScopri"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="17dp"
@@ -58,14 +58,14 @@
                     android:text="SCOPRI"
                     android:textColor="#4D4D4D"
                     app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintEnd_toStartOf="@+id/buttonPerte1"
+                    app:layout_constraintEnd_toStartOf="@+id/buttonPerte"
                     app:layout_constraintHorizontal_chainStyle="packed"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/searchView1"
                     app:layout_constraintVertical_bias="0.733" />
 
                 <Button
-                    android:id="@+id/buttonPerte1"
+                    android:id="@+id/buttonPerte"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginEnd="17dp"
@@ -76,7 +76,7 @@
                     android:textColor="#4D4D4D"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toEndOf="@+id/buttonPerte"
+                    app:layout_constraintStart_toEndOf="@+id/buttonScopri"
                     app:layout_constraintTop_toBottomOf="@+id/searchView1" />
 
 
@@ -92,27 +92,36 @@
                 android:fontFamily="@font/lora_bold_italic"
                 android:text="Titolo"
                 android:textColor="#4D4D4D"
-                android:textSize="30sp" />
+                android:textSize="25sp" />
 
             <ImageButton
                 android:id="@+id/imageButton2"
-                android:layout_width="310dp"
-                android:layout_height="314dp"
+                android:layout_width="300dp"
+                android:layout_height="300dp"
+                android:layout_gravity="center"
+                android:adjustViewBounds="true"
+                android:background="?attr/selectableItemBackgroundBorderless"
+                android:paddingTop="8dp"
+                android:paddingBottom="8dp"
+                android:scaleType="fitCenter"
                 android:layout_marginLeft="45dp"
-                android:layout_marginTop="12dp"
+                android:layout_marginTop="15dp"
                 android:layout_marginRight="45dp"
-                android:layout_marginBottom="38dp"
-                android:src="@drawable/profile_circle_icon" />
+                android:layout_marginBottom="30dp"
+                android:src="@drawable/book_icon" />
 
             <LinearLayout
+                android:id="@+id/linearL"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
+                android:layout_height="117dp"
+                android:layout_gravity="center"
                 android:orientation="horizontal">
 
                 <ImageButton
-                    android:id="@+id/imageButton4"
+                    android:id="@+id/si"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_gravity="center"
                     android:layout_marginLeft="24dp"
                     android:layout_marginRight="8dp"
                     android:layout_weight="1"
@@ -120,9 +129,10 @@
                     android:src="@drawable/conferma" />
 
                 <ImageButton
-                    android:id="@+id/imageButton5"
+                    android:id="@+id/no"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_gravity="center"
                     android:layout_marginLeft="8dp"
                     android:layout_marginRight="24dp"
                     android:layout_weight="1"
