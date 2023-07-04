@@ -18,7 +18,7 @@ class MyAdapterL (private val listaLibri : ArrayList<LibriL>) :
         fun onItemClick(position: Int)
         fun hideShow(element: LinearLayout, comment : ImageButton)
 
-        fun likeDislike(like: ImageButton, dislike : ImageButton)
+        fun likeDislike(like: ImageButton, dislike : ImageButton, position: Int)
     }
 
     fun setOnCLickItemListener(listener : onItemClickListener){
@@ -30,6 +30,8 @@ class MyAdapterL (private val listaLibri : ArrayList<LibriL>) :
         val cover : ImageButton = itemView.findViewById(R.id.coverL)
         val titolo : TextView = itemView.findViewById(R.id.titoloL)
         val autore : TextView = itemView.findViewById(R.id.autoreL)
+        val btnLike : ImageButton = itemView.findViewById(R.id.likeL)
+        val btnDislike : ImageButton = itemView.findViewById(R.id.dislikeL)
 
         init {
 
@@ -39,11 +41,7 @@ class MyAdapterL (private val listaLibri : ArrayList<LibriL>) :
 
             itemView.findViewById<ImageButton>(R.id.commentL).setOnClickListener {
                 listener.hideShow(itemView.findViewById(R.id.hideLayoutL), itemView.findViewById(R.id.commentL))
-            }
-
-            //like
-            itemView.findViewById<ImageButton>(R.id.likeL).setOnClickListener {
-                listener.likeDislike(itemView.findViewById(R.id.likeL),itemView.findViewById(R.id.dislikeL))
+                listener.likeDislike(btnLike,btnDislike,bindingAdapterPosition)
             }
 
         }
@@ -64,6 +62,11 @@ class MyAdapterL (private val listaLibri : ArrayList<LibriL>) :
         holder.titolo.text = abbreviaInfo(currentItem?.titolo ?: "",25)
 
         holder.autore.text = abbreviaInfo(currentItem?.autori ?: "",25)
+
+        if(currentItem?.valutazione == 1)
+            holder.btnLike.setImageResource(R.drawable.like_click_icon)
+        else if(currentItem?.valutazione == 2)
+            holder.btnDislike.setImageResource(R.drawable.dislike_click)
     }
 
     override fun getItemCount(): Int {
