@@ -133,6 +133,7 @@
             app:srcCompat="@drawable/pollice_icon" />
 
         <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/textInputLayout"
             android:layout_width="220dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"

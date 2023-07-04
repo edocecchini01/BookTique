@@ -8,6 +8,7 @@ import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
+import com.google.android.material.textfield.TextInputLayout
 
 class MyAdapterL (private val listaLibri : ArrayList<LibriL>) :
     RecyclerView.Adapter<MyAdapterL.MyViewHolder>() {
@@ -19,6 +20,8 @@ class MyAdapterL (private val listaLibri : ArrayList<LibriL>) :
         fun hideShow(element: LinearLayout, comment : ImageButton)
 
         fun likeDislike(like: ImageButton, dislike : ImageButton, position: Int)
+
+        fun comment(recensione : TextInputLayout, position: Int)
     }
 
     fun setOnCLickItemListener(listener : onItemClickListener){
@@ -32,6 +35,7 @@ class MyAdapterL (private val listaLibri : ArrayList<LibriL>) :
         val autore : TextView = itemView.findViewById(R.id.autoreL)
         val btnLike : ImageButton = itemView.findViewById(R.id.likeL)
         val btnDislike : ImageButton = itemView.findViewById(R.id.dislikeL)
+        val comment : TextInputLayout = itemView.findViewById(R.id.textInputLayout)
 
         init {
 
@@ -42,6 +46,7 @@ class MyAdapterL (private val listaLibri : ArrayList<LibriL>) :
             itemView.findViewById<ImageButton>(R.id.commentL).setOnClickListener {
                 listener.hideShow(itemView.findViewById(R.id.hideLayoutL), itemView.findViewById(R.id.commentL))
                 listener.likeDislike(btnLike,btnDislike,bindingAdapterPosition)
+                listener.comment(comment,bindingAdapterPosition)
             }
 
         }
@@ -67,6 +72,8 @@ class MyAdapterL (private val listaLibri : ArrayList<LibriL>) :
             holder.btnLike.setImageResource(R.drawable.like_click_icon)
         else if(currentItem?.valutazione == 2)
             holder.btnDislike.setImageResource(R.drawable.dislike_click)
+
+        holder.comment.editText?.setText(currentItem?.recensione ?: "")
     }
 
     override fun getItemCount(): Int {

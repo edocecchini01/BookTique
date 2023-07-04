@@ -2,6 +2,8 @@ package com.example.booktique
 
 import android.animation.ObjectAnimator
 import android.os.Bundle
+import android.text.Editable
+import android.text.TextWatcher
 import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
@@ -20,6 +22,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.booktique.databinding.FragmentCatalogoInCorsoBinding
 import com.example.booktique.databinding.FragmentCatalogoLettiBinding
+import com.google.android.material.textfield.TextInputLayout
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
@@ -165,6 +168,60 @@ class CatalogoLetti : Fragment() {
                         }
                     }
 
+                }
+            }
+
+            override fun comment(recensione: TextInputLayout, position: Int) {
+                val commento = recensione.editText
+                val bookPos = position
+                val bookId = getIdPos(bookPos)
+
+                if (commento != null) {
+                    commento.addTextChangedListener(object : TextWatcher {
+                        override fun beforeTextChanged(
+                            s: CharSequence?,
+                            start: Int,
+                            count: Int,
+                            after: Int
+                        ) {
+
+                        }
+
+                        override fun onTextChanged(
+                            s: CharSequence?,
+                            start: Int,
+                            before: Int,
+                            count: Int
+                        ) {
+
+                        }
+
+                        override fun afterTextChanged(s: Editable?) {
+                            if(s != null && s.isNotEmpty() && s.last() == '\n'){
+                                s.replace(s.length - 1, s.length, "")
+                                if (FirebaseAuth.getInstance().currentUser != null) {
+                                    val cUser = FirebaseAuth.getInstance().currentUser!!
+                                    Log.d("TAG", "Sono :")
+                                    val database =
+                                        FirebaseDatabase.getInstance("https://booktique-87881-default-rtdb.europe-west1.firebasedatabase.app/")
+                                    val usersRef = database.reference.child("Utenti")
+                                    val childRef = usersRef.child(cUser.uid)
+                                    val catalogoRef = childRef.child("Catalogo")
+                                    val lettiRef = catalogoRef.child("Letti")
+
+                                    if (bookId != null) {
+                                        val review = s.toString()
+                                        lettiRef.child(bookId).child("recensione").setValue(review)
+                                    }
+                                    val navController = findNavController()
+                                    navController.popBackStack()
+                                    navController.navigate(R.id.catalogoLetti)
+                                }
+                            }
+
+                        }
+
+                    })
                 }
             }
 
