@@ -19,6 +19,10 @@ class CatalogoHomeBlock : Fragment() {
         return binding.root
     }
 
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
 
+        val context = requireContext()
+    }
 
 }

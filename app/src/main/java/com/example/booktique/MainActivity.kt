@@ -6,6 +6,7 @@ import androidx.fragment.app.Fragment
 import androidx.navigation.NavController
 import androidx.navigation.fragment.NavHostFragment
 import com.example.booktique.databinding.ActivityMainBinding
+import com.google.firebase.auth.FirebaseAuth
 
 
 class MainActivity : AppCompatActivity() {
@@ -23,15 +24,27 @@ class MainActivity : AppCompatActivity() {
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        navController = (supportFragmentManager.findFragmentById(R.id.fragmentContainerView) as NavHostFragment).navController
+        navController =
+            (supportFragmentManager.findFragmentById(R.id.fragmentContainerView) as NavHostFragment).navController
 
-        binding.bottomNavigationView.setOnItemSelectedListener { menuItem ->
-            when (menuItem.itemId) {
-                R.id.catalogoPulsante -> navController.navigate(R.id.catalogoHome)
-                R.id.scopriPulsante -> navController.navigate(R.id.scopri)
-                R.id.impostazioniPulsante -> navController.navigate(R.id.impostazioni)
+        if(FirebaseAuth.getInstance().currentUser != null) {
+            binding.bottomNavigationView.setOnItemSelectedListener { menuItem ->
+                when (menuItem.itemId) {
+                    R.id.catalogoPulsante -> navController.navigate(R.id.catalogoHome)
+                    R.id.scopriPulsante -> navController.navigate(R.id.scopri)
+                    R.id.impostazioniPulsante -> navController.navigate(R.id.impostazioni)
+                }
+                true
             }
-            true
+        }else{
+            binding.bottomNavigationView.setOnItemSelectedListener { menuItem ->
+                when (menuItem.itemId) {
+                    R.id.catalogoPulsante -> navController.navigate(R.id.catalogoHomeBlock)
+                    R.id.scopriPulsante -> navController.navigate(R.id.scopri)
+                    R.id.impostazioniPulsante -> navController.navigate(R.id.impostazioni)
+                }
+                true
+            }
         }
 
     }

@@ -101,5 +101,16 @@
         android:name="com.example.booktique.DettaglioLibroDaLeggere"
         android:label="fragment_dettaglio_libro_da_leggere"
         tools:layout="@layout/fragment_dettaglio_libro_da_leggere" />
+    <fragment
+        android:id="@+id/catalogoHomeBlock"
+        android:name="com.example.booktique.CatalogoHomeBlock"
+        android:label="CatalogoHomeBlock" >
+        <action
+            android:id="@+id/action_catalogoHomeBlock_to_scopri"
+            app:destination="@id/scopri" />
+        <action
+            android:id="@+id/action_catalogoHomeBlock_to_impostazioni"
+            app:destination="@id/impostazioni" />
+    </fragment>
 
 </navigation>

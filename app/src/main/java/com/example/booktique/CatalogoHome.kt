@@ -75,16 +75,30 @@ class CatalogoHome : Fragment() {
 
         if (FirebaseAuth.getInstance().currentUser != null) {
             binding.myButton.setOnClickListener {
-                replaceFragment(Impostazioni())
-                val bottomNavigationView = requireActivity().findViewById<BottomNavigationView>(R.id.bottomNavigationView)
-                bottomNavigationView.selectedItemId = R.id.impostazioniPulsante
+                if (fragment is NavHostFragment) {
+                    val navController = fragment.navController
+                    navController.navigate(R.id.action_catalogoHome_to_impostazioni)
+                }else {
+                    Toast.makeText(
+                        requireContext(),
+                        "Errore nella navigazione!",
+                        Toast.LENGTH_SHORT,
+                    ).show()
+                }
             }
         } else {
-            replaceFragment(CatalogoHomeBlock())
-            binding.myButton.setOnClickListener {
-                val intent = Intent(requireContext(), AutenticazioneActivity::class.java)
-                startActivity(intent)
-                requireActivity().finish()
+            if (fragment is NavHostFragment) {
+                val navController = fragment.navController
+                navController.navigate(R.id.catalogoHomeBlock)
+                binding.myButton.setOnClickListener {
+                    navController.navigate(R.id.action_catalogoHomeBlock_to_impostazioni)
+                }
+            }else {
+                Toast.makeText(
+                    requireContext(),
+                    "Errore nella navigazione!",
+                    Toast.LENGTH_SHORT,
+                ).show()
             }
 
         }
