@@ -41,13 +41,13 @@
                     android:background="#C6C6C6"
                     android:queryHint="Cerca"
                     android:theme="@style/ThemeOverlay.AppCompat.Light"
-                    app:layout_constraintBottom_toTopOf="@+id/buttonPerte1"
+                    app:layout_constraintBottom_toTopOf="@+id/buttonPerte"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
 
                 <Button
-                    android:id="@+id/buttonPerte"
+                    android:id="@+id/buttonScopri"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="17dp"
@@ -58,14 +58,14 @@
                     android:text="SCOPRI"
                     android:textColor="#4D4D4D"
                     app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintEnd_toStartOf="@+id/buttonPerte1"
+                    app:layout_constraintEnd_toStartOf="@+id/buttonPerte"
                     app:layout_constraintHorizontal_chainStyle="packed"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/searchView1"
                     app:layout_constraintVertical_bias="0.733" />
 
                 <Button
-                    android:id="@+id/buttonPerte1"
+                    android:id="@+id/buttonPerte"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginEnd="17dp"
@@ -76,7 +76,7 @@
                     android:textColor="#4D4D4D"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toEndOf="@+id/buttonPerte"
+                    app:layout_constraintStart_toEndOf="@+id/buttonScopri"
                     app:layout_constraintTop_toBottomOf="@+id/searchView1" />
 
 
