@@ -2,7 +2,8 @@ plugins {
     id 'com.android.application'
     id 'org.jetbrains.kotlin.android'
     id 'com.google.gms.google-services'
-    id 'androidx.navigation.safeargs' version '2.5.0'
+    id 'androidx.navigation.safeargs.kotlin'
+    id "kotlin-parcelize"
 }
 
 
@@ -46,7 +47,7 @@ android {
     buildscript {
         dependencies {
             // ...
-            classpath "androidx.navigation:navigation-safe-args-gradle-plugin:2.5.0"
+            classpath "androidx.navigation:navigation-safe-args-gradle-plugin:2.6.0"
         }
     }
 
