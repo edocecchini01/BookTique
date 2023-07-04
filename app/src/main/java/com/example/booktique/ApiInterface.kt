@@ -44,7 +44,7 @@ interface ApiInterface {
     fun getSubjectBooks(@Query("q") query: String, @Query("orderBy") orderBy: String): Call<BookResponse>
 
     @GET("books/v1/volumes")
-    fun getPerTe(@Query("q") query: String, @Query("orderBy") orderBy: String): Call<ResponseBody>
+    fun getPerTe(@Query("q") query: String, @Query("orderBy") orderBy: String, @Query("maxResults") maxResults: Int): Call<ResponseBody>
 
 }
 

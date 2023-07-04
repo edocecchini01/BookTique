@@ -41,7 +41,7 @@ class ScopriPerTe : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         scopriButton()
-        perTeBook("a", "relevance")
+        perTeBook("a", "relevance",20)
     }
 
     override fun onResume() {
@@ -57,9 +57,9 @@ class ScopriPerTe : Fragment() {
         }
     }
 
-    private fun perTeBook(query:String, order: String){
+    private fun perTeBook(query:String, order: String, maxResults: Int){
         val titolo = binding.textView7.toString()
-        val perTeCall = ApiServiceManager.apiService.getPerTe(query,order)
+        val perTeCall = ApiServiceManager.apiService.getPerTe(query,order,maxResults)
         perTeCall.enqueue(object : Callback<ResponseBody> {
             override fun onResponse(call: Call<ResponseBody>, response: Response<ResponseBody>) {
                 if (response.isSuccessful) {
@@ -155,50 +155,111 @@ class ScopriPerTe : Fragment() {
     }
 
     private fun slideBook(books: List<VolumeDet>?) {
+        var i = 0
         if (books != null){
-        val i = 0
-        val book = books?.get(i)
+            val book = books?.get(i)
             if (book != null) {
-                binding.textView7.text = book.title.toString()
+                binding.textView7.text = abbreviaInfo(book.title.toString(),25)
             }
             val imageUrl = book?.imageLinks?.smallThumbnail
-        Log.d("Image", "imageUrl: $imageUrl")
+            Log.d("Image", "imageUrl: $imageUrl")
 
-        Glide.with(requireContext())
-            .load(imageUrl)
-            .listener(object : RequestListener<Drawable> {
-                override fun onLoadFailed(
-                    e: GlideException?,
-                    model: Any?,
-                    target: Target<Drawable>?,
-                    isFirstResource: Boolean
-                ): Boolean {
-                    e?.let {
-                        // Ottieni la lista delle cause radice dell'eccezione
-                        val rootCauses = e.rootCauses
-                        for (cause in rootCauses) {
-                            // Stampa le informazioni sulla causa dell'errore
-                            Log.e("Glide1", "Root cause: ${cause.message}")
+            Glide.with(requireContext())
+                .load(imageUrl)
+                .listener(object : RequestListener<Drawable> {
+                    override fun onLoadFailed(
+                        e: GlideException?,
+                        model: Any?,
+                        target: Target<Drawable>?,
+                        isFirstResource: Boolean
+                    ): Boolean {
+                        e?.let {
+                            // Ottieni la lista delle cause radice dell'eccezione
+                            val rootCauses = e.rootCauses
+                            for (cause in rootCauses) {
+                                // Stampa le informazioni sulla causa dell'errore
+                                Log.e("Glide1", "Root cause: ${cause.message}")
+                            }
                         }
+                        return false
                     }
-                    return false
-                }
 
-                override fun onResourceReady(
-                    resource: Drawable?,
-                    model: Any?,
-                    target: Target<Drawable>?,
-                    dataSource: DataSource?,
-                    isFirstResource: Boolean
-                ): Boolean {
-                    // L'immagine è stata caricata con successo
-                    return false
-                }
-            })
+                    override fun onResourceReady(
+                        resource: Drawable?,
+                        model: Any?,
+                        target: Target<Drawable>?,
+                        dataSource: DataSource?,
+                        isFirstResource: Boolean
+                    ): Boolean {
+                        // L'immagine è stata caricata con successo
+                        return false
+                    }
+                })
 
-            .into(binding.imageButton2)
+                .into(binding.imageButton2)
+
+            binding.no.setOnClickListener {
+                if (i <= 19) {
+                    Log.d("Per Te", "$i")
+                    val book = books?.get(i)
+                    if (book != null) {
+                        binding.textView7.text = abbreviaInfo(book.title.toString(), 20)
+                    }
+                    val imageUrl = book?.imageLinks?.smallThumbnail
+                    Log.d("Image", "imageUrl: $imageUrl")
+
+                    Glide.with(requireContext())
+                        .load(imageUrl)
+                        .listener(object : RequestListener<Drawable> {
+                            override fun onLoadFailed(
+                                e: GlideException?,
+                                model: Any?,
+                                target: Target<Drawable>?,
+                                isFirstResource: Boolean
+                            ): Boolean {
+                                e?.let {
+                                    // Ottieni la lista delle cause radice dell'eccezione
+                                    val rootCauses = e.rootCauses
+                                    for (cause in rootCauses) {
+                                        // Stampa le informazioni sulla causa dell'errore
+                                        Log.e("Glide1", "Root cause: ${cause.message}")
+                                    }
+                                }
+                                return false
+                            }
+
+                            override fun onResourceReady(
+                                resource: Drawable?,
+                                model: Any?,
+                                target: Target<Drawable>?,
+                                dataSource: DataSource?,
+                                isFirstResource: Boolean
+                            ): Boolean {
+                                // L'immagine è stata caricata con successo
+                                return false
+                            }
+                        })
+
+                        .into(binding.imageButton2)
+                    i++
+                }else{
+                    binding.imageButton2.visibility = View.GONE
+                    binding.textView7.text = "Libri terminati! Torna più tardi"
+                    binding.linearL.visibility = View.GONE
+                }
+            }
+
+        }
+    }
+
+    fun abbreviaInfo(stringa: String, lunghezzaMassima: Int): String {
+        return if (stringa.length <= lunghezzaMassima) {
+            stringa
+        } else {
+            val sottostringa = stringa.take(lunghezzaMassima)
+            "$sottostringa..."
         }
     }
 
 
-    }
+}
