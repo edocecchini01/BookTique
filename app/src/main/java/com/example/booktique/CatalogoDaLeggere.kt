@@ -87,9 +87,16 @@ class CatalogoDaLeggere : Fragment() {
                             // Verifica se è stato selezionato un elemento
                             if (select.selectedItem != null) {
                                 val selectedItem = select.selectedItem.toString()
+                                var where = false
+
+                                if(selectedItem == "In corso")
+                                    where = false
+                                if(selectedItem == "Letti")
+                                    where = true
+
                                 if (bookId != null) {
                                     Log.d("TAG", "idLibro: $bookId")
-                                    moveBooks(bookId)
+                                    moveBooks(bookId, where)
                                     adapter.notifyDataSetChanged()
                                 }
                             } else {
@@ -159,7 +166,7 @@ class CatalogoDaLeggere : Fragment() {
         }
     }
 
-    private fun moveBooks(bookId : String) {
+    private fun moveBooks(bookId : String, where : Boolean) {
         if (FirebaseAuth.getInstance().currentUser != null) {
             val cUser = FirebaseAuth.getInstance().currentUser!!
             val database =
@@ -172,36 +179,81 @@ class CatalogoDaLeggere : Fragment() {
             val lettiRef = catalogoRef.child("Letti")
 
             Log.d("TAG", "bookId: $bookId")
+            if (!where){
+                daLeggereRef.addListenerForSingleValueEvent(object : ValueEventListener {
+                    override fun onDataChange(dataSnapshot: DataSnapshot) {
+                        for (childSnapshot in dataSnapshot.children) {
+                            val libro = childSnapshot.getValue(LibriDaL::class.java)
 
-            daLeggereRef.addListenerForSingleValueEvent(object : ValueEventListener {
-                override fun onDataChange(dataSnapshot: DataSnapshot) {
-                    for (childSnapshot in dataSnapshot.children) {
-                        val libro = childSnapshot.getValue(LibriDaL::class.java)
+                            if (libro != null && libro.id == bookId) {
 
-                        if (libro != null && libro.id == bookId) {
+                                // Hai individuato il libro desiderato
+                                Log.d("Libro", "Libro trovato: $libro")
+                                inCorsoRef.child(bookId).setValue(libro)
+                                val libroRef = childSnapshot.ref
+                                Log.d("Libro", "Libro da eliminare: $libro")
+                                libroRef.removeValue()
+                                Toast.makeText(
+                                    requireContext(),
+                                    "${libro.titolo?.take(50)}, spostato!",
+                                    Toast.LENGTH_SHORT
+                                ).show()
 
-                            // Hai individuato il libro desiderato
-                            Log.d("Libro","Libro trovato: $libro")
-                            inCorsoRef.child(bookId).setValue(libro)
-                            val libroRef = childSnapshot.ref
-                            Log.d("Libro","Libro da eliminare: $libro")
-                            libroRef.removeValue()
+                                val navController = findNavController()
+                                navController.navigate(R.id.action_catalogoDaLeggere_to_catalogoHome)
 
-
-                            val navController = findNavController()
-                            navController.navigate(R.id.action_catalogoDaLeggere_to_catalogoHome)
-
-
-                            break
+                                break
+                            }
                         }
                     }
-                }
 
-                override fun onCancelled(error: DatabaseError) {
-                    TODO("Not yet implemented")
-                }
+                    override fun onCancelled(error: DatabaseError) {
+                        Toast.makeText(
+                            requireContext(),
+                            "Errore nello spostamento!",
+                            Toast.LENGTH_SHORT
+                        ).show()
+                    }
 
-            })
+                })
+        }else{
+                daLeggereRef.addListenerForSingleValueEvent(object : ValueEventListener {
+                    override fun onDataChange(dataSnapshot: DataSnapshot) {
+                        for (childSnapshot in dataSnapshot.children) {
+                            val libro = childSnapshot.getValue(LibriDaL::class.java)
+
+                            if (libro != null && libro.id == bookId) {
+
+                                // Hai individuato il libro desiderato
+                                Log.d("Libro","Libro trovato: $libro")
+                                lettiRef.child(bookId).setValue(libro)
+                                val libroRef = childSnapshot.ref
+                                Log.d("Libro","Libro da eliminare: $libro")
+                                libroRef.removeValue()
+                                Toast.makeText(
+                                    requireContext(),
+                                    "${libro.titolo?.take(50)}, spostato!",
+                                    Toast.LENGTH_SHORT
+                                ).show()
+
+                                val navController = findNavController()
+                                navController.navigate(R.id.action_catalogoInCorso_to_catalogoHome)
+
+                                break
+                            }
+                        }
+                    }
+
+                    override fun onCancelled(error: DatabaseError) {
+                        Toast.makeText(
+                            requireContext(),
+                            "Errore nello spostamento!",
+                            Toast.LENGTH_SHORT
+                        ).show()
+                    }
+
+                })
+        }
         }
 
     }
