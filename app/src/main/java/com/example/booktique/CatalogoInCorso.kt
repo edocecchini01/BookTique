@@ -260,7 +260,7 @@ class CatalogoInCorso : Fragment() {
                                 libroRef.removeValue()
                                 Toast.makeText(
                                     requireContext(),
-                                    "${libro.titolo?.take(50)}, spostato!",
+                                    "${libro.titolo?.take(50)}, spostato in \"Letti\"",
                                     Toast.LENGTH_SHORT
                                 ).show()
 
@@ -294,7 +294,7 @@ class CatalogoInCorso : Fragment() {
                                 libroRef.removeValue()
                                 Toast.makeText(
                                     requireContext(),
-                                    "${libro.titolo?.take(50)}, spostato!",
+                                    "${libro.titolo?.take(50)}, spostato in \"Da leggere\"",
                                     Toast.LENGTH_SHORT
                                 ).show()
 
