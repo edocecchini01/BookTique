@@ -25,10 +25,11 @@
         android:id="@+id/genere_labelDL"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginStart="5dp"
         android:layout_marginTop="12dp"
         android:layout_marginEnd="81dp"
         android:fontFamily="@font/lora_bold_italic"
-        android:text="Genere"
+        android:text="Autore"
         android:textColor="@color/gray"
         app:layout_constraintEnd_toStartOf="@+id/downIC"
         app:layout_constraintHorizontal_bias="0.166"
@@ -54,17 +55,17 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
-        android:layout_marginEnd="2dp"
+        android:layout_marginEnd="3dp"
         android:background="?attr/selectableItemBackgroundBorderless"
         app:layout_constraintBottom_toTopOf="@+id/hideLayout"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.851"
         app:layout_constraintStart_toEndOf="@+id/genere_labelDL"
         app:layout_constraintTop_toBottomOf="@+id/downIC"
-        app:srcCompat="@drawable/delete_icon" />
+        app:srcCompat="@drawable/send_icon" />
 
     <TextView
-        android:id="@+id/genereIC"
+        android:id="@+id/autoreIC"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="20dp"
@@ -120,7 +121,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/genereIC"
+        app:layout_constraintTop_toBottomOf="@+id/autoreIC"
         app:layout_constraintVertical_bias="1.0">
 
         <TextView

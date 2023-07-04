@@ -1,5 +1,6 @@
 package com.example.booktique
 
+import android.util.Log
 import android.view.Gravity
 import android.view.LayoutInflater
 import android.view.View
@@ -31,7 +32,7 @@ class MyAdapterIC(private val listaLibri : ArrayList<LibriInC>) :
 
         val cover : ImageButton = itemView.findViewById(R.id.coverIC)
         val titolo : TextView = itemView.findViewById(R.id.titoloIC)
-        val genere : TextView = itemView.findViewById(R.id.genereIC)
+        val autore : TextView = itemView.findViewById(R.id.autoreIC)
         val pagTot : TextView = itemView.findViewById(R.id.pag_tot)
 
         val seek : SeekBar = itemView.findViewById(R.id.seekBar2)
@@ -73,7 +74,11 @@ class MyAdapterIC(private val listaLibri : ArrayList<LibriInC>) :
             .into(holder.cover)
 
         holder.titolo.text = abbreviaInfo(currentItem?.titolo ?: "",25)
-        holder.genere.text = "Genere"
+
+        holder.autore.text = abbreviaInfo(currentItem?.autori ?: "",25)
+
+        holder.pagAtt.text = currentItem?.paginaAtt.toString()
+
         if(currentItem?.pagineTot != 0) {
             holder.pagTot.text = currentItem?.pagineTot.toString()
         }else{
@@ -82,6 +87,9 @@ class MyAdapterIC(private val listaLibri : ArrayList<LibriInC>) :
             holder.pagAtt.text = "Pagine totali non disponibili"
             holder.pagAtt.gravity = Gravity.CENTER
         }
+
+        holder.seek.progress = currentItem?.paginaAtt!!
+
     }
 
     fun abbreviaInfo(stringa: String, lunghezzaMassima: Int): String {

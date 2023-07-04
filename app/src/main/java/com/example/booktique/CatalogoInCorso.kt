@@ -135,6 +135,26 @@ class CatalogoInCorso : Fragment() {
                         }
 
                         override fun onStopTrackingTouch(seekBar: SeekBar?) {
+                            if (FirebaseAuth.getInstance().currentUser != null) {
+                                val cUser = FirebaseAuth.getInstance().currentUser!!
+                                Log.d("TAG", "Sono :")
+                                val database =
+                                    FirebaseDatabase.getInstance("https://booktique-87881-default-rtdb.europe-west1.firebasedatabase.app/")
+                                val usersRef = database.reference.child("Utenti")
+                                val childRef = usersRef.child(cUser.uid)
+                                val catalogoRef = childRef.child("Catalogo")
+                                val inCorsoRef = catalogoRef.child("InCorso")
+
+                                if (bookId != null) {
+                                    val pagAconv = pagA.text.toString()
+                                    inCorsoRef.child(bookId).child("paginaAtt").setValue(pagAconv.toInt())
+                                }
+                                //metodo da rivedere
+                                val navController = findNavController()
+                                navController.popBackStack()
+                                navController.navigate(R.id.catalogoInCorso)
+                            }
+
                             if(pagA.text == pagT.text && bookId != null){
                                 moveBooks(bookId,false)
                                 Toast.makeText(

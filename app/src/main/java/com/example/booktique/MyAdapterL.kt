@@ -29,7 +29,7 @@ class MyAdapterL (private val listaLibri : ArrayList<LibriL>) :
 
         val cover : ImageButton = itemView.findViewById(R.id.coverL)
         val titolo : TextView = itemView.findViewById(R.id.titoloL)
-        val genere : TextView = itemView.findViewById(R.id.genereL)
+        val autore : TextView = itemView.findViewById(R.id.autoreL)
 
         init {
 
@@ -61,12 +61,22 @@ class MyAdapterL (private val listaLibri : ArrayList<LibriL>) :
         Glide.with(holder.itemView.context)
             .load(currentItem.copertina)
             .into(holder.cover)
-        holder.titolo.text = currentItem.titolo
-        holder.genere.text = "Genere"
+        holder.titolo.text = abbreviaInfo(currentItem?.titolo ?: "",25)
+
+        holder.autore.text = abbreviaInfo(currentItem?.autori ?: "",25)
     }
 
     override fun getItemCount(): Int {
         return listaLibri.size
+    }
+
+    fun abbreviaInfo(stringa: String, lunghezzaMassima: Int): String {
+        return if (stringa.length <= lunghezzaMassima) {
+            stringa
+        } else {
+            val sottostringa = stringa.take(lunghezzaMassima)
+            "$sottostringa..."
+        }
     }
 
 }
