@@ -11,7 +11,9 @@ import android.widget.ArrayAdapter
 import android.widget.Button
 import android.widget.ImageButton
 import android.widget.LinearLayout
+import android.widget.SeekBar
 import android.widget.Spinner
+import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.databinding.DataBindingUtil
@@ -106,6 +108,44 @@ class CatalogoInCorso : Fragment() {
 
                     dialog = builder.create()
                     dialog?.show()
+                }
+            }
+
+            override fun reading(seekBar: SeekBar, pagAtt: TextView, pagTot : TextView, element: LinearLayout, position: Int) {
+                val seek = seekBar
+                val pagA = pagAtt
+                val pagT = pagTot
+                seek.max = pagT.text.toString().toInt()
+                val linearL = element
+                val bookPos = position
+                val bookId = getIdPos(bookPos)
+
+                if(linearL.visibility == View.VISIBLE) {
+                    seek.setOnSeekBarChangeListener(object : SeekBar.OnSeekBarChangeListener {
+                        override fun onProgressChanged(
+                            seekBar: SeekBar?,
+                            progress: Int,
+                            fromUser: Boolean
+                        ) {
+                            pagA.text = progress.toString()
+                        }
+
+                        override fun onStartTrackingTouch(seekBar: SeekBar?) {
+
+                        }
+
+                        override fun onStopTrackingTouch(seekBar: SeekBar?) {
+                            if(pagA.text == pagT.text && bookId != null){
+                                moveBooks(bookId,false)
+                                Toast.makeText(
+                                    requireContext(),
+                                    "Complimenti hai terminato la tua lettura!",
+                                    Toast.LENGTH_SHORT
+                                ).show()
+                            }
+                        }
+
+                    })
                 }
             }
 

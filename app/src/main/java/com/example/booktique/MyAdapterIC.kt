@@ -1,10 +1,12 @@
 package com.example.booktique
 
+import android.view.Gravity
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageButton
 import android.widget.LinearLayout
+import android.widget.SeekBar
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
@@ -16,8 +18,9 @@ class MyAdapterIC(private val listaLibri : ArrayList<LibriInC>) :
     interface onItemClickListener{
         fun onItemClick(position: Int)
         fun hideShow(element: LinearLayout, arrow : ImageButton)
-
         fun moveBook(send : ImageButton, position: Int)
+
+        fun reading(seekBar: SeekBar, pagAtt : TextView, pagTot : TextView, element: LinearLayout,position: Int)
     }
 
     fun setOnCLickItemListener(listener : onItemClickListener){
@@ -29,6 +32,10 @@ class MyAdapterIC(private val listaLibri : ArrayList<LibriInC>) :
         val cover : ImageButton = itemView.findViewById(R.id.coverIC)
         val titolo : TextView = itemView.findViewById(R.id.titoloIC)
         val genere : TextView = itemView.findViewById(R.id.genereIC)
+        val pagTot : TextView = itemView.findViewById(R.id.pag_tot)
+
+        val seek : SeekBar = itemView.findViewById(R.id.seekBar2)
+        val pagAtt: TextView = itemView.findViewById(R.id.pag_att)
 
         init {
 
@@ -38,10 +45,14 @@ class MyAdapterIC(private val listaLibri : ArrayList<LibriInC>) :
 
             itemView.findViewById<ImageButton>(R.id.downIC).setOnClickListener {
                 listener.hideShow(itemView.findViewById(R.id.hideLayout), itemView.findViewById(R.id.downIC))
+                listener.reading(seek,pagAtt,pagTot,itemView.findViewById(R.id.hideLayout),bindingAdapterPosition)
             }
+
             itemView.findViewById<ImageButton>(R.id.deleteIC).setOnClickListener {
                 listener.moveBook(itemView.findViewById(R.id.deleteIC), bindingAdapterPosition)
             }
+
+
         }
     }
 
@@ -63,6 +74,14 @@ class MyAdapterIC(private val listaLibri : ArrayList<LibriInC>) :
 
         holder.titolo.text = abbreviaInfo(currentItem?.titolo ?: "",25)
         holder.genere.text = "Genere"
+        if(currentItem?.pagineTot != 0) {
+            holder.pagTot.text = currentItem?.pagineTot.toString()
+        }else{
+            holder.seek.visibility = View.GONE
+            holder.pagTot.visibility = View.GONE
+            holder.pagAtt.text = "Pagine totali non disponibili"
+            holder.pagAtt.gravity = Gravity.CENTER
+        }
     }
 
     fun abbreviaInfo(stringa: String, lunghezzaMassima: Int): String {

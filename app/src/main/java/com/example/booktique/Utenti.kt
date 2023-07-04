@@ -15,6 +15,7 @@ data class LibriDaL(
     val titolo: String?="",
     val copertina: String?="",
     val autori: String?="",
+    val pagineTot: Int?=0,
     val id: String?=""
 )
 data class LibriL(

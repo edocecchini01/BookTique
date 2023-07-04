@@ -124,7 +124,7 @@
         app:layout_constraintVertical_bias="1.0">
 
         <TextView
-            android:id="@+id/textView16"
+            android:id="@+id/pag_att"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
@@ -141,12 +141,12 @@
             android:progressTint="@color/red" />
 
         <TextView
-            android:id="@+id/textView17"
+            android:id="@+id/pag_tot"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:gravity="center"
-            android:text="30"
+            android:text="0"
             android:textColor="@color/gray" />
     </LinearLayout>
 

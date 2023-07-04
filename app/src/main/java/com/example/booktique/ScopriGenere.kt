@@ -129,6 +129,12 @@ class ScopriGenere : Fragment() {
                                     language = volumeInfo.optString("language")
                                 }
 
+                                var pag = 0
+                                if (volumeInfo.has("pageCount")) {
+                                    val pageCountString = volumeInfo.optString("pageCount")
+                                    pag = pageCountString.toIntOrNull() ?: 0
+                                }
+
                                 val imageLinks: ImageLinks =
                                     if (volumeInfo.has("imageLinks")) {
                                         val imageLinksObject =
@@ -145,7 +151,7 @@ class ScopriGenere : Fragment() {
 
 
                                 val newBook =
-                                    VolumeDet(imageLinks, title, authors, language, id)
+                                    VolumeDet(imageLinks, title, authors, language, pag,id)
                                 newBooksList.add(newBook)
                             }
 

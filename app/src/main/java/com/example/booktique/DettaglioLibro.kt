@@ -86,9 +86,11 @@ class DettaglioLibro : AppCompatActivity() {
                 val catalogoRef = childRef.child("Catalogo")
                 val daLeggereRef = catalogoRef.child("DaLeggere")
                 var link = ""
+                var pag = 0
                 var id = ""
                 if (book!=null){
                     link = book.imageLinks?.smallThumbnail ?: ""
+                    pag = book.pageCount?: 0
                     id = book.id ?: ""
                 }
                 Log.d("TAG", "Sono qui: $link")
@@ -97,6 +99,7 @@ class DettaglioLibro : AppCompatActivity() {
                     binding.textView11.text.toString(),
                     link,
                     binding.textView9.text.toString(),
+                    pag,
                     id
                 )
 
