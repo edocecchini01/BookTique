@@ -86,7 +86,7 @@ class ScopriGenere : Fragment() {
 
     private fun getSubjectBooks(query:String, ordine: String){
         // Chiamata per ottenere i nuovi libri
-        val newReleasesCall = ApiServiceManager.apiService.searchBooks(query)   //forse meglio usare getnewreleases con relevant come parametro oltre la query
+        val newReleasesCall = ApiServiceManager.apiService.searchBooks(query,"relevance")
         newReleasesCall.enqueue(object : Callback<ResponseBody> {
             override fun onResponse(call: Call<ResponseBody>, response: Response<ResponseBody>) {
                 if (response.isSuccessful) {

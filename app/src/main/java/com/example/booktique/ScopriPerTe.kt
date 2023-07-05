@@ -8,7 +8,13 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ArrayAdapter
+import android.widget.Button
+import android.widget.Spinner
+import android.widget.Toast
+import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.widget.SearchView
+import androidx.core.content.ContextCompat
 import androidx.databinding.DataBindingUtil
 import androidx.navigation.Navigation
 import androidx.navigation.fragment.findNavController
@@ -204,26 +210,23 @@ class ScopriPerTe : Fragment() {
                         perTeBook(query, "relevance",20, likeBook)
                     }else{
                         binding.imageButton2.visibility = View.GONE
-                        binding.textView7.text = "Non ci sono abbastanza informazione per consigliare dei libri, torna quando avrai letto altri libri!"
+                        binding.textView7.text = "Non ci sono abbastanza informazioni, torna quando avrai letto altri libri!"
                         binding.linearL.visibility = View.GONE
                     }
                 }
 
                 override fun onCancelled(error: DatabaseError) {
-                    // Gestisci eventuali errori nella lettura dei dati
                     Log.e("TAG", "Errore nel recupero dei dati", error.toException())
                 }
             })
         }
     }
 
+    private var currentIndex = 0
     private fun slideBook(books: List<VolumeDet>?) {
-        var i = 0
         if (books != null){
-            val book = books?.get(i)
-            if (book != null) {
+            val book = books[currentIndex]
                 binding.textView7.text = abbreviaInfo(book.title.toString(),25)
-            }
             val imageUrl = book?.imageLinks?.smallThumbnail
             Log.d("Image", "imageUrl: $imageUrl")
 
@@ -262,56 +265,72 @@ class ScopriPerTe : Fragment() {
                 .into(binding.imageButton2)
 
             binding.no.setOnClickListener {
-                if (i < books.size) {
-                    Log.d("Per Te", "$i")
-                    val book = books?.get(i)
-                    if (book != null) {
-                        binding.textView7.text = abbreviaInfo(book.title.toString(), 20)
-                    }
-                    val imageUrl = book?.imageLinks?.smallThumbnail
-                    Log.d("Image", "imageUrl: $imageUrl")
+                if (currentIndex < (books.size - 1)){
+                    currentIndex++
 
-                    Glide.with(requireContext())
-                        .load(imageUrl)
-                        .listener(object : RequestListener<Drawable> {
-                            override fun onLoadFailed(
-                                e: GlideException?,
-                                model: Any?,
-                                target: Target<Drawable>?,
-                                isFirstResource: Boolean
-                            ): Boolean {
-                                e?.let {
-                                    // Ottieni la lista delle cause radice dell'eccezione
-                                    val rootCauses = e.rootCauses
-                                    for (cause in rootCauses) {
-                                        // Stampa le informazioni sulla causa dell'errore
-                                        Log.e("Glide1", "Root cause: ${cause.message}")
-                                    }
+                    val book = books[currentIndex]
+                    binding.textView7.text = abbreviaInfo(book.title.toString(), 20)
+
+                val imageUrl = book?.imageLinks?.smallThumbnail
+                Log.d("Image", "imageUrl: $imageUrl")
+
+                Glide.with(requireContext())
+                    .load(imageUrl)
+                    .listener(object : RequestListener<Drawable> {
+                        override fun onLoadFailed(
+                            e: GlideException?,
+                            model: Any?,
+                            target: Target<Drawable>?,
+                            isFirstResource: Boolean
+                        ): Boolean {
+                            e?.let {
+                                // Ottieni la lista delle cause radice dell'eccezione
+                                val rootCauses = e.rootCauses
+                                for (cause in rootCauses) {
+                                    // Stampa le informazioni sulla causa dell'errore
+                                    Log.e("Glide1", "Root cause: ${cause.message}")
                                 }
-                                return false
                             }
+                            return false
+                        }
 
-                            override fun onResourceReady(
-                                resource: Drawable?,
-                                model: Any?,
-                                target: Target<Drawable>?,
-                                dataSource: DataSource?,
-                                isFirstResource: Boolean
-                            ): Boolean {
-                                // L'immagine è stata caricata con successo
-                                return false
-                            }
-                        })
+                        override fun onResourceReady(
+                            resource: Drawable?,
+                            model: Any?,
+                            target: Target<Drawable>?,
+                            dataSource: DataSource?,
+                            isFirstResource: Boolean
+                        ): Boolean {
+                            // L'immagine è stata caricata con successo
+                            return false
+                        }
+                    })
 
-                        .into(binding.imageButton2)
-                    i++
-                }else{
+                    .into(binding.imageButton2)
+            }else{
                     binding.imageButton2.visibility = View.GONE
                     binding.textView7.text = "Libri terminati! Torna più tardi"
                     binding.linearL.visibility = View.GONE
+                    currentIndex = 0
                 }
             }
 
+                binding.si.setOnClickListener {
+                    var dialog: AlertDialog? = null
+                    val builder = AlertDialog.Builder(requireContext())
+                    val dialogView = layoutInflater.inflate(R.layout.dialog_per_te, null)
+                    val btnConfirm = dialogView.findViewById<Button>(R.id.btn_confirm)
+                    val btnCancel = dialogView.findViewById<Button>(R.id.btn_cancel)
+                    builder.setView(dialogView)
+
+                    btnConfirm.setOnClickListener {
+                        aggiungiLibro(books)
+                        dialog?.dismiss()
+                    }
+
+                    dialog = builder.create()
+                    dialog?.show()
+                }
         }
     }
 
@@ -321,6 +340,76 @@ class ScopriPerTe : Fragment() {
         } else {
             val sottostringa = stringa.take(lunghezzaMassima)
             "$sottostringa..."
+        }
+    }
+
+    private fun aggiungiLibro(books: List<VolumeDet>?){
+        if(FirebaseAuth.getInstance().currentUser != null) {
+            val cUser = FirebaseAuth.getInstance().currentUser!!
+            val database = FirebaseDatabase.getInstance("https://booktique-87881-default-rtdb.europe-west1.firebasedatabase.app/")
+            val usersRef = database.reference.child("Utenti")
+            val childRef = usersRef.child(cUser.uid)
+            val catalogoRef = childRef.child("Catalogo")
+            val daLeggereRef = catalogoRef.child("DaLeggere")
+            val book = books?.get(currentIndex)
+            var title = ""
+            var link = ""
+            var authors = ""
+            var pag = 0
+            var id = ""
+            if (book!=null){
+                title = book.title?: ""
+                link = book.imageLinks?.smallThumbnail ?: ""
+                authors = book.authors[0]
+                pag = book.pageCount?: 0
+                id = book.id ?: ""
+            }
+            Log.d("TAG", "Sono qui: $link")
+
+            val libroLeg = LibriDaL(
+                title,
+                link,
+                authors,
+                pag,
+                id
+            )
+
+            val nuovoLibroRef = daLeggereRef.push()
+            nuovoLibroRef.setValue(libroLeg)
+                .addOnSuccessListener {
+                    Toast.makeText(
+                        requireContext(),
+                        "Libro aggiunto con successo",
+                        Toast.LENGTH_SHORT
+                    ).show()
+
+                    if (books != null) {
+                        if (currentIndex < (books.size -1)) {
+                            currentIndex++
+                            slideBook(books)
+                        } else{
+                            binding.imageButton2.visibility = View.GONE
+                            binding.textView7.text = "Libri terminati! Torna più tardi"
+                            binding.linearL.visibility = View.GONE
+                            currentIndex = 0
+                        }
+                    }
+                }
+                .addOnFailureListener {
+                    Toast.makeText(
+                        requireContext(),
+                        "Errore durante l'aggiunta del libro",
+                        Toast.LENGTH_SHORT
+                    ).show()
+                }
+
+
+        }else{
+            Toast.makeText(
+                requireContext(),
+                "Errore",
+                Toast.LENGTH_SHORT,
+            ).show()
         }
     }
 
