@@ -39,8 +39,9 @@ class DettaglioLibro : AppCompatActivity() {
 
 
             // Utilizza l'oggetto 'book' per impostare i valori nelle TextView e nell'ImageView
-            findViewById<TextView>(R.id.textView11).text = book.title
-            findViewById<TextView>(R.id.textView9).text = book.authors[0]
+            binding.textView11.text = book.title
+            binding.textView9.text = book.authors[0]
+            binding.textView13.text = book.description
             // Imposta gli altri valori nelle TextView
 
             val imageView = findViewById<ImageView>(R.id.imageView3)
@@ -79,10 +80,14 @@ class DettaglioLibro : AppCompatActivity() {
                 var link = ""
                 var pag = 0
                 var id = ""
+                var genere = ""
+
                 if (book!=null){
                     link = book.imageLinks?.smallThumbnail ?: ""
                     pag = book.pageCount?: 0
                     id = book.id ?: ""
+                    genere = book.categories.toString() ?: ""
+
                 }
                 Log.d("TAG", "Sono qui: $link")
 
@@ -91,7 +96,10 @@ class DettaglioLibro : AppCompatActivity() {
                     link,
                     binding.textView9.text.toString(),
                     pag,
-                    id
+                    id,
+                    binding.textView13.text.toString(),
+                    genere
+
                 )
 
                 val nuovoLibroRef = daLeggereRef.push()

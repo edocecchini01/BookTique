@@ -131,8 +131,26 @@ class Scopri : Fragment() {
                                             }
                                         val id = book.optString("id")
 
+                                        var categorieList = mutableListOf<String>()
+                                        if (volumeInfo.has("categories")) {
+                                            val categorieArray = volumeInfo.optJSONArray("categories")
+                                            if (categorieArray != null) {
+                                                for (j in 0 until categorieArray.length()) {
+                                                    val categoria = categorieArray.getString(j)
+                                                    categorieList.add(categoria)
+                                                }
+                                            }
+                                        }
+                                        val categoria = categorieList.toList()
+
+                                        var descrizione = "Descrizione non presente"
+                                        if (volumeInfo.has("description")) {
+                                            descrizione = volumeInfo.optString("description")
+                                        }
+
+
                                         val newBook =
-                                            VolumeDet(imageLinks, title, authors, language, pag, id)
+                                            VolumeDet(imageLinks, title, authors, language, pag, id, descrizione, categoria)
                                         newBooksList.add(newBook)
                                     }
 
@@ -245,8 +263,25 @@ class Scopri : Fragment() {
                                             }
                                         val id = book.optString("id")
 
+                                        var categorieList = mutableListOf<String>()
+                                        if (volumeInfo.has("categories")) {
+                                            val categorieArray = volumeInfo.optJSONArray("categories")
+                                            if (categorieArray != null) {
+                                                for (j in 0 until categorieArray.length()) {
+                                                    val categoria = categorieArray.getString(j)
+                                                    categorieList.add(categoria)
+                                                }
+                                            }
+                                        }
+                                        val categoria = categorieList.toList()
+
+                                        var descrizione = "Descrizione non presente"
+                                        if (volumeInfo.has("description")) {
+                                            descrizione = volumeInfo.optString("description")
+                                        }
+
                                         val newBook =
-                                            VolumeDet(imageLinks, title, authors, language, pag, id)
+                                            VolumeDet(imageLinks, title, authors, language, pag, id, descrizione, categoria)
                                         newBooksList.add(newBook)
                                     }
 
@@ -341,8 +376,30 @@ class Scopri : Fragment() {
                                     }
                                 val id = book.optString("id")
 
+                                var categorieList = mutableListOf<String>()
+                                if (volumeInfo.has("categories")) {
+
+                                    Log.d("cat", "ccc:")
+                                    val categorieArray = volumeInfo.optJSONArray("categories")
+                                    if (categorieArray != null) {
+                                        for (j in 0 until categorieArray.length()) {
+                                            val categoria = categorieArray.getString(j)
+                                            Log.d("cat", "ccc: $categoria")
+                                            categorieList.add(categoria)
+                                        }
+                                    }
+                                }
+                                val categoria = categorieList.toList()
+                                Log.d("cat", "c: $categoria")
+
+                                var descrizione = "Descrizione non presente"
+                                if (volumeInfo.has("description")) {
+                                    descrizione = volumeInfo.optString("description")
+                                }
+
                                 val newBook =
-                                    VolumeDet(imageLinks, title, authors, language, pag, id)
+                                    VolumeDet(imageLinks, title, authors, language, pag, id, descrizione, categoria)
+                                Log.d("cat", "ccc: $newBook")
                                 newBooksList.add(newBook)
                             }
 

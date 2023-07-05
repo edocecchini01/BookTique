@@ -133,7 +133,11 @@
     <fragment
         android:id="@+id/libroLetto"
         android:name="com.example.booktique.LibroLetto"
-        android:label="LibroLetto" />
+        android:label="LibroLetto" >
+        <argument
+            android:name="LibroLett"
+            app:argType="com.example.booktique.LibriL" />
+    </fragment>
     <fragment
         android:id="@+id/libroInCorso"
         android:name="com.example.booktique.LibroInCorso"

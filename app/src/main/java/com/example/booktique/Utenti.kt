@@ -23,17 +23,22 @@ data class LibriDaL(
     val copertina: String?="",
     val autori: String?="",
     val pagineTot: Int?=0,
-    val id: String?=""
+    val id: String?="",
+    val descrizione: String?="",
+    val categorie: String?=""
 ): Parcelable
 
+@Parcelize
 data class LibriL(
     val titolo: String?="",
     val copertina: String?="",
     val autori: String?="",
     val recensione: String?="",
     val valutazione: Int?=0,
-    val id: String?=""
-)
+    val id: String?="",
+    val descrizione: String?="",
+    val categorie: String?=""
+):Parcelable
 @Parcelize
 data class LibriInC(
     val titolo: String?="",
@@ -41,6 +46,8 @@ data class LibriInC(
     val autori: String?="",
     val pagineTot: Int?=0,
     val paginaAtt: Int?=0,
-    val id: String?=""
+    val id: String?="",
+    val descrizione: String?="",
+    val categorie: String?=""
 ):Parcelable
 

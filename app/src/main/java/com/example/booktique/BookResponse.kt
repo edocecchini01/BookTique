@@ -20,7 +20,10 @@ data class VolumeDet(
     val authors: List<String> = emptyList(),
     val language: String?="",
     val pageCount: Int?=0,
-    val id: String?=""
+    val id: String?="",
+    val description: String?="",
+    val categories: List<String> = emptyList()
+
 )
 
 
