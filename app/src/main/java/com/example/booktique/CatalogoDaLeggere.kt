@@ -237,7 +237,7 @@ class CatalogoDaLeggere : Fragment() {
                                 ).show()
 
                                 val navController = findNavController()
-                                navController.navigate(R.id.action_catalogoInCorso_to_catalogoHome)
+                                navController.navigate(R.id.action_catalogoDaLeggere_to_catalogoHome)
 
                                 break
                             }
