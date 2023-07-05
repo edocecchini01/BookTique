@@ -3,6 +3,7 @@ package com.example.booktique
 import android.content.Intent
 import android.graphics.Color
 import android.graphics.drawable.Drawable
+import android.icu.util.Calendar
 import android.os.Bundle
 import android.util.Log
 import androidx.fragment.app.Fragment
@@ -10,6 +11,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageButton
+import android.widget.Toast
 import androidx.appcompat.widget.SearchView
 import androidx.core.content.ContextCompat
 import androidx.databinding.DataBindingUtil
@@ -28,6 +30,7 @@ import retrofit2.Call
 import retrofit2.Response
 import retrofit2.Callback
 import com.bumptech.glide.request.target.Target
+import com.google.firebase.auth.FirebaseAuth
 import okhttp3.ResponseBody
 import org.json.JSONException
 
@@ -49,10 +52,13 @@ class Scopri : Fragment() {
             inflater,
             R.layout.fragment_scopri, container, false
         )
-        orderedBooks("a", "newest")
-        relevantBooks("a", "relevance")
-        searchBook()
+        val currentYear = Calendar.getInstance().get(Calendar.YEAR)
+        val startYear = currentYear - 1
+        val endYear = currentYear
+        orderedBooks("published:$startYear..$endYear", "newest")
+        relevantBooks("published:$startYear..$endYear", "relevance")
 
+        searchBook()
 
         return binding.root
     }
@@ -62,7 +68,7 @@ class Scopri : Fragment() {
         searchview.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
             override fun onQueryTextSubmit(query: String): Boolean {
                 // Effettua la chiamata all'API
-                val newReleasesCall = ApiServiceManager.apiService.searchBooks(query)   //forse meglio usare getnewreleases con relevant come parametro oltre la query
+                val newReleasesCall = ApiServiceManager.apiService.searchBooks(query,"relevance")
                 newReleasesCall.enqueue(object : Callback<ResponseBody> {
                     override fun onResponse(call: Call<ResponseBody>, response: Response<ResponseBody>) {
                         if (response.isSuccessful) {
@@ -469,9 +475,21 @@ class Scopri : Fragment() {
     }
 
     private fun perTeButton(){
-        binding.buttonPerTe.setOnClickListener {
-            val navController = findNavController()
-            navController.navigate(R.id.action_scopri_to_scopriPerTe)
+        if (FirebaseAuth.getInstance().currentUser != null) {
+            binding.buttonPerTe.setOnClickListener {
+                val navController = findNavController()
+                navController.navigate(R.id.action_scopri_to_scopriPerTe)
+            }
+        }else{
+            binding.buttonPerTe.setBackgroundColor(Color.parseColor("#4D4D4D"))
+            binding.buttonPerTe.setTextColor(Color.parseColor("#FFF4E0"))
+            binding.buttonPerTe.setOnClickListener {
+                Toast.makeText(
+                    requireContext(),
+                    "Effettua il login!",
+                    Toast.LENGTH_SHORT
+                ).show()
+            }
         }
     }
 

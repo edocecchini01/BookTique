@@ -34,7 +34,7 @@ interface ApiInterface {
     fun getNewReleases(@Query("q") query: String, @Query("orderBy") filter: String): Call<ResponseBody>
 
     @GET("books/v1/volumes")
-    fun searchBooks(@Query("q") query: String): Call<ResponseBody>
+    fun searchBooks(@Query("q") query: String, @Query("orderBy") filter: String): Call<ResponseBody>
 
     @GET("books/v1/volumes")
     fun getMostRelevant(@Query("orderBy") filter: String): Call<ResponseBody>

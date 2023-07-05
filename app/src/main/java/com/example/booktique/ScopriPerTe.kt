@@ -18,6 +18,11 @@ import com.bumptech.glide.load.engine.GlideException
 import com.bumptech.glide.request.RequestListener
 import com.bumptech.glide.request.target.Target
 import com.example.booktique.databinding.FragmentScopriPerTeBinding
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.database.DataSnapshot
+import com.google.firebase.database.DatabaseError
+import com.google.firebase.database.FirebaseDatabase
+import com.google.firebase.database.ValueEventListener
 import okhttp3.ResponseBody
 import org.json.JSONException
 import org.json.JSONObject
@@ -41,7 +46,7 @@ class ScopriPerTe : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         scopriButton()
-        perTeBook("a", "relevance",20)
+        userBook()
     }
 
     override fun onResume() {
@@ -57,7 +62,7 @@ class ScopriPerTe : Fragment() {
         }
     }
 
-    private fun perTeBook(query:String, order: String, maxResults: Int){
+    private fun perTeBook(query:String, order: String, maxResults: Int, likeBook : ArrayList<LibriL>){
         val titolo = binding.textView7.toString()
         val perTeCall = ApiServiceManager.apiService.getPerTe(query,order,maxResults)
         perTeCall.enqueue(object : Callback<ResponseBody> {
@@ -127,6 +132,9 @@ class ScopriPerTe : Fragment() {
                                 perTeBooksList.add(newBook)
                             }
 
+                            val titoliLike = likeBook.map { it.titolo }
+                            perTeBooksList.removeAll{ libro -> titoliLike.contains(libro.title)}
+
                             slideBook(perTeBooksList)
                         }
                     } catch (e: JSONException) {
@@ -152,6 +160,61 @@ class ScopriPerTe : Fragment() {
         })
 
 
+    }
+
+    private fun userBook(){
+        //uguale a checkbook letti
+        if (FirebaseAuth.getInstance().currentUser != null) {
+            val cUser = FirebaseAuth.getInstance().currentUser!!
+            Log.d("TAG", "Sono :")
+            val database =
+                FirebaseDatabase.getInstance("https://booktique-87881-default-rtdb.europe-west1.firebasedatabase.app/")
+            val usersRef = database.reference.child("Utenti")
+            val childRef = usersRef.child(cUser.uid)
+            val catalogoRef = childRef.child("Catalogo")
+            val lettiRef = catalogoRef.child("Letti")
+            /*
+            val lettiRef = catalogoRef.child("Letti")
+            val inCorsoRef = catalogoRef.child("InCorso")
+
+             */
+
+            lettiRef.addValueEventListener(object : ValueEventListener {
+                override fun onDataChange(snapshot: DataSnapshot) {
+                    val lettiBooks = arrayListOf<LibriL>()
+                    if (snapshot.exists()) {
+                        for (bookSnapshot in snapshot.children) {
+                            val LibriL = bookSnapshot.getValue(LibriL::class.java)
+                            Log.d("TAG", "VolumeDet : ${LibriL}")
+                            lettiBooks.add(LibriL!!)
+
+                        }
+                    }
+                    val likeBook = arrayListOf<LibriL>()
+
+                    for(book in lettiBooks){
+                        if(book.valutazione == 1)
+                            likeBook.add(book)
+                    }
+
+                    if(likeBook.isNotEmpty()) {
+                        val countAutori = likeBook.groupingBy { it.autori }.eachCount()
+                        val mostAutore = countAutori.maxByOrNull { it.value }?.key
+                        val query = "inauthor:\"$mostAutore\""
+                        perTeBook(query, "relevance",20, likeBook)
+                    }else{
+                        binding.imageButton2.visibility = View.GONE
+                        binding.textView7.text = "Non ci sono abbastanza informazione per consigliare dei libri, torna quando avrai letto altri libri!"
+                        binding.linearL.visibility = View.GONE
+                    }
+                }
+
+                override fun onCancelled(error: DatabaseError) {
+                    // Gestisci eventuali errori nella lettura dei dati
+                    Log.e("TAG", "Errore nel recupero dei dati", error.toException())
+                }
+            })
+        }
     }
 
     private fun slideBook(books: List<VolumeDet>?) {
@@ -199,7 +262,7 @@ class ScopriPerTe : Fragment() {
                 .into(binding.imageButton2)
 
             binding.no.setOnClickListener {
-                if (i <= 19) {
+                if (i < books.size) {
                     Log.d("Per Te", "$i")
                     val book = books?.get(i)
                     if (book != null) {
