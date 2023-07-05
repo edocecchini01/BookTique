@@ -23,15 +23,26 @@
         <action
             android:id="@+id/action_catalogoHome_to_impostazioni"
             app:destination="@id/impostazioni" />
+        <action
+            android:id="@+id/action_catalogoHome_to_libroDaLeggere"
+            app:destination="@id/libroDaLeggere" >
+        <argument
+            android:name="book"
+            app:argType="com.example.booktique.LibriDaL" />
+        </action>
+        <action
+            android:id="@+id/action_catalogoHome_to_libroLetto"
+            app:destination="@id/libroLetto" />
+        <action
+            android:id="@+id/action_catalogoHome_to_libroInCorso"
+            app:destination="@id/libroInCorso" />
     </fragment>
     <fragment
         android:id="@+id/catalogoDaLeggere"
         android:name="com.example.booktique.CatalogoDaLeggere"
         android:label="fragment_catalogo_da_leggere"
         tools:layout="@layout/fragment_catalogo_da_leggere" >
-        <action
-            android:id="@+id/action_catalogoDaLeggere_to_dettaglioLibroDaLeggere"
-            app:destination="@id/dettaglioLibroDaLeggere" />
+
         <action
             android:id="@+id/action_catalogoDaLeggere_to_catalogoHome"
             app:destination="@id/catalogoHome" />
@@ -96,11 +107,7 @@
         android:id="@+id/impostazioni"
         android:name="com.example.booktique.Impostazioni"
         android:label="Impostazioni" />
-    <fragment
-        android:id="@+id/dettaglioLibroDaLeggere"
-        android:name="com.example.booktique.DettaglioLibroDaLeggere"
-        android:label="fragment_dettaglio_libro_da_leggere"
-        tools:layout="@layout/fragment_dettaglio_libro_da_leggere" />
+
     <fragment
         android:id="@+id/catalogoHomeBlock"
         android:name="com.example.booktique.CatalogoHomeBlock"
@@ -111,6 +118,29 @@
         <action
             android:id="@+id/action_catalogoHomeBlock_to_impostazioni"
             app:destination="@id/impostazioni" />
+        <argument
+            android:name="LibridaLeggere"
+            app:argType="com.example.booktique.LibriDaL" />
+    </fragment>
+    <fragment
+        android:id="@+id/libroDaLeggere"
+        android:name="com.example.booktique.LibroDaLeggere"
+        android:label="LibroDaLeggere" >
+        <argument
+            android:name="LibriDaLegg"
+            app:argType="com.example.booktique.LibriDaL" />
+    </fragment>
+    <fragment
+        android:id="@+id/libroLetto"
+        android:name="com.example.booktique.LibroLetto"
+        android:label="LibroLetto" />
+    <fragment
+        android:id="@+id/libroInCorso"
+        android:name="com.example.booktique.LibroInCorso"
+        android:label="LibroInCorso" >
+        <argument
+            android:name="LibroInC"
+            app:argType="com.example.booktique.LibriInC" />
     </fragment>
 
 </navigation>

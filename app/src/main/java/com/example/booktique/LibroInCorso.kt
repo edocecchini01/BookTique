@@ -8,17 +8,19 @@ import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.databinding.DataBindingUtil
+import androidx.navigation.fragment.navArgs
 import com.bumptech.glide.Glide
-import com.example.booktique.databinding.FragmentCatalogoHomeBinding
-
-import com.example.booktique.databinding.FragmentDettaglioLibroInCorsoBinding
+import com.example.booktique.databinding.FragmentLibroInCorsoBinding
 import com.google.firebase.auth.FirebaseUser
 
 
-class DettaglioLibroInCorso : Fragment() {
-    private lateinit var binding: FragmentDettaglioLibroInCorsoBinding
+
+class LibroInCorso : Fragment() {
+    private lateinit var binding: FragmentLibroInCorsoBinding
     private lateinit var cUser : FirebaseUser
     private lateinit var libroIncorso: LibriInC
+
+    private val args by navArgs<LibroInCorsoArgs>()
 
 
     override fun onCreateView(
@@ -26,13 +28,16 @@ class DettaglioLibroInCorso : Fragment() {
         savedInstanceState: Bundle?
 
     ): View? {
-        return inflater.inflate(R.layout.fragment_dettaglio_libro_in_corso, container, false)
+        binding = DataBindingUtil.inflate<FragmentLibroInCorsoBinding>(inflater,
+            R.layout.fragment_libro_in_corso,container,false)
+
+        return binding.root
     }
 
 
     companion object {
-        fun newInstance(libroIncorso: LibriInC): DettaglioLibroInCorso {
-            val fragment = DettaglioLibroInCorso()
+        fun newInstance(libroIncorso: LibriInC): LibroInCorso {
+            val fragment = LibroInCorso()
             fragment.libroIncorso = libroIncorso
             return fragment
         }
@@ -41,11 +46,14 @@ class DettaglioLibroInCorso : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        if (::libroIncorso.isInitialized) {
-            view.findViewById<TextView>(R.id.textView22).text = libroIncorso.titolo
-            view.findViewById<TextView>(R.id.textView23).text = libroIncorso.autori
-        }
+            val imageView = binding.imageView3
+            Glide.with(this)
+                .load(args.LibroInC.copertina)
+                .into(imageView)
+
+            binding.textView22.text = args.LibroInC.titolo
+            binding.textView23.text = args.LibroInC.autori
+
 
     }
-
 }

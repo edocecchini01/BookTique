@@ -62,15 +62,6 @@ class DettaglioLibro : AppCompatActivity() {
 
             Log.d("TAG", "Sono qui $libroIncorso")
 
-            val fragmentManager = supportFragmentManager
-            val fragmentTransaction = fragmentManager.beginTransaction()
-
-            // Crea una nuova istanza del tuo fragment sostitutivo
-            val nuovoFragment = DettaglioLibroInCorso.newInstance(libroIncorso)
-
-            // Esegui la transazione del fragment sostitutivo
-            fragmentTransaction.replace(R.id.fragmentContainerView, nuovoFragment)
-            fragmentTransaction.commit()
         }
 
 
