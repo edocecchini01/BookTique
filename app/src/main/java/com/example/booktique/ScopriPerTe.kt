@@ -68,7 +68,7 @@ class ScopriPerTe : Fragment() {
         }
     }
 
-    private fun perTeBook(query:String, order: String, maxResults: Int, likeBook : ArrayList<LibriL>, allBookUser : ArrayList<String?>){
+    private fun perTeBook(query:String, order: String, maxResults: Int, allBookUser : ArrayList<String?>){
         val titolo = binding.textView7.toString()
         val perTeCall = ApiServiceManager.apiService.getPerTe(query,order,maxResults)
         perTeCall.enqueue(object : Callback<ResponseBody> {
@@ -133,8 +133,25 @@ class ScopriPerTe : Fragment() {
                                     }
                                 val id = book.optString("id")
 
+                                var categorieList = mutableListOf<String>()
+                                if (volumeInfo.has("categories")) {
+                                    val categorieArray = volumeInfo.optJSONArray("categories")
+                                    if (categorieArray != null) {
+                                        for (j in 0 until categorieArray.length()) {
+                                            val categoria = categorieArray.getString(j)
+                                            categorieList.add(categoria)
+                                        }
+                                    }
+                                }
+                                val categoria = categorieList.toList()
+
+                                var descrizione = "Descrizione non presente"
+                                if (volumeInfo.has("description")) {
+                                    descrizione = volumeInfo.optString("description")
+                                }
+
                                 val newBook =
-                                    VolumeDet(imageLinks, title, authors, language, pag, id)
+                                    VolumeDet(imageLinks, title, authors, language, pag, id, descrizione, categoria)
                                 perTeBooksList.add(newBook)
                             }
 
@@ -229,7 +246,7 @@ class ScopriPerTe : Fragment() {
                         val countAutori = likeBook.groupingBy { it.autori }.eachCount()
                         val mostAutore = countAutori.maxByOrNull { it.value }?.key
                         val query = "inauthor:\"$mostAutore\""
-                        perTeBook(query, "relevance",20, likeBook,allBookUser)
+                        perTeBook(query, "relevance",20,allBookUser)
                     }else{
                         binding.imageButton2.visibility = View.GONE
                         binding.textView7.text = "Non ci sono abbastanza informazioni, torna quando avrai letto altri libri!"
