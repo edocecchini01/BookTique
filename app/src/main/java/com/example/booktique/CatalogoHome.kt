@@ -397,12 +397,9 @@ class CatalogoHome : Fragment() {
 
     private fun setupImageButtonClickListenerLetto(book: LibriL, imageButton: ImageButton) {
         imageButton.setOnClickListener {
-            BookHolder.libroL = book
-            val fragmentManager = requireActivity().supportFragmentManager
-            val scopriFragment = LibroLetto.newInstance(book)
-            fragmentManager.beginTransaction()
-                .replace(R.id.fragmentContainerView, scopriFragment)
-                .commit()
+            val navController = findNavController()
+            val action = CatalogoHomeDirections.actionCatalogoHomeToLibroLetto(book)
+            findNavController().navigate(action)
         }
     }
 

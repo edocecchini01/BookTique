@@ -53,6 +53,7 @@ class LibroInCorso : Fragment() {
 
             binding.textView22.text = args.LibroInC.titolo
             binding.textView23.text = args.LibroInC.autori
+            binding.textView13.text = args.LibroInC.descrizione
 
 
     }
