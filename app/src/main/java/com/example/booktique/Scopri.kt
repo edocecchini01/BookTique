@@ -125,7 +125,8 @@ class Scopri : Fragment() {
                                                     imageLinksObject.optString("smallThumbnail")
                                                 ImageLinks(smallThumbnail)
                                             } else {
-                                                val smallThumbnail = "android.resource://com.example.booktique/drawable/no_book_icon"
+                                                val smallThumbnail =
+                                                    "https://thenounproject.com/api/private/icons/2637513/edit/?backgroundShape=SQUARE&backgroundShapeColor=%23000000&backgroundShapeOpacity=0&exportSize=752&flipX=false&flipY=false&foregroundColor=%23000000&foregroundOpacity=1&imageFormat=png&rotation=0"
                                                 ImageLinks(smallThumbnail)
                                             }
                                         val id = book.optString("id")
@@ -239,7 +240,7 @@ class Scopri : Fragment() {
                                                 ImageLinks(smallThumbnail)
                                             } else {
                                                 val smallThumbnail =
-                                                    "android.resource://com.example.booktique/drawable/no_book_icon"
+                                                    "https://thenounproject.com/api/private/icons/2637513/edit/?backgroundShape=SQUARE&backgroundShapeColor=%23000000&backgroundShapeOpacity=0&exportSize=752&flipX=false&flipY=false&foregroundColor=%23000000&foregroundOpacity=1&imageFormat=png&rotation=0"
                                                 ImageLinks(smallThumbnail)
                                             }
                                         val id = book.optString("id")
@@ -335,7 +336,7 @@ class Scopri : Fragment() {
                                         ImageLinks(smallThumbnail)
                                     } else {
                                         val smallThumbnail =
-                                            "android.resource://com.example.booktique/drawable/no_book_icon"
+                                            "https://thenounproject.com/api/private/icons/2637513/edit/?backgroundShape=SQUARE&backgroundShapeColor=%23000000&backgroundShapeOpacity=0&exportSize=752&flipX=false&flipY=false&foregroundColor=%23000000&foregroundOpacity=1&imageFormat=png&rotation=0"
                                         ImageLinks(smallThumbnail)
                                     }
                                 val id = book.optString("id")

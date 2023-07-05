@@ -68,7 +68,7 @@ class ScopriPerTe : Fragment() {
         }
     }
 
-    private fun perTeBook(query:String, order: String, maxResults: Int, likeBook : ArrayList<LibriL>){
+    private fun perTeBook(query:String, order: String, maxResults: Int, likeBook : ArrayList<LibriL>, allBookUser : ArrayList<String?>){
         val titolo = binding.textView7.toString()
         val perTeCall = ApiServiceManager.apiService.getPerTe(query,order,maxResults)
         perTeCall.enqueue(object : Callback<ResponseBody> {
@@ -138,9 +138,8 @@ class ScopriPerTe : Fragment() {
                                 perTeBooksList.add(newBook)
                             }
 
-                            val titoliLike = likeBook.map { it.titolo }
-                            perTeBooksList.removeAll{ libro -> titoliLike.contains(libro.title)}
-
+                            val allBookU = allBookUser
+                            perTeBooksList.removeAll{ libro -> allBookU.contains(libro.id)}
                             slideBook(perTeBooksList)
                         }
                     } catch (e: JSONException) {
@@ -179,35 +178,58 @@ class ScopriPerTe : Fragment() {
             val childRef = usersRef.child(cUser.uid)
             val catalogoRef = childRef.child("Catalogo")
             val lettiRef = catalogoRef.child("Letti")
-            /*
-            val lettiRef = catalogoRef.child("Letti")
+            val daLeggereRef = catalogoRef.child("DaLeggere")
             val inCorsoRef = catalogoRef.child("InCorso")
 
-             */
+            var allBookUser = ArrayList<String?>()
+            val likeBook = arrayListOf<LibriL>()
 
-            lettiRef.addValueEventListener(object : ValueEventListener {
+            val eventListener = object : ValueEventListener {
                 override fun onDataChange(snapshot: DataSnapshot) {
                     val lettiBooks = arrayListOf<LibriL>()
+                    val daLeggereBooks = arrayListOf<LibriDaL>()
+                    val inCorsoBooks = arrayListOf<LibriInC>()
+
                     if (snapshot.exists()) {
                         for (bookSnapshot in snapshot.children) {
-                            val LibriL = bookSnapshot.getValue(LibriL::class.java)
-                            Log.d("TAG", "VolumeDet : ${LibriL}")
-                            lettiBooks.add(LibriL!!)
+                            val libroL = bookSnapshot.getValue(LibriL::class.java)
+                            val libroDaL = bookSnapshot.getValue(LibriDaL::class.java)
+                            val libroInC = bookSnapshot.getValue(LibriInC::class.java)
+
+                            if (libroL != null) {
+                                lettiBooks.add(libroL)
+                            } else if (libroDaL != null) {
+                                daLeggereBooks.add(libroDaL)
+                            } else if (libroInC != null) {
+                                inCorsoBooks.add(libroInC)
+                            }
 
                         }
                     }
-                    val likeBook = arrayListOf<LibriL>()
 
                     for(book in lettiBooks){
                         if(book.valutazione == 1)
                             likeBook.add(book)
                     }
 
+                    if(lettiBooks.isNotEmpty()) {
+                        val ids = lettiBooks.map { libro -> libro.id }
+                        allBookUser.addAll(ids)
+                    }
+                    if(daLeggereBooks.isNotEmpty()) {
+                        val ids = daLeggereBooks.map { libro -> libro.id }
+                        allBookUser.addAll(ids)
+                    }
+                    if(inCorsoBooks.isNotEmpty()) {
+                        val ids = inCorsoBooks.map { libro -> libro.id }
+                        allBookUser.addAll(ids)
+                    }
+
                     if(likeBook.isNotEmpty()) {
                         val countAutori = likeBook.groupingBy { it.autori }.eachCount()
                         val mostAutore = countAutori.maxByOrNull { it.value }?.key
                         val query = "inauthor:\"$mostAutore\""
-                        perTeBook(query, "relevance",20, likeBook)
+                        perTeBook(query, "relevance",20, likeBook,allBookUser)
                     }else{
                         binding.imageButton2.visibility = View.GONE
                         binding.textView7.text = "Non ci sono abbastanza informazioni, torna quando avrai letto altri libri!"
@@ -218,7 +240,12 @@ class ScopriPerTe : Fragment() {
                 override fun onCancelled(error: DatabaseError) {
                     Log.e("TAG", "Errore nel recupero dei dati", error.toException())
                 }
-            })
+            }
+
+            lettiRef.addValueEventListener(eventListener)
+            daLeggereRef.addValueEventListener(eventListener)
+            inCorsoRef.addValueEventListener(eventListener)
+
         }
     }
 
