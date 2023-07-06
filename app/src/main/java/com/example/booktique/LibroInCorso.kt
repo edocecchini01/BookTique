@@ -8,6 +8,7 @@ import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.databinding.DataBindingUtil
+import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import com.bumptech.glide.Glide
 import com.example.booktique.databinding.FragmentLibroInCorsoBinding
@@ -54,6 +55,21 @@ class LibroInCorso : Fragment() {
             binding.textView22.text = args.LibroInC.titolo
             binding.textView23.text = args.LibroInC.autori
             binding.textView13.text = args.LibroInC.descrizione
+
+        val origin = args.origin
+
+        if (origin == "catalogoInCorso") {
+            binding.imageButton.setOnClickListener {
+                val navController = findNavController()
+                navController.navigate(R.id.action_libroInCorso_to_catalogoInCorso)
+            }
+        }
+        else if (origin == "catalogoHome") {
+            binding.imageButton.setOnClickListener {
+                val navController = findNavController()
+                navController.navigate(R.id.action_libroInCorso_to_catalogoHome)
+            }
+        }
 
 
     }

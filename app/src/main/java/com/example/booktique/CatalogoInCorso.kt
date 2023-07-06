@@ -45,6 +45,12 @@ class CatalogoInCorso : Fragment() {
             binding = DataBindingUtil.inflate<FragmentCatalogoInCorsoBinding>(inflater,
             R.layout.fragment_catalogo_in_corso,container,false)
 
+        binding.backbuttonIc.setOnClickListener{
+            val navController = findNavController()
+            navController.navigate(R.id.action_catalogoInCorso_to_catalogoHome)
+        }
+
+
         return binding.root
     }
 
@@ -196,7 +202,7 @@ class CatalogoInCorso : Fragment() {
                 val libro = getLibro(position)
 
                 val navController = findNavController()
-                val action = CatalogoInCorsoDirections.actionCatalogoInCorsoToLibroInCorso(libro)
+                val action = CatalogoInCorsoDirections.actionCatalogoInCorsoToLibroInCorso(libro, "catalogoInCorso" )
                 findNavController().navigate(action)
             }
 

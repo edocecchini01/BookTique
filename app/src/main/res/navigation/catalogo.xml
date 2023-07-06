@@ -137,6 +137,15 @@
         <argument
             android:name="LibroLett"
             app:argType="com.example.booktique.LibriL" />
+        <action
+            android:id="@+id/action_libroLetto_to_catalogoLetti"
+            app:destination="@id/catalogoLetti" />
+        <action
+            android:id="@+id/action_libroLetto_to_catalogoHome"
+            app:destination="@id/catalogoHome" />
+        <argument
+            android:name="origin"
+            app:argType="string" />
     </fragment>
     <fragment
         android:id="@+id/libroInCorso"
@@ -145,6 +154,15 @@
         <argument
             android:name="LibroInC"
             app:argType="com.example.booktique.LibriInC" />
+        <action
+            android:id="@+id/action_libroInCorso_to_catalogoInCorso"
+            app:destination="@id/catalogoInCorso" />
+        <action
+            android:id="@+id/action_libroInCorso_to_catalogoHome"
+            app:destination="@id/catalogoHome" />
+        <argument
+            android:name="origin"
+            app:argType="string" />
     </fragment>
     <fragment
         android:id="@+id/libroDaLeggere"
@@ -153,6 +171,15 @@
         <argument
             android:name="LibroDaLeg"
             app:argType="com.example.booktique.LibriDaL" />
+        <action
+            android:id="@+id/action_libroDaLeggere_to_catalogoHome"
+            app:destination="@id/catalogoHome" />
+        <action
+            android:id="@+id/action_libroDaLeggere_to_catalogoDaLeggere"
+            app:destination="@id/catalogoDaLeggere" />
+        <argument
+            android:name="origin"
+            app:argType="string" />
     </fragment>
 
 </navigation>

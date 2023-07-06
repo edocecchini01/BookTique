@@ -44,6 +44,12 @@ class CatalogoLetti : Fragment() {
             binding = DataBindingUtil.inflate<FragmentCatalogoLettiBinding>(inflater,
             R.layout.fragment_catalogo_letti,container,false)
 
+        binding.backbuttonL.setOnClickListener{
+            val navController = findNavController()
+            navController.navigate(R.id.action_catalogoLetti_to_catalogoHome)
+        }
+
+
         return binding.root
     }
 
@@ -229,7 +235,7 @@ class CatalogoLetti : Fragment() {
                 val libro = getLibro(position)
 
                 val navController = findNavController()
-                val action = CatalogoLettiDirections.actionCatalogoLettiToLibroLetto(libro)
+                val action = CatalogoLettiDirections.actionCatalogoLettiToLibroLetto(libro, "catalogoLetti" )
                 findNavController().navigate(action)
             }
 
