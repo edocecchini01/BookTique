@@ -196,6 +196,21 @@ class LibroLetto : Fragment() {
         }
 
 
+        val origin = args.origin
+
+        if (origin == "catalogoLetti") {
+            binding.imageButton.setOnClickListener {
+                val navController = findNavController()
+                navController.navigate(R.id.action_libroLetto_to_catalogoLetti)
+            }
+        }
+        else if (origin == "catalogoHome") {
+            binding.imageButton.setOnClickListener {
+                val navController = findNavController()
+                navController.navigate(R.id.action_libroLetto_to_catalogoHome)
+            }
+        }
+
     }
 
     fun graphicLike(valAtt : Int?){

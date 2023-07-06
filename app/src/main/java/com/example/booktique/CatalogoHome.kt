@@ -371,7 +371,7 @@ class CatalogoHome : Fragment() {
     private fun setupImageButtonClickListener(book: LibriInC, imageButton: ImageButton) {
         imageButton.setOnClickListener {
             val navController = findNavController()
-            val action = CatalogoHomeDirections.actionCatalogoHomeToLibroInCorso(book)
+            val action = CatalogoHomeDirections.actionCatalogoHomeToLibroInCorso(book,"catalogoHome" )
             findNavController().navigate(action)
         }
     }
@@ -380,7 +380,7 @@ class CatalogoHome : Fragment() {
         imageButton.setOnClickListener {
 
             val navController = findNavController()
-            val action = CatalogoHomeDirections.actionCatalogoHomeToLibroDaLeggere(book)
+            val action = CatalogoHomeDirections.actionCatalogoHomeToLibroDaLeggere(book, "catalogoHome" )
             findNavController().navigate(action)
         }
     }
@@ -388,7 +388,7 @@ class CatalogoHome : Fragment() {
     private fun setupImageButtonClickListenerLetto(book: LibriL, imageButton: ImageButton) {
         imageButton.setOnClickListener {
             val navController = findNavController()
-            val action = CatalogoHomeDirections.actionCatalogoHomeToLibroLetto(book)
+            val action = CatalogoHomeDirections.actionCatalogoHomeToLibroLetto(book, "catalogoHome" )
             findNavController().navigate(action)
         }
     }

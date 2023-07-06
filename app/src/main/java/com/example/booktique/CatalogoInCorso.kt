@@ -45,6 +45,12 @@ class CatalogoInCorso : Fragment() {
             binding = DataBindingUtil.inflate<FragmentCatalogoInCorsoBinding>(inflater,
             R.layout.fragment_catalogo_in_corso,container,false)
 
+        binding.backbuttonIc.setOnClickListener{
+            val navController = findNavController()
+            navController.navigate(R.id.action_catalogoInCorso_to_catalogoHome)
+        }
+
+
         return binding.root
     }
 
@@ -190,6 +196,14 @@ class CatalogoInCorso : Fragment() {
                 }
 
 
+            }
+
+            override fun dettaglioBook(cover: ImageButton, position: Int) {
+                val libro = getLibro(position)
+
+                val navController = findNavController()
+                val action = CatalogoInCorsoDirections.actionCatalogoInCorsoToLibroInCorso(libro, "catalogoInCorso" )
+                findNavController().navigate(action)
             }
 
         })
@@ -339,6 +353,11 @@ class CatalogoInCorso : Fragment() {
 
         }
         }
+
+    }
+    private fun getLibro(position: Int): LibriInC {
+
+        return listaLibri[position]
 
     }
 

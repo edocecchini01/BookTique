@@ -39,7 +39,13 @@ class CatalogoDaLeggere : Fragment() {
             binding = DataBindingUtil.inflate<FragmentCatalogoDaLeggereBinding>(inflater,
             R.layout.fragment_catalogo_da_leggere,container,false)
 
+        binding.backbuttonDl.setOnClickListener{
+            val navController = findNavController()
+            navController.navigate(R.id.action_catalogoDaLeggere_to_catalogoHome)
+        }
+
         return binding.root
+
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -57,6 +63,8 @@ class CatalogoDaLeggere : Fragment() {
         recyclerView.adapter = adapter
 
         Log.d("TAG", "ADAPTER")
+
+
         adapter.setOnCLickItemListener(object : MyAdapterDL.onItemClickListener {
                 override fun onItemClick(position: Int) {
 
@@ -110,6 +118,15 @@ class CatalogoDaLeggere : Fragment() {
                         dialog?.show()
                     }
                 }
+
+            override fun dettaglioBook(cover: ImageButton, position: Int) {
+                val libro = getLibro(position)
+
+                val navController = findNavController()
+                val action = CatalogoDaLeggereDirections.actionCatalogoDaLeggereToLibroDaLeggere(libro, "catalogoDaLeggere" )
+                findNavController().navigate(action)
+            }
+
 
             })
 
@@ -264,6 +281,12 @@ class CatalogoDaLeggere : Fragment() {
             return bookId
         }
         return null
+    }
+
+    private fun getLibro(position: Int): LibriDaL {
+
+        return listaLibri[position]
+
     }
 
 }

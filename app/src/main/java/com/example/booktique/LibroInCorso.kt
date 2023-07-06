@@ -2,6 +2,7 @@ package com.example.booktique
 
 import android.os.Bundle
 import android.util.Log
+import android.view.Gravity
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -58,7 +59,7 @@ class LibroInCorso : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         activity = requireActivity()
-
+        val bookId = args.LibroInC.id
         val imageView = binding.imageView3
         Glide.with(this)
             .load(args.LibroInC.copertina)
@@ -68,12 +69,12 @@ class LibroInCorso : Fragment() {
         binding.textView23.text = args.LibroInC.autori
         binding.textView13.text = args.LibroInC.descrizione
 
-        binding.textView26.text = args.LibroInC.pagineTot.toString()
+        if (args.LibroInC.pagineTot != 0){
+            binding.textView26.text = args.LibroInC.pagineTot.toString()
         binding.seekBar4.max = args.LibroInC.pagineTot!!
         binding.seekBar4.progress = args.LibroInC.paginaAtt!!
         binding.textView25.text = args.LibroInC.paginaAtt.toString()
 
-        val bookId = args.LibroInC.id
 
         binding.seekBar4.setOnSeekBarChangeListener(object : SeekBar.OnSeekBarChangeListener {
             override fun onProgressChanged(
@@ -105,7 +106,7 @@ class LibroInCorso : Fragment() {
                     }
                 }
 
-                if(binding.textView25.text == binding.textView26.text && bookId != null){
+                if (binding.textView25.text == binding.textView26.text && bookId != null) {
                     moveBooks(bookId)
                     Toast.makeText(
                         activity,
@@ -116,6 +117,27 @@ class LibroInCorso : Fragment() {
             }
 
         })
+    }else{
+            binding.seekBar4.visibility = View.GONE
+            binding.textView26.visibility = View.GONE
+            binding.textView25.text = "Pagine totali non disponibili"
+            binding.textView25.gravity = Gravity.CENTER
+    }
+        val origin = args.origin
+
+        if (origin == "catalogoInCorso") {
+            binding.imageButton.setOnClickListener {
+                val navController = findNavController()
+                navController.navigate(R.id.action_libroInCorso_to_catalogoInCorso)
+            }
+        }
+        else if (origin == "catalogoHome") {
+            binding.imageButton.setOnClickListener {
+                val navController = findNavController()
+                navController.navigate(R.id.action_libroInCorso_to_catalogoHome)
+            }
+        }
+
 
     }
 
