@@ -384,7 +384,6 @@ class Scopri : Fragment() {
                                     if (categorieArray != null) {
                                         for (j in 0 until categorieArray.length()) {
                                             val categoria = categorieArray.getString(j)
-                                            Log.d("cat", "ccc: $categoria")
                                             categorieList.add(categoria)
                                         }
                                     }

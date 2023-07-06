@@ -99,13 +99,6 @@ class CatalogoHome : Fragment() {
         }
     }
 
-    private fun replaceFragment(fragment: Fragment) {
-        val fragmentManager = requireActivity().supportFragmentManager
-        val fragmentTransaction = fragmentManager.beginTransaction()
-        fragmentTransaction.replace(R.id.fragmentContainerView, fragment)
-        fragmentTransaction.commit()
-    }
-
     private fun checkBookCatalogo(){
         if (FirebaseAuth.getInstance().currentUser != null) {
             val cUser = FirebaseAuth.getInstance().currentUser!!
