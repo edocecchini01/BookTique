@@ -39,11 +39,12 @@ class LibroDaLeggere : Fragment() {
 
             val imageView = binding.imageView5
         Glide.with(this)
-            .load(args.LibriDaLegg.copertina)
+            .load(args.LibroDaLeg.copertina)
             .into(imageView)
 
-        binding.textView26.text = args.LibriDaLegg.titolo
-        binding.textView27.text = args.LibriDaLegg.autori
+        binding.textView26.text = args.LibroDaLeg.titolo
+        binding.textView27.text = args.LibroDaLeg.autori
+        binding.textView14.text = args.LibroDaLeg.descrizione
 
 
     }
