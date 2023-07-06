@@ -380,8 +380,8 @@ class CatalogoHome : Fragment() {
         imageButton.setOnClickListener {
 
             val navController = findNavController()
-            //val action = CatalogoHomeDirections.actionCatalogoHomeToLibroDaLeggere(book)
-            //findNavController().navigate(action)
+            val action = CatalogoHomeDirections.actionCatalogoHomeToLibroDaLeggere(book)
+            findNavController().navigate(action)
         }
     }
 
