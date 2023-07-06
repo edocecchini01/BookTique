@@ -17,6 +17,7 @@ import com.bumptech.glide.Glide
 import com.bumptech.glide.load.DataSource
 import com.bumptech.glide.load.engine.GlideException
 import com.bumptech.glide.request.RequestListener
+import com.bumptech.glide.request.RequestOptions
 import com.bumptech.glide.request.target.Target
 import com.example.booktique.databinding.FragmentCatalogoHomeBinding
 import com.google.firebase.auth.FirebaseAuth
@@ -195,18 +196,17 @@ class CatalogoHome : Fragment() {
 
 
     private fun loadImagesIntoImageButtonsDaLeggere(books: List<LibriDaL>?) {
-        val imageButtons =
-            listOf(
-                binding.bookLetti1,
-                binding.bookLetti2,
-                binding.bookLetti3,
-                binding.bookLetti4,
-                binding.bookLetti5,
-                binding.bookLetti6
-            )
+        val imageButtons = listOf(
+            binding.bookLetti1,
+            binding.bookLetti2,
+            binding.bookLetti3,
+            binding.bookLetti4,
+            binding.bookLetti5,
+            binding.bookLetti6
+        )
 
-        // Verifica che la lista dei libri non sia nulla e contenga almeno 6 elementi
-        if (books != null ) {
+        // Verifica che la lista dei libri non sia nulla
+        if (books != null) {
             for (i in 0 until minOf(books.size, 6)) {
                 val book = books[i]
                 val imageUrl = book.copertina
@@ -243,11 +243,9 @@ class CatalogoHome : Fragment() {
                                 return false
                             }
                         })
-
                         .into(imageButtons[i])
 
                     setupImageButtonClickListenerDaLeggere(book, imageButtons[i])
-
                 }
             }
         }
@@ -256,17 +254,16 @@ class CatalogoHome : Fragment() {
 
     private fun loadImagesIntoImageButtonsInCorso(books: List<LibriInC>?) {
         val imageButtons = listOf(
-                binding.bookInC1,
-                binding.bookInC2,
-                binding.bookInC3,
-                binding.bookInC4,
-                binding.bookInC5,
-                binding.bookInC6
-            )
-
+            binding.bookInC1,
+            binding.bookInC2,
+            binding.bookInC3,
+            binding.bookInC4,
+            binding.bookInC5,
+            binding.bookInC6
+        )
 
         // Verifica che la lista dei libri non sia nulla e contenga almeno 6 elementi
-        if (books != null ) {
+        if (books != null) {
             for (i in 0 until minOf(books.size, 6)) {
                 val book = books[i]
                 val imageUrl = book.copertina
@@ -303,11 +300,9 @@ class CatalogoHome : Fragment() {
                                 return false
                             }
                         })
-
                         .into(imageButtons[i])
 
                     setupImageButtonClickListener(book, imageButtons[i])
-
                 }
             }
         }
