@@ -150,7 +150,7 @@ class CatalogoDaLeggere : Fragment() {
 
              */
 
-            daLeggereRef.addValueEventListener(object : ValueEventListener {
+            daLeggereRef.addListenerForSingleValueEvent(object : ValueEventListener {
                 override fun onDataChange(snapshot: DataSnapshot) {
                     val daLeggereBooks = arrayListOf<LibriDaL>()
                     if (snapshot.exists()) {
