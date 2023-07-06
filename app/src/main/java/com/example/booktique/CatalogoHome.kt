@@ -10,6 +10,7 @@ import android.view.ViewGroup
 import android.widget.ImageButton
 import android.widget.Toast
 import androidx.databinding.DataBindingUtil
+import androidx.fragment.app.FragmentActivity
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.fragment.findNavController
 import com.bumptech.glide.Glide
@@ -26,7 +27,7 @@ import com.google.firebase.database.ValueEventListener
 
 class CatalogoHome : Fragment() {
     private lateinit var binding: FragmentCatalogoHomeBinding
-
+    private lateinit var activity : FragmentActivity
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -42,6 +43,7 @@ class CatalogoHome : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        activity = binding.root.context as FragmentActivity
         val fragment = requireActivity().supportFragmentManager.findFragmentById(R.id.fragmentContainerView)
 
         if (fragment is NavHostFragment) {
@@ -210,7 +212,7 @@ class CatalogoHome : Fragment() {
                 val imageUrl = book.copertina
                 Log.d("Image", "imageUrl: $imageUrl")
                 if (!imageUrl.isNullOrEmpty()) {
-                    Glide.with(binding.root.context)
+                    Glide.with(activity)
                         .load(imageUrl)
                         .listener(object : RequestListener<Drawable> {
                             override fun onLoadFailed(
@@ -270,7 +272,7 @@ class CatalogoHome : Fragment() {
                 val imageUrl = book.copertina
                 Log.d("Image", "imageUrl: $imageUrl")
                 if (!imageUrl.isNullOrEmpty()) {
-                    Glide.with(binding.root.context)
+                    Glide.with(activity)
                         .load(imageUrl)
                         .listener(object : RequestListener<Drawable> {
                             override fun onLoadFailed(
@@ -329,7 +331,7 @@ class CatalogoHome : Fragment() {
                 val imageUrl = book.copertina
                 Log.d("Image", "imageUrl: $imageUrl")
                 if (!imageUrl.isNullOrEmpty()) {
-                    Glide.with(binding.root.context)
+                    Glide.with(activity)
                         .load(imageUrl)
                         .listener(object : RequestListener<Drawable> {
                             override fun onLoadFailed(
@@ -383,8 +385,8 @@ class CatalogoHome : Fragment() {
         imageButton.setOnClickListener {
 
             val navController = findNavController()
-            val action = CatalogoHomeDirections.actionCatalogoHomeToLibroDaLeggere(book)
-            findNavController().navigate(action)
+            //val action = CatalogoHomeDirections.actionCatalogoHomeToLibroDaLeggere(book)
+            //findNavController().navigate(action)
         }
     }
 

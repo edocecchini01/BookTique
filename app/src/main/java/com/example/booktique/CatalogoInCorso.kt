@@ -100,7 +100,7 @@ class CatalogoInCorso : Fragment() {
 
                             if (bookId != null) {
                                 Log.d("TAG", "idLibro: $bookId")
-                                moveBooks(bookId,where,activity)
+                                moveBooks(bookId,where)
                                 adapter.notifyDataSetChanged()
                             }
                         } else {
@@ -160,9 +160,9 @@ class CatalogoInCorso : Fragment() {
                             }
 
                             if(pagA.text == pagT.text && bookId != null){
-                                moveBooks(bookId,false,activity)
+                                moveBooks(bookId,false)
                                 Toast.makeText(
-                                    requireContext(),
+                                    activity,
                                     "Complimenti hai terminato la tua lettura!",
                                     Toast.LENGTH_SHORT
                                 ).show()
@@ -254,7 +254,7 @@ class CatalogoInCorso : Fragment() {
         return null
     }
 
-    private fun moveBooks(bookId : String, where : Boolean, activity: FragmentActivity) {
+    private fun moveBooks(bookId : String, where : Boolean) {
         if (FirebaseAuth.getInstance().currentUser != null) {
             val cUser = FirebaseAuth.getInstance().currentUser!!
             val database =
