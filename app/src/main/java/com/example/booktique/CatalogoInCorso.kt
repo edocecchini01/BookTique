@@ -1,6 +1,7 @@
 package com.example.booktique
 
 import android.animation.ObjectAnimator
+import android.app.Activity
 import android.os.Bundle
 import android.util.Log
 import androidx.fragment.app.Fragment
@@ -17,6 +18,8 @@ import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.databinding.DataBindingUtil
+import androidx.fragment.app.FragmentActivity
+import androidx.navigation.Navigation
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -34,6 +37,7 @@ class CatalogoInCorso : Fragment() {
     private lateinit var listaLibri: ArrayList<LibriInC>
     private lateinit var select: Spinner
     private val sezioni = arrayListOf("Letti","Da Leggere")
+    private lateinit var activity : FragmentActivity
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -55,7 +59,7 @@ class CatalogoInCorso : Fragment() {
 
         adapter = MyAdapterIC(listaLibri)
         recyclerView.adapter = adapter
-
+        activity = requireActivity()
 
         adapter.setOnCLickItemListener(object : MyAdapterIC.onItemClickListener{
             override fun onItemClick(position: Int) {
@@ -96,7 +100,7 @@ class CatalogoInCorso : Fragment() {
 
                             if (bookId != null) {
                                 Log.d("TAG", "idLibro: $bookId")
-                                moveBooks(bookId,where)
+                                moveBooks(bookId,where,activity)
                                 adapter.notifyDataSetChanged()
                             }
                         } else {
@@ -156,7 +160,7 @@ class CatalogoInCorso : Fragment() {
                             }
 
                             if(pagA.text == pagT.text && bookId != null){
-                                moveBooks(bookId,false)
+                                moveBooks(bookId,false,activity)
                                 Toast.makeText(
                                     requireContext(),
                                     "Complimenti hai terminato la tua lettura!",
@@ -250,7 +254,7 @@ class CatalogoInCorso : Fragment() {
         return null
     }
 
-    private fun moveBooks(bookId : String, where : Boolean) {
+    private fun moveBooks(bookId : String, where : Boolean, activity: FragmentActivity) {
         if (FirebaseAuth.getInstance().currentUser != null) {
             val cUser = FirebaseAuth.getInstance().currentUser!!
             val database =
@@ -278,15 +282,15 @@ class CatalogoInCorso : Fragment() {
                                 val libroRef = childSnapshot.ref
                                 Log.d("Libro", "Libro da eliminare: $libro")
                                 libroRef.removeValue()
-                                Toast.makeText(
-                                    requireContext(),
-                                    "${libro.titolo?.take(50)}, spostato in \"Letti\"",
-                                    Toast.LENGTH_SHORT
-                                ).show()
 
-                                val navController = findNavController()
+                                    Toast.makeText(
+                                        activity,
+                                        "${libro.titolo?.take(50)}, spostato in \"Letti\"",
+                                        Toast.LENGTH_SHORT
+                                    ).show()
+
+                                val navController = Navigation.findNavController(activity, R.id.fragmentContainerView)
                                 navController.navigate(R.id.action_catalogoInCorso_to_catalogoHome)
-
 
                                 break
                             }
@@ -313,12 +317,12 @@ class CatalogoInCorso : Fragment() {
                                 Log.d("Libro", "Libro da eliminare: $libro")
                                 libroRef.removeValue()
                                 Toast.makeText(
-                                    requireContext(),
+                                    activity,
                                     "${libro.titolo?.take(50)}, spostato in \"Da leggere\"",
                                     Toast.LENGTH_SHORT
                                 ).show()
 
-                                val navController = findNavController()
+                                val navController = Navigation.findNavController(activity, R.id.fragmentContainerView)
                                 navController.navigate(R.id.action_catalogoInCorso_to_catalogoHome)
 
 

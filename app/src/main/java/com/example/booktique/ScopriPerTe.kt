@@ -295,8 +295,6 @@ class ScopriPerTe : Fragment() {
                 Log.e("TAG", "Errore nella chiamata API: ${t.message}", t)
             }
         })
-
-        slideBook(perTeBooksList)
     }
 
     private fun userBook(){
@@ -362,9 +360,11 @@ class ScopriPerTe : Fragment() {
                         val mostAutore = countAutori.maxByOrNull { it.value }?.key
                         val countGeneri = likeBook.groupingBy { it.categorie }.eachCount()
                         val mostGenere = countGeneri.maxByOrNull { it.value }?.key
+                        Log.d("GENERE","Valore genere: $mostGenere")
+                        Log.d("GENERE","Valore autore: $mostAutore")
                         val query1 = "inauthor:\"$mostAutore\""
                         val query2 = "subject:\"$mostGenere\""
-                        perTeBook(query1, query2,"relevance",10,allBookUser)
+                        perTeBook(query1, query2,"relevance",15,allBookUser)
                     }else{
                         binding.imageButton2.visibility = View.GONE
                         binding.textView7.text = "Non ci sono abbastanza informazioni, torna quando avrai letto altri libri!"
