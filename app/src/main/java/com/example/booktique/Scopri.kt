@@ -14,6 +14,7 @@ import android.widget.ImageButton
 import android.widget.Toast
 import androidx.appcompat.widget.SearchView
 import androidx.core.content.ContextCompat
+import androidx.core.os.bundleOf
 import androidx.databinding.DataBindingUtil
 import androidx.navigation.Navigation
 import androidx.navigation.fragment.findNavController
@@ -555,63 +556,38 @@ class Scopri : Fragment() {
 
         binding.button3.setOnClickListener {
 
-            val fragmentManager = requireActivity().supportFragmentManager
-            val scopriFragment = ScopriGenere.newInstance("fantasia")
-            FragmentUtils.replaceFragment(
-                fragmentManager,
-                R.id.fragmentContainerView,
-                scopriFragment
-            )
+            val navController = findNavController()
+            val bundle = bundleOf("genere" to "fantasia", "ricerca" to false)
+            navController.navigate(R.id.action_scopri_to_scopriGenere, bundle)
         }
         binding.button4.setOnClickListener {
-
-            val fragmentManager = requireActivity().supportFragmentManager
-            val scopriFragment = ScopriGenere.newInstance("romanzi")
-            FragmentUtils.replaceFragment(
-                fragmentManager,
-                R.id.fragmentContainerView,
-                scopriFragment
-            )
+            val navController = findNavController()
+            val bundle = bundleOf("genere" to "romanzi", "ricerca" to false)
+            navController.navigate(R.id.action_scopri_to_scopriGenere, bundle)
         }
         binding.button5.setOnClickListener {
 
-            val fragmentManager = requireActivity().supportFragmentManager
-            val scopriFragment = ScopriGenere.newInstance("fiction")
-            FragmentUtils.replaceFragment(
-                fragmentManager,
-                R.id.fragmentContainerView,
-                scopriFragment
-            )
+            val navController = findNavController()
+            val bundle = bundleOf("genere" to "fiction", "ricerca" to false)
+            navController.navigate(R.id.action_scopri_to_scopriGenere, bundle)
         }
         binding.button6.setOnClickListener {
 
-            val fragmentManager = requireActivity().supportFragmentManager
-            val scopriFragment = ScopriGenere.newInstance("biografia" )
-            FragmentUtils.replaceFragment(
-                fragmentManager,
-                R.id.fragmentContainerView,
-                scopriFragment
-            )
+            val navController = findNavController()
+            val bundle = bundleOf("genere" to "biografia", "ricerca" to false)
+            navController.navigate(R.id.action_scopri_to_scopriGenere, bundle)
         }
         binding.button7.setOnClickListener {
 
-            val fragmentManager = requireActivity().supportFragmentManager
-            val scopriFragment = ScopriGenere.newInstance("storia")
-            FragmentUtils.replaceFragment(
-                fragmentManager,
-                R.id.fragmentContainerView,
-                scopriFragment
-            )
+            val navController = findNavController()
+            val bundle = bundleOf("genere" to "storia", "ricerca" to false)
+            navController.navigate(R.id.action_scopri_to_scopriGenere, bundle)
         }
         binding.button8.setOnClickListener {
 
-            val fragmentManager = requireActivity().supportFragmentManager
-            val scopriFragment = ScopriGenere.newInstance("horror")
-            FragmentUtils.replaceFragment(
-                fragmentManager,
-                R.id.fragmentContainerView,
-                scopriFragment
-            )
+            val navController = findNavController()
+            val bundle = bundleOf("genere" to "horror", "ricerca" to false)
+            navController.navigate(R.id.action_scopri_to_scopriGenere, bundle)
         }
 
     }

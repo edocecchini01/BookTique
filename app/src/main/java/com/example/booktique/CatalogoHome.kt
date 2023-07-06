@@ -16,6 +16,7 @@ import com.bumptech.glide.Glide
 import com.bumptech.glide.load.DataSource
 import com.bumptech.glide.load.engine.GlideException
 import com.bumptech.glide.request.RequestListener
+import com.bumptech.glide.request.RequestOptions
 import com.bumptech.glide.request.target.Target
 import com.example.booktique.databinding.FragmentCatalogoHomeBinding
 import com.google.firebase.auth.FirebaseAuth
@@ -210,49 +211,52 @@ class CatalogoHome : Fragment() {
                 binding.bookLetti6
             )
 
-        // Verifica che la lista dei libri non sia nulla e contenga almeno 6 elementi
+        // Verifica che la lista dei libri non sia nulla
         if (books != null ) {
             for (i in 0 until minOf(books.size, 6)) {
                 val book = books[i]
                 val imageUrl = book.copertina
                 Log.d("Image", "imageUrl: $imageUrl")
-                if (!imageUrl.isNullOrEmpty()) {
-                    Glide.with(binding.root.context)
-                        .load(imageUrl)
-                        .listener(object : RequestListener<Drawable> {
-                            override fun onLoadFailed(
-                                e: GlideException?,
-                                model: Any?,
-                                target: Target<Drawable>?,
-                                isFirstResource: Boolean
-                            ): Boolean {
-                                e?.let {
-                                    // Ottieni la lista delle cause radice dell'eccezione
-                                    val rootCauses = e.rootCauses
-                                    for (cause in rootCauses) {
-                                        // Stampa le informazioni sulla causa dell'errore
-                                        Log.e("Glide1", "Root cause: ${cause.message}")
+                if (!requireActivity().isDestroyed) {
+                    if (!imageUrl.isNullOrEmpty()) {
+                        Glide.with(binding.root.context)
+                            .load(imageUrl)
+                            .apply(RequestOptions().placeholder(R.drawable.book_icon))
+                            .listener(object : RequestListener<Drawable> {
+                                override fun onLoadFailed(
+                                    e: GlideException?,
+                                    model: Any?,
+                                    target: Target<Drawable>?,
+                                    isFirstResource: Boolean
+                                ): Boolean {
+                                    e?.let {
+                                        // Ottieni la lista delle cause radice dell'eccezione
+                                        val rootCauses = e.rootCauses
+                                        for (cause in rootCauses) {
+                                            // Stampa le informazioni sulla causa dell'errore
+                                            Log.e("Glide1", "Root cause: ${cause.message}")
+                                        }
                                     }
+                                    return false
                                 }
-                                return false
-                            }
 
-                            override fun onResourceReady(
-                                resource: Drawable?,
-                                model: Any?,
-                                target: Target<Drawable>?,
-                                dataSource: DataSource?,
-                                isFirstResource: Boolean
-                            ): Boolean {
-                                // L'immagine è stata caricata con successo
-                                return false
-                            }
-                        })
+                                override fun onResourceReady(
+                                    resource: Drawable?,
+                                    model: Any?,
+                                    target: Target<Drawable>?,
+                                    dataSource: DataSource?,
+                                    isFirstResource: Boolean
+                                ): Boolean {
+                                    // L'immagine è stata caricata con successo
+                                    return false
+                                }
+                            })
 
-                        .into(imageButtons[i])
+                            .into(imageButtons[i])
 
-                    setupImageButtonClickListenerDaLeggere(book, imageButtons[i])
+                        setupImageButtonClickListenerDaLeggere(book, imageButtons[i])
 
+                    }
                 }
             }
         }
@@ -276,43 +280,45 @@ class CatalogoHome : Fragment() {
                 val book = books[i]
                 val imageUrl = book.copertina
                 Log.d("Image", "imageUrl: $imageUrl")
-                if (!imageUrl.isNullOrEmpty()) {
-                    Glide.with(binding.root.context)
-                        .load(imageUrl)
-                        .listener(object : RequestListener<Drawable> {
-                            override fun onLoadFailed(
-                                e: GlideException?,
-                                model: Any?,
-                                target: Target<Drawable>?,
-                                isFirstResource: Boolean
-                            ): Boolean {
-                                e?.let {
-                                    // Ottieni la lista delle cause radice dell'eccezione
-                                    val rootCauses = e.rootCauses
-                                    for (cause in rootCauses) {
-                                        // Stampa le informazioni sulla causa dell'errore
-                                        Log.e("Glide1", "Root cause: ${cause.message}")
+                if (!requireActivity().isDestroyed) {
+                    if (!imageUrl.isNullOrEmpty()) {
+                        Glide.with(binding.root.context)
+                            .load(imageUrl)
+                            .listener(object : RequestListener<Drawable> {
+                                override fun onLoadFailed(
+                                    e: GlideException?,
+                                    model: Any?,
+                                    target: Target<Drawable>?,
+                                    isFirstResource: Boolean
+                                ): Boolean {
+                                    e?.let {
+                                        // Ottieni la lista delle cause radice dell'eccezione
+                                        val rootCauses = e.rootCauses
+                                        for (cause in rootCauses) {
+                                            // Stampa le informazioni sulla causa dell'errore
+                                            Log.e("Glide1", "Root cause: ${cause.message}")
+                                        }
                                     }
+                                    return false
                                 }
-                                return false
-                            }
 
-                            override fun onResourceReady(
-                                resource: Drawable?,
-                                model: Any?,
-                                target: Target<Drawable>?,
-                                dataSource: DataSource?,
-                                isFirstResource: Boolean
-                            ): Boolean {
-                                // L'immagine è stata caricata con successo
-                                return false
-                            }
-                        })
+                                override fun onResourceReady(
+                                    resource: Drawable?,
+                                    model: Any?,
+                                    target: Target<Drawable>?,
+                                    dataSource: DataSource?,
+                                    isFirstResource: Boolean
+                                ): Boolean {
+                                    // L'immagine è stata caricata con successo
+                                    return false
+                                }
+                            })
 
-                        .into(imageButtons[i])
+                            .into(imageButtons[i])
 
-                    setupImageButtonClickListener(book, imageButtons[i])
+                        setupImageButtonClickListener(book, imageButtons[i])
 
+                    }
                 }
             }
         }

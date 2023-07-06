@@ -25,6 +25,7 @@ class ScopriGenere : Fragment() {
     private var param: String? = null
     private var ricerca: Boolean = false
 
+
     companion object {
 
         fun newInstance(genre: String): ScopriGenere {
@@ -57,8 +58,8 @@ class ScopriGenere : Fragment() {
         recyclerView.layoutManager = LinearLayoutManager(requireContext())
 
         arguments?.let { args ->
-            ricerca = args.getBoolean("ricerca")
-            param = args.getString("param")
+            ricerca = requireArguments().getBoolean("ricerca")
+            param = requireArguments().getString("genere")
             if(param != null){
                 if(ricerca)
                     binding.genere.text = "Ricerca: "+ param

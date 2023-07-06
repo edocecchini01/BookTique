@@ -80,6 +80,9 @@
         <action
             android:id="@+id/action_scopriGenere_to_scopri"
             app:destination="@id/scopri" />
+        <argument
+            android:name="ricerca"
+            app:argType="boolean" />
     </fragment>
     <fragment
         android:id="@+id/catalogoInCorso"
