@@ -123,6 +123,7 @@
                 android:textAlignment="viewStart"
                 android:textColor="@color/gray" />
 
+
         </LinearLayout>
     </ScrollView>
 </androidx.constraintlayout.widget.ConstraintLayout>

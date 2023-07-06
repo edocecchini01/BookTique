@@ -43,6 +43,16 @@ class DettaglioLibro : AppCompatActivity() {
             binding.textView11.text = book.title
             binding.textView9.text = book.authors[0]
             binding.textView13.text = book.description
+
+            checkBookAdded()
+            val bundle = intent.extras
+
+            val parametro = bundle?.getString("parametro")
+            if (parametro == "ScopriPerTe"){
+                binding.imageButton.setOnClickListener {
+
+                }
+            }
             // Imposta gli altri valori nelle TextView
 
             val imageView = findViewById<ImageView>(R.id.imageView3)
@@ -50,11 +60,11 @@ class DettaglioLibro : AppCompatActivity() {
                 .load(book.imageLinks.smallThumbnail)
                 .into(imageView)
 
-            checkBookAdded()
 
             binding.buttonAggiungi.setOnClickListener {
                 aggiungiLibro()
             }
+
 
         }else if (libroIncorso!=null){
             val imageView = findViewById<ImageView>(R.id.imageView3)
@@ -131,6 +141,7 @@ class DettaglioLibro : AppCompatActivity() {
                 ).show()
             }
         }
+
 
     private fun checkBookAdded() {
         if (FirebaseAuth.getInstance().currentUser != null) {

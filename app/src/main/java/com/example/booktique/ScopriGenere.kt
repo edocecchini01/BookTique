@@ -7,6 +7,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.booktique.databinding.FragmentScopriGenereBinding
@@ -73,6 +74,11 @@ class ScopriGenere : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        binding.backbuttonGen.setOnClickListener {
+            val navController = findNavController()
+            navController.navigate(R.id.action_scopriGenere_to_scopri)
+        }
+
         listaLibri = ArrayList()
         recyclerView.setHasFixedSize(true)
         if(!ricerca) {
@@ -82,6 +88,7 @@ class ScopriGenere : Fragment() {
         }else{
             loadBooks(BooksHolder.books)
         }
+
 
     }
 
