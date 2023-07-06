@@ -20,6 +20,7 @@ class MyAdapterIC(private val listaLibri : ArrayList<LibriInC>) :
         fun onItemClick(position: Int)
         fun hideShow(element: LinearLayout, arrow : ImageButton)
         fun moveBook(send : ImageButton, position: Int)
+        fun dettaglioBook(cover: ImageButton, position: Int)
 
         fun reading(seekBar: SeekBar, pagAtt : TextView, pagTot : TextView, element: LinearLayout,position: Int)
     }
@@ -51,6 +52,11 @@ class MyAdapterIC(private val listaLibri : ArrayList<LibriInC>) :
 
             itemView.findViewById<ImageButton>(R.id.deleteIC).setOnClickListener {
                 listener.moveBook(itemView.findViewById(R.id.deleteIC), bindingAdapterPosition)
+            }
+
+            itemView.findViewById<ImageButton>(R.id.coverIC).setOnClickListener{
+                listener.dettaglioBook(itemView.findViewById(R.id.coverIC),bindingAdapterPosition)
+
             }
 
 

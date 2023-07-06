@@ -42,6 +42,9 @@
         <action
             android:id="@+id/action_catalogoDaLeggere_to_catalogoHome"
             app:destination="@id/catalogoHome" />
+        <action
+            android:id="@+id/action_catalogoDaLeggere_to_libroDaLeggere"
+            app:destination="@id/libroDaLeggere" />
     </fragment>
     <fragment
         android:id="@+id/scopri"
@@ -92,6 +95,9 @@
         <action
             android:id="@+id/action_catalogoInCorso_to_catalogoHome"
             app:destination="@id/catalogoHome" />
+        <action
+            android:id="@+id/action_catalogoInCorso_to_libroInCorso"
+            app:destination="@id/libroInCorso" />
     </fragment>
     <fragment
         android:id="@+id/catalogoLetti"
@@ -101,6 +107,9 @@
         <action
             android:id="@+id/action_catalogoLetti_to_catalogoHome"
             app:destination="@id/catalogoHome" />
+        <action
+            android:id="@+id/action_catalogoLetti_to_libroLetto"
+            app:destination="@id/libroLetto" />
     </fragment>
     <fragment
         android:id="@+id/impostazioni"

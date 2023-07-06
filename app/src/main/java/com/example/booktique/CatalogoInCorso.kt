@@ -192,6 +192,14 @@ class CatalogoInCorso : Fragment() {
 
             }
 
+            override fun dettaglioBook(cover: ImageButton, position: Int) {
+                val libro = getLibro(position)
+
+                val navController = findNavController()
+                val action = CatalogoInCorsoDirections.actionCatalogoInCorsoToLibroInCorso(libro)
+                findNavController().navigate(action)
+            }
+
         })
         checkBookCatalogo()
     }
@@ -339,6 +347,11 @@ class CatalogoInCorso : Fragment() {
 
         }
         }
+
+    }
+    private fun getLibro(position: Int): LibriInC {
+
+        return listaLibri[position]
 
     }
 

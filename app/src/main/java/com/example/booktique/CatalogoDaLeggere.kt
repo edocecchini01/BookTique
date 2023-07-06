@@ -111,6 +111,15 @@ class CatalogoDaLeggere : Fragment() {
                     }
                 }
 
+            override fun dettaglioBook(cover: ImageButton, position: Int) {
+                val libro = getLibro(position)
+
+                val navController = findNavController()
+                val action = CatalogoDaLeggereDirections.actionCatalogoDaLeggereToLibroDaLeggere(libro)
+                findNavController().navigate(action)
+            }
+
+
             })
 
         checkBookCatalogo()
@@ -264,6 +273,12 @@ class CatalogoDaLeggere : Fragment() {
             return bookId
         }
         return null
+    }
+
+    private fun getLibro(position: Int): LibriDaL {
+
+        return listaLibri[position]
+
     }
 
 }
