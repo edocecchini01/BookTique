@@ -24,18 +24,14 @@
             android:id="@+id/action_catalogoHome_to_impostazioni"
             app:destination="@id/impostazioni" />
         <action
-            android:id="@+id/action_catalogoHome_to_libroDaLeggere"
-            app:destination="@id/libroDaLeggere" >
-        <argument
-            android:name="book"
-            app:argType="com.example.booktique.LibriDaL" />
-        </action>
-        <action
             android:id="@+id/action_catalogoHome_to_libroLetto"
             app:destination="@id/libroLetto" />
         <action
             android:id="@+id/action_catalogoHome_to_libroInCorso"
             app:destination="@id/libroInCorso" />
+        <action
+            android:id="@+id/action_catalogoHome_to_libroDaLeggere"
+            app:destination="@id/libroDaLeggere" />
     </fragment>
     <fragment
         android:id="@+id/catalogoDaLeggere"
@@ -123,14 +119,6 @@
             app:argType="com.example.booktique.LibriDaL" />
     </fragment>
     <fragment
-        android:id="@+id/libroDaLeggere"
-        android:name="com.example.booktique.LibroDaLeggere"
-        android:label="LibroDaLeggere" >
-        <argument
-            android:name="LibriDaLegg"
-            app:argType="com.example.booktique.LibriDaL" />
-    </fragment>
-    <fragment
         android:id="@+id/libroLetto"
         android:name="com.example.booktique.LibroLetto"
         android:label="LibroLetto" >
@@ -145,6 +133,14 @@
         <argument
             android:name="LibroInC"
             app:argType="com.example.booktique.LibriInC" />
+    </fragment>
+    <fragment
+        android:id="@+id/libroDaLeggere"
+        android:name="com.example.booktique.LibroDaLeggere"
+        android:label="LibroDaLeggere" >
+        <argument
+            android:name="LibroDaLeg"
+            app:argType="com.example.booktique.LibriDaL" />
     </fragment>
 
 </navigation>
