@@ -37,7 +37,7 @@ import retrofit2.Callback
 import retrofit2.Response
 
 private lateinit var binding:FragmentScopriPerTeBinding
-
+private val perTeBooksList = mutableListOf<VolumeDet>()
 class ScopriPerTe : Fragment() {
 
     override fun onCreateView(
@@ -68,10 +68,12 @@ class ScopriPerTe : Fragment() {
         }
     }
 
-    private fun perTeBook(query:String, order: String, maxResults: Int, allBookUser : ArrayList<String?>){
-        val titolo = binding.textView7.toString()
-        val perTeCall = ApiServiceManager.apiService.getPerTe(query,order,maxResults)
-        perTeCall.enqueue(object : Callback<ResponseBody> {
+    private fun perTeBook(query1: String, query2: String, order: String, maxResults: Int, allBookUser: ArrayList<String?>) {
+        val perTeCall1 = ApiServiceManager.apiService.getPerTe(query1,order,maxResults)
+        val perTeCall2 = ApiServiceManager.apiService.getPerTe(query2,order,maxResults)
+        var completedCalls = 0
+        //autore
+        perTeCall1.enqueue(object : Callback<ResponseBody> {
             override fun onResponse(call: Call<ResponseBody>, response: Response<ResponseBody>) {
                 if (response.isSuccessful) {
                     Log.d("TAG", "Messaggio di debug")
@@ -85,8 +87,6 @@ class ScopriPerTe : Fragment() {
 
                             val jsonObject = JSONObject(jsonString)
                             val itemsArray = jsonObject.getJSONArray("items")
-
-                            val perTeBooksList = mutableListOf<VolumeDet>()
 
                             for (i in 0 until itemsArray.length()) {
                                 val book = itemsArray.getJSONObject(i)
@@ -157,7 +157,12 @@ class ScopriPerTe : Fragment() {
 
                             val allBookU = allBookUser
                             perTeBooksList.removeAll{ libro -> allBookU.contains(libro.id)}
-                            slideBook(perTeBooksList)
+
+                            completedCalls++
+
+                            if (completedCalls == 2) {
+                                slideBook(perTeBooksList)
+                            }
                         }
                     } catch (e: JSONException) {
                         // Il parsing del JSON non è valido
@@ -170,18 +175,128 @@ class ScopriPerTe : Fragment() {
                     val errorMessage = response.message()
                     Log.d("API Error", "Status Code: $statusCode")
                     Log.d("API Error", "Error Message: $errorMessage")
-
                 }
             }
 
             override fun onFailure(call: Call<ResponseBody>, t: Throwable) {
                 Log.d("TAG", "Messaggio di debug11111")
                 Log.e("TAG", "Errore nella chiamata API: ${t.message}", t)
-
             }
         })
 
+        //genere
+        perTeCall2.enqueue(object : Callback<ResponseBody> {
+            override fun onResponse(call: Call<ResponseBody>, response: Response<ResponseBody>) {
+                if (response.isSuccessful) {
+                    Log.d("TAG", "Messaggio di debug")
 
+                    val bookResponse = response.body()
+                    Log.d("TAG", "bookResponse: $bookResponse")
+
+                    try {
+                        if (bookResponse != null) {
+                            val jsonString = bookResponse.string()
+
+                            val jsonObject = JSONObject(jsonString)
+                            val itemsArray = jsonObject.getJSONArray("items")
+
+                            for (i in 0 until itemsArray.length()) {
+                                val book = itemsArray.getJSONObject(i)
+                                val volumeInfo = book.getJSONObject("volumeInfo")
+
+                                var title = "Titolo non disponibile"
+                                if (volumeInfo.has("title")) {
+                                    title = volumeInfo.optString("title")
+                                }
+                                val authorsList = mutableListOf<String>()
+                                if (volumeInfo.has("authors")) {
+                                    val authorsArray = volumeInfo.optJSONArray("authors")
+                                    if (authorsArray != null) {
+                                        for (j in 0 until authorsArray.length()) {
+                                            val author = authorsArray.getString(j)
+                                            authorsList.add(author)
+                                        }
+                                    }
+                                }
+                                val authors = authorsList.toList()
+
+                                var language = "Lingua non specificata"
+                                if (volumeInfo.has("language")) {
+                                    language = volumeInfo.optString("language")
+                                }
+
+                                var pag = 0
+                                if (volumeInfo.has("pageCount")) {
+                                    val pageCountString = volumeInfo.optString("pageCount")
+                                    pag = pageCountString.toIntOrNull() ?: 0
+                                }
+
+                                val imageLinks: ImageLinks =
+                                    if (volumeInfo.has("imageLinks")) {
+                                        val imageLinksObject =
+                                            volumeInfo.getJSONObject("imageLinks")
+                                        val smallThumbnail =
+                                            imageLinksObject.optString("smallThumbnail")
+                                        ImageLinks(smallThumbnail)
+                                    } else {
+                                        val smallThumbnail =
+                                            "android.resource://com.example.booktique/drawable/no_book_icon"
+                                        ImageLinks(smallThumbnail)
+                                    }
+                                val id = book.optString("id")
+
+                                var categorieList = mutableListOf<String>()
+                                if (volumeInfo.has("categories")) {
+                                    val categorieArray = volumeInfo.optJSONArray("categories")
+                                    if (categorieArray != null) {
+                                        for (j in 0 until categorieArray.length()) {
+                                            val categoria = categorieArray.getString(j)
+                                            categorieList.add(categoria)
+                                        }
+                                    }
+                                }
+                                val categoria = categorieList.toList()
+
+                                var descrizione = "Descrizione non presente"
+                                if (volumeInfo.has("description")) {
+                                    descrizione = volumeInfo.optString("description")
+                                }
+
+                                val newBook =
+                                    VolumeDet(imageLinks, title, authors, language, pag, id, descrizione, categoria)
+                                perTeBooksList.add(newBook)
+                            }
+
+                            val allBookU = allBookUser
+                            perTeBooksList.removeAll{ libro -> allBookU.contains(libro.id)}
+
+                            completedCalls++
+                            if (completedCalls == 2) {
+                                slideBook(perTeBooksList)
+                            }
+                        }
+                    } catch (e: JSONException) {
+                        // Il parsing del JSON non è valido
+                        // Gestisci l'errore
+                        Log.e("JSON Parsing Error", "Errore nel parsing del JSON: ${e.message}")
+                    }
+
+                } else {
+                    val statusCode = response.code()
+                    val errorMessage = response.message()
+                    Log.d("API Error", "Status Code: $statusCode")
+                    Log.d("API Error", "Error Message: $errorMessage")
+                }
+
+            }
+
+            override fun onFailure(call: Call<ResponseBody>, t: Throwable) {
+                Log.d("TAG", "Messaggio di debug11111")
+                Log.e("TAG", "Errore nella chiamata API: ${t.message}", t)
+            }
+        })
+
+        slideBook(perTeBooksList)
     }
 
     private fun userBook(){
@@ -245,8 +360,11 @@ class ScopriPerTe : Fragment() {
                     if(likeBook.isNotEmpty()) {
                         val countAutori = likeBook.groupingBy { it.autori }.eachCount()
                         val mostAutore = countAutori.maxByOrNull { it.value }?.key
-                        val query = "inauthor:\"$mostAutore\""
-                        perTeBook(query, "relevance",20,allBookUser)
+                        val countGeneri = likeBook.groupingBy { it.categorie }.eachCount()
+                        val mostGenere = countGeneri.maxByOrNull { it.value }?.key
+                        val query1 = "inauthor:\"$mostAutore\""
+                        val query2 = "subject:\"$mostGenere\""
+                        perTeBook(query1, query2,"relevance",10,allBookUser)
                     }else{
                         binding.imageButton2.visibility = View.GONE
                         binding.textView7.text = "Non ci sono abbastanza informazioni, torna quando avrai letto altri libri!"
@@ -268,53 +386,12 @@ class ScopriPerTe : Fragment() {
 
     private var currentIndex = 0
     private fun slideBook(books: List<VolumeDet>?) {
-        if (books != null){
-            val book = books[currentIndex]
+        if (books != null) {
+            if (books.isNotEmpty()){
+                binding.imageButton2.visibility = View.VISIBLE
+                binding.linearL.visibility = View.VISIBLE
+                val book = books[currentIndex]
                 binding.textView7.text = abbreviaInfo(book.title.toString(),25)
-            val imageUrl = book?.imageLinks?.smallThumbnail
-            Log.d("Image", "imageUrl: $imageUrl")
-
-            Glide.with(requireContext())
-                .load(imageUrl)
-                .listener(object : RequestListener<Drawable> {
-                    override fun onLoadFailed(
-                        e: GlideException?,
-                        model: Any?,
-                        target: Target<Drawable>?,
-                        isFirstResource: Boolean
-                    ): Boolean {
-                        e?.let {
-                            // Ottieni la lista delle cause radice dell'eccezione
-                            val rootCauses = e.rootCauses
-                            for (cause in rootCauses) {
-                                // Stampa le informazioni sulla causa dell'errore
-                                Log.e("Glide1", "Root cause: ${cause.message}")
-                            }
-                        }
-                        return false
-                    }
-
-                    override fun onResourceReady(
-                        resource: Drawable?,
-                        model: Any?,
-                        target: Target<Drawable>?,
-                        dataSource: DataSource?,
-                        isFirstResource: Boolean
-                    ): Boolean {
-                        // L'immagine è stata caricata con successo
-                        return false
-                    }
-                })
-
-                .into(binding.imageButton2)
-
-            binding.no.setOnClickListener {
-                if (currentIndex < (books.size - 1)){
-                    currentIndex++
-
-                    val book = books[currentIndex]
-                    binding.textView7.text = abbreviaInfo(book.title.toString(), 20)
-
                 val imageUrl = book?.imageLinks?.smallThumbnail
                 Log.d("Image", "imageUrl: $imageUrl")
 
@@ -351,13 +428,57 @@ class ScopriPerTe : Fragment() {
                     })
 
                     .into(binding.imageButton2)
-            }else{
-                    binding.imageButton2.visibility = View.GONE
-                    binding.textView7.text = "Libri terminati! Torna più tardi"
-                    binding.linearL.visibility = View.GONE
-                    currentIndex = 0
+
+                binding.no.setOnClickListener {
+                    if (currentIndex < (books.size - 1)){
+                        currentIndex++
+
+                        val book = books[currentIndex]
+                        binding.textView7.text = abbreviaInfo(book.title.toString(), 20)
+
+                        val imageUrl = book?.imageLinks?.smallThumbnail
+                        Log.d("Image", "imageUrl: $imageUrl")
+
+                        Glide.with(requireContext())
+                            .load(imageUrl)
+                            .listener(object : RequestListener<Drawable> {
+                                override fun onLoadFailed(
+                                    e: GlideException?,
+                                    model: Any?,
+                                    target: Target<Drawable>?,
+                                    isFirstResource: Boolean
+                                ): Boolean {
+                                    e?.let {
+                                        // Ottieni la lista delle cause radice dell'eccezione
+                                        val rootCauses = e.rootCauses
+                                        for (cause in rootCauses) {
+                                            // Stampa le informazioni sulla causa dell'errore
+                                            Log.e("Glide1", "Root cause: ${cause.message}")
+                                        }
+                                    }
+                                    return false
+                                }
+
+                                override fun onResourceReady(
+                                    resource: Drawable?,
+                                    model: Any?,
+                                    target: Target<Drawable>?,
+                                    dataSource: DataSource?,
+                                    isFirstResource: Boolean
+                                ): Boolean {
+                                    // L'immagine è stata caricata con successo
+                                    return false
+                                }
+                            })
+
+                            .into(binding.imageButton2)
+                    }else{
+                        binding.imageButton2.visibility = View.GONE
+                        binding.textView7.text = "Libri terminati! Torna più tardi"
+                        binding.linearL.visibility = View.GONE
+                        currentIndex = 0
+                    }
                 }
-            }
 
                 binding.si.setOnClickListener {
                     var dialog: AlertDialog? = null
@@ -375,6 +496,11 @@ class ScopriPerTe : Fragment() {
                     dialog = builder.create()
                     dialog?.show()
                 }
+            }else{
+                binding.imageButton2.visibility = View.GONE
+                binding.textView7.text = "Caricamento..."
+                binding.linearL.visibility = View.GONE
+            }
         }
     }
 
