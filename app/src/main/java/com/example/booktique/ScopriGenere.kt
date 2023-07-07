@@ -6,6 +6,8 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.appcompat.widget.SearchView
+import androidx.core.os.bundleOf
 import androidx.databinding.DataBindingUtil
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -28,16 +30,6 @@ class ScopriGenere : Fragment() {
 
 
     companion object {
-
-        fun newInstance(genre: String): ScopriGenere {
-            val fragment = ScopriGenere()
-            val args = Bundle()
-            args.putString("param", genre)
-            args.putBoolean("ricerca", false)
-            fragment.arguments = args
-            return fragment
-        }
-
         fun newInstanceS(searchQuery: String): ScopriGenere {
             val fragment = ScopriGenere()
             val args = Bundle()
@@ -61,6 +53,7 @@ class ScopriGenere : Fragment() {
         arguments?.let { args ->
             ricerca = requireArguments().getBoolean("ricerca")
             param = requireArguments().getString("genere")
+            Log.d("param", param.toString())
             if(param != null){
                 if(ricerca)
                     binding.genere.text = "Ricerca: "+ param
@@ -82,15 +75,154 @@ class ScopriGenere : Fragment() {
         listaLibri = ArrayList()
         recyclerView.setHasFixedSize(true)
         if(!ricerca) {
+
             val queryparameter = "subject:" + param
+
             Log.d("TAG", queryparameter)
             getSubjectBooks(queryparameter, "relevance")
         }else{
-            loadBooks(BooksHolder.books)
+                getSearchBooks(param)
+
         }
 
 
     }
+
+    private fun getSearchBooks(query: String?){
+                // Effettua la chiamata all'API
+        if (query!=null) {
+            val newReleasesCall = ApiServiceManager.apiService.searchBooks(query, "relevance")
+            newReleasesCall.enqueue(object : Callback<ResponseBody> {
+                override fun onResponse(
+                    call: Call<ResponseBody>,
+                    response: Response<ResponseBody>
+                ) {
+                    if (response.isSuccessful) {
+                        Log.d("TAG", "Messaggio di debug")
+
+                        val bookResponse = response.body()
+                        Log.d("TAG", "bookResponse: $bookResponse")
+
+                        try {
+                            if (bookResponse != null) {
+                                val jsonString = bookResponse.string()
+
+                                val jsonObject = JSONObject(jsonString)
+                                val itemsArray = jsonObject.getJSONArray("items")
+
+                                val newBooksList = mutableListOf<VolumeDet>()
+
+                                for (i in 0 until itemsArray.length()) {
+                                    val book = itemsArray.getJSONObject(i)
+                                    val volumeInfo = book.getJSONObject("volumeInfo")
+
+                                    var title = "Titolo non disponibile"
+                                    if (volumeInfo.has("title")) {
+                                        title = volumeInfo.optString("title")
+                                    }
+                                    val authorsList = mutableListOf<String>()
+                                    if (volumeInfo.has("authors")) {
+                                        val authorsArray = volumeInfo.optJSONArray("authors")
+                                        if (authorsArray != null) {
+                                            for (j in 0 until authorsArray.length()) {
+                                                val author = authorsArray.getString(j)
+                                                authorsList.add(author)
+                                            }
+                                        }
+                                    }
+                                    val authors = authorsList.toList()
+
+                                    var language = "Lingua non specificata"
+                                    if (volumeInfo.has("language")) {
+                                        language = volumeInfo.optString("language")
+                                    }
+
+                                    var pag = 0
+                                    if (volumeInfo.has("pageCount")) {
+                                        val pageCountString = volumeInfo.optString("pageCount")
+                                        pag = pageCountString.toIntOrNull() ?: 0
+                                    }
+
+                                    val imageLinks: ImageLinks =
+                                        if (volumeInfo.has("imageLinks")) {
+                                            val imageLinksObject =
+                                                volumeInfo.getJSONObject("imageLinks")
+                                            val smallThumbnail =
+                                                imageLinksObject.optString("smallThumbnail")
+                                            ImageLinks(smallThumbnail)
+                                        } else {
+                                            val smallThumbnail =
+                                                "https://thenounproject.com/api/private/icons/2637513/edit/?backgroundShape=SQUARE&backgroundShapeColor=%23000000&backgroundShapeOpacity=0&exportSize=752&flipX=false&flipY=false&foregroundColor=%23000000&foregroundOpacity=1&imageFormat=png&rotation=0"
+                                            ImageLinks(smallThumbnail)
+                                        }
+                                    val id = book.optString("id")
+
+                                    var categorieList = mutableListOf<String>()
+                                    if (volumeInfo.has("categories")) {
+                                        val categorieArray =
+                                            volumeInfo.optJSONArray("categories")
+                                        if (categorieArray != null) {
+                                            for (j in 0 until categorieArray.length()) {
+                                                val categoria = categorieArray.getString(j)
+                                                categorieList.add(categoria)
+                                            }
+                                        }
+                                    }
+                                    val categoria = categorieList.toList()
+
+                                    var descrizione = "Descrizione non presente"
+                                    if (volumeInfo.has("description")) {
+                                        descrizione = volumeInfo.optString("description")
+                                    }
+
+
+                                    val newBook =
+                                        VolumeDet(
+                                            imageLinks,
+                                            title,
+                                            authors,
+                                            language,
+                                            pag,
+                                            id,
+                                            descrizione,
+                                            categoria
+                                        )
+                                    newBooksList.add(newBook)
+                                    Log.d("Tag", newBook.toString())
+                                }
+
+                                loadBooks(newBooksList)
+                            }
+                        } catch (e: JSONException) {
+                            // Il parsing del JSON non è valido
+                            // Gestisci l'errore
+                            Log.e(
+                                "JSON Parsing Error",
+                                "Errore nel parsing del JSON: ${e.message}"
+                            )
+                        }
+
+                    } else {
+                        val statusCode = response.code()
+                        val errorMessage = response.message()
+                        Log.d("API Error", "Status Code: $statusCode")
+                        Log.d("API Error", "Error Message: $errorMessage")
+
+                    }
+                }
+
+
+                override fun onFailure(call: Call<ResponseBody>, t: Throwable) {
+                    Log.d("TAG", "Messaggio di debug11111")
+                    Log.e("TAG", "Errore nella chiamata API: ${t.message}", t)
+
+                }
+            })
+        }
+            }
+
+
+
 
     private fun getSubjectBooks(query:String, ordine: String){
         // Chiamata per ottenere i nuovi libri
