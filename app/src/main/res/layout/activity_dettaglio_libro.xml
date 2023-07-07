@@ -95,20 +95,33 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
+                android:layout_marginBottom="15dp"
                 android:backgroundTint="@color/red"
                 android:fontFamily="@font/lora_bold_italic"
+                android:textColor="@color/beige"
                 android:text="AGGIUNGI" />
+
+            <TextView
+                android:id="@+id/textView14"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/lora_bold_italic"
+                android:textColor="@color/gray"
+                android:padding="7dp"
+                android:paddingStart="15dp"
+                android:paddingEnd="15dp"
+                android:text="Descrizione:" />
 
             <TextView
                 android:id="@+id/textView13"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:fontFamily="@font/lora_bold_italic"
-                android:paddingLeft="4pt"
-                android:paddingTop="10pt"
-                android:paddingRight="4pt"
-                android:textAlignment="viewStart"
-                android:textColor="@color/gray" />
+                android:textColor="@color/gray"
+                android:padding="7dp"
+                android:paddingStart="18dp"
+                android:paddingEnd="15dp"
+                android:layout_marginBottom="15dp"
+                android:text="" />
 
 
         </LinearLayout>

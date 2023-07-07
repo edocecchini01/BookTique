@@ -171,7 +171,7 @@ class Scopri : Fragment() {
                                             VolumeDet(imageLinks, title, authors, language, pag, id, descrizione, categoria)
                                         newBooksList.add(newBook)
                                     }
-
+                                    newBooksList.shuffle()
                                     loadImagesIntoImageButtons(newBooksList, tipologia)
                                 }
                             } catch (e: JSONException) {
@@ -288,7 +288,7 @@ class Scopri : Fragment() {
                                 Log.d("cat", "ccc: $newBook")
                                 newBooksList.add(newBook)
                             }
-
+                            newBooksList.shuffle()
                             loadImagesIntoImageButtons(newBooksList, tipologia)
                         }
                     } catch (e: JSONException) {

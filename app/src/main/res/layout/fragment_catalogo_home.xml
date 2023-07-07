@@ -32,11 +32,11 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="28dp"
                     android:layout_marginBottom="12dp"
-                    android:layout_marginStart="7dp"
+                    android:layout_marginStart="8dp"
                     android:fontFamily="@font/lora_bold_italic"
                     android:text="Da leggere >"
                     android:textColor="@color/red"
-                    android:textSize="17dp" />
+                    android:textSize="20dp" />
 
                 <HorizontalScrollView
                     android:id="@+id/horizontalScrollView3"
@@ -124,11 +124,11 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="12dp"
-                    android:layout_marginStart="7dp"
+                    android:layout_marginStart="8dp"
                     android:fontFamily="@font/lora_bold_italic"
                     android:text="In corso >"
                     android:textColor="@color/red"
-                    android:textSize="17dp" />
+                    android:textSize="20dp" />
 
                 <HorizontalScrollView
                     android:id="@+id/horizontalScrollView"
@@ -215,11 +215,11 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="12dp"
-                    android:layout_marginStart="7dp"
+                    android:layout_marginStart="8dp"
                     android:fontFamily="@font/lora_bold_italic"
                     android:text="Letti >"
                     android:textColor="@color/red"
-                    android:textSize="17dp" />
+                    android:textSize="20dp" />
 
                 <HorizontalScrollView
                     android:id="@+id/horizontalScrollView2"
