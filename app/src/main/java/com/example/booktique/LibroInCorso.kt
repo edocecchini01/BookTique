@@ -7,11 +7,15 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ArrayAdapter
+import android.widget.Button
 import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.SeekBar
+import android.widget.Spinner
 import android.widget.TextView
 import android.widget.Toast
+import androidx.appcompat.app.AlertDialog
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.FragmentActivity
 import androidx.navigation.Navigation
@@ -32,6 +36,7 @@ class LibroInCorso : Fragment() {
     private lateinit var cUser : FirebaseUser
     private lateinit var libroIncorso: LibriInC
     private lateinit var activity : FragmentActivity
+    private val sezioni = arrayListOf("Letti","Da Leggere")
 
     private val args by navArgs<LibroInCorsoArgs>()
 
@@ -106,7 +111,7 @@ class LibroInCorso : Fragment() {
                 }
 
                 if (binding.textView25.text == binding.textView26.text && bookId != null) {
-                    moveBooks(bookId)
+                    moveBooks(bookId,false)
                     Toast.makeText(
                         activity,
                         "Complimenti hai terminato la tua lettura!",
@@ -137,10 +142,51 @@ class LibroInCorso : Fragment() {
             }
         }
 
+        binding.buttonSposta.setOnClickListener {
+            var dialog: AlertDialog? = null
+            val builder = AlertDialog.Builder(requireContext())
+            val dialogView = layoutInflater.inflate(R.layout.move_spinner, null)
+            var select = dialogView.findViewById<Spinner>(R.id.spinner)
+            val btnConfirm = dialogView.findViewById<Button>(R.id.btn_confirm)
+            val btnCancel = dialogView.findViewById<Button>(R.id.btn_cancel)
+            builder.setView(dialogView)
+
+            val arrayAdapter = ArrayAdapter<String>(
+                requireContext(),
+                android.R.layout.simple_spinner_dropdown_item
+            )
+            select.adapter = arrayAdapter
+            arrayAdapter.addAll(sezioni)
+
+            btnConfirm.setOnClickListener {
+                if (select.selectedItem != null) {
+                    val selectedItem = select.selectedItem.toString()
+                    var where = false
+
+                    if(selectedItem == "Letti")
+                        where = false
+                    if(selectedItem == "Da Leggere")
+                        where = true
+
+                    if (bookId != null) {
+                        Log.d("TAG", "idLibro: $bookId")
+                        moveBooks(bookId,where)
+                    }
+                } else {
+                    Toast.makeText(requireContext(), "Seleziona un elemento!", Toast.LENGTH_SHORT).show()
+                }
+                // Chiudi il dialog
+                dialog?.dismiss()
+            }
+
+            dialog = builder.create()
+            dialog?.show()
+        }
+
 
     }
-
-    private fun moveBooks(bookId : String) {
+    
+    private fun moveBooks(bookId : String, where : Boolean) {
         if (FirebaseAuth.getInstance().currentUser != null) {
             val cUser = FirebaseAuth.getInstance().currentUser!!
             val database =
@@ -154,6 +200,7 @@ class LibroInCorso : Fragment() {
 
             Log.d("TAG", "bookId: $bookId")
 
+            if (!where){
                 inCorsoRef.addListenerForSingleValueEvent(object : ValueEventListener {
                     override fun onDataChange(dataSnapshot: DataSnapshot) {
                         for (childSnapshot in dataSnapshot.children) {
@@ -187,6 +234,42 @@ class LibroInCorso : Fragment() {
                     }
 
                 })
+            } else{
+                inCorsoRef.addListenerForSingleValueEvent(object : ValueEventListener {
+                    override fun onDataChange(dataSnapshot: DataSnapshot) {
+                        for (childSnapshot in dataSnapshot.children) {
+                            val libro = childSnapshot.getValue(LibriDaL::class.java)
+
+                            if (libro != null && libro.id == bookId) {
+
+                                // Hai individuato il libro desiderato
+                                Log.d("Libro", "Libro trovato: $libro")
+                                daLeggereRef.child(bookId).setValue(libro)
+                                val libroRef = childSnapshot.ref
+                                Log.d("Libro", "Libro da eliminare: $libro")
+                                libroRef.removeValue()
+                                Toast.makeText(
+                                    activity,
+                                    "${libro.titolo?.take(50)}, spostato in \"Da leggere\"",
+                                    Toast.LENGTH_SHORT
+                                ).show()
+
+                                val navController = Navigation.findNavController(activity, R.id.fragmentContainerView)
+                                navController.navigate(R.id.action_libroInCorso_to_catalogoDaLeggere)
+
+
+                                break
+                            }
+                        }
+                    }
+
+                    override fun onCancelled(error: DatabaseError) {
+                        TODO("Not yet implemented")
+                    }
+
+                })
+
+            }
         }
 
     }
