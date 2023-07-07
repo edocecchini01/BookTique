@@ -163,6 +163,7 @@ class ScopriPerTe : Fragment() {
                             completedCalls++
 
                             if (completedCalls == 2) {
+                                perTeBooksList.shuffle()
                                 slideBook(perTeBooksList)
                             }
                         }
@@ -274,6 +275,7 @@ class ScopriPerTe : Fragment() {
 
                             completedCalls++
                             if (completedCalls == 2) {
+                                perTeBooksList.shuffle()
                                 slideBook(perTeBooksList)
                             }
                         }
