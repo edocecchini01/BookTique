@@ -58,9 +58,26 @@ class DettaglioLibroScopri : Fragment() {
         binding.buttonAggiungi.setOnClickListener {
             aggiungiLibro()
         }
-        binding.imageButton2.setOnClickListener {
-            val navController = findNavController()
-            navController.navigate(R.id.action_dettaglioLibroScopri_to_scopri)
+
+
+        val origin = args.origin
+
+        if (origin == "scopri") {
+            binding.imageButton2.setOnClickListener {
+                val navController = findNavController()
+                navController.navigate(R.id.action_dettaglioLibroScopri_to_scopri)
+            }
+        }
+        else if (origin == "scopriPerTe") {
+            binding.imageButton2.setOnClickListener {
+                val navController = findNavController()
+                navController.popBackStack()
+            }
+        }else{
+            binding.imageButton2.setOnClickListener {
+                val navController = findNavController()
+                navController.popBackStack()
+            }
         }
 
 

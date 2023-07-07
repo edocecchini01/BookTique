@@ -414,7 +414,7 @@ class Scopri : Fragment() {
         imageButton.setOnClickListener {
 
             val navController = findNavController()
-            val action = ScopriDirections.actionScopriToDettaglioLibroScopri(book)
+            val action = ScopriDirections.actionScopriToDettaglioLibroScopri(book, "scopri")
             findNavController().navigate(action)
         }
     }
@@ -465,36 +465,36 @@ class Scopri : Fragment() {
         binding.button3.setOnClickListener {
 
             val navController = findNavController()
-            val bundle = bundleOf("genere" to "fantasia", "ricerca" to false)
+            val bundle = bundleOf("genere" to "Poetry", "ricerca" to false)
             navController.navigate(R.id.action_scopri_to_scopriGenere, bundle)
         }
         binding.button4.setOnClickListener {
             val navController = findNavController()
-            val bundle = bundleOf("genere" to "romanzi", "ricerca" to false)
+            val bundle = bundleOf("genere" to "Drama", "ricerca" to false)
             navController.navigate(R.id.action_scopri_to_scopriGenere, bundle)
         }
         binding.button5.setOnClickListener {
 
             val navController = findNavController()
-            val bundle = bundleOf("genere" to "fiction", "ricerca" to false)
+            val bundle = bundleOf("genere" to "Fiction", "ricerca" to false)
             navController.navigate(R.id.action_scopri_to_scopriGenere, bundle)
         }
         binding.button6.setOnClickListener {
 
             val navController = findNavController()
-            val bundle = bundleOf("genere" to "biografia", "ricerca" to false)
+            val bundle = bundleOf("genere" to "Biography", "ricerca" to false)
             navController.navigate(R.id.action_scopri_to_scopriGenere, bundle)
         }
         binding.button7.setOnClickListener {
 
             val navController = findNavController()
-            val bundle = bundleOf("genere" to "storia", "ricerca" to false)
+            val bundle = bundleOf("genere" to "History", "ricerca" to false)
             navController.navigate(R.id.action_scopri_to_scopriGenere, bundle)
         }
         binding.button8.setOnClickListener {
 
             val navController = findNavController()
-            val bundle = bundleOf("genere" to "horror", "ricerca" to false)
+            val bundle = bundleOf("genere" to "Computers", "ricerca" to false)
             navController.navigate(R.id.action_scopri_to_scopriGenere, bundle)
         }
 
