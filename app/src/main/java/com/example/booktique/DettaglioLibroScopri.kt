@@ -26,6 +26,7 @@ class DettaglioLibroScopri : Fragment() {
     private lateinit var binding: FragmentDettaglioLibroScopriBinding
     private lateinit var cUser : FirebaseUser
     private val args by navArgs<DettaglioLibroScopriArgs>()
+    private var allBookUser = ArrayList<String?>()
 
 
     override fun onCreateView(
@@ -41,7 +42,7 @@ class DettaglioLibroScopri : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        checkBookAdded()
+        userBook()
 
         binding.titolo.text = args.LibroLeggere.titolo
         binding.autore.text = args.LibroLeggere.autori
@@ -128,46 +129,94 @@ class DettaglioLibroScopri : Fragment() {
         }
     }
 
-
     private fun checkBookAdded() {
+
+        val bookId = args.LibroLeggere.id
+        Log.d("tag", "lirbi: $allBookUser")
+        if (allBookUser.contains(bookId)) {
+            Log.d("tag", "liber: $allBookUser")
+            val grayColor = ContextCompat.getColor(
+                requireContext(),
+                R.color.gray
+            ) // Ottieni il colore grigio dal tuo file di risorse colors.xml
+            val whiteColor = ContextCompat.getColor(requireContext(), R.color.white)
+
+            binding.buttonAggiungi.isEnabled = false
+            binding.buttonAggiungi.text = "Aggiunto"
+            binding.buttonAggiungi.setBackgroundColor(grayColor)
+            binding.buttonAggiungi.setTextColor(whiteColor)
+        }
+    }
+
+    private fun userBook(){
+        //uguale a checkbook letti
         if (FirebaseAuth.getInstance().currentUser != null) {
             val cUser = FirebaseAuth.getInstance().currentUser!!
             Log.d("TAG", "Sono :")
-            val database = FirebaseDatabase.getInstance("https://booktique-87881-default-rtdb.europe-west1.firebasedatabase.app/")
+            val database =
+                FirebaseDatabase.getInstance("https://booktique-87881-default-rtdb.europe-west1.firebasedatabase.app/")
             val usersRef = database.reference.child("Utenti")
             val childRef = usersRef.child(cUser.uid)
             val catalogoRef = childRef.child("Catalogo")
+            val lettiRef = catalogoRef.child("Letti")
             val daLeggereRef = catalogoRef.child("DaLeggere")
+            val inCorsoRef = catalogoRef.child("InCorso")
 
-            // Recupera l'ID del libro corrente
-            val bookId = args.LibroLeggere.id
-
-            Log.d("TAG", "Sono : $bookId")
-            // Verifica se il libro è stato aggiunto dall'utente
-            daLeggereRef.orderByChild("id").equalTo(bookId).addListenerForSingleValueEvent(object :
-                ValueEventListener {
+            val eventListener = object : ValueEventListener {
                 override fun onDataChange(snapshot: DataSnapshot) {
-                    val bookExists = snapshot.exists()
+                    val lettiBooks = arrayListOf<LibriL>()
+                    val daLeggereBooks = arrayListOf<LibriDaL>()
+                    val inCorsoBooks = arrayListOf<LibriInC>()
 
-                    // Imposta lo stato del pulsante "Aggiungi" in base al libro aggiunto
-                    binding.buttonAggiungi.isEnabled = !bookExists
+                    if (snapshot.exists()) {
+                        for (bookSnapshot in snapshot.children) {
+                            val libroL = bookSnapshot.getValue(LibriL::class.java)
+                            val libroDaL = bookSnapshot.getValue(LibriDaL::class.java)
+                            val libroInC = bookSnapshot.getValue(LibriInC::class.java)
 
-                    if (bookExists) {
-                        val grayColor = ContextCompat.getColor(requireContext(), R.color.gray) // Ottieni il colore grigio dal tuo file di risorse colors.xml
-                        val whiteColor = ContextCompat.getColor(requireContext(), R.color.white)
+                            if (libroL != null) {
+                                lettiBooks.add(libroL)
+                            } else if (libroDaL != null) {
+                                daLeggereBooks.add(libroDaL)
+                            } else if (libroInC != null) {
+                                inCorsoBooks.add(libroInC)
+                            }
 
-                        binding.buttonAggiungi.isEnabled = false
-                        binding.buttonAggiungi.text = "Aggiunto"
-                        binding.buttonAggiungi.setBackgroundColor(grayColor)
-                        binding.buttonAggiungi.setTextColor(whiteColor)
+                        }
                     }
+
+                    if(lettiBooks.isNotEmpty()) {
+                        val ids = lettiBooks.map { libro -> libro.id }
+                        allBookUser.addAll(ids)
+                        Log.d("tag", "allbooks: $allBookUser")
+
+                    }
+                    if(daLeggereBooks.isNotEmpty()) {
+                        val ids = daLeggereBooks.map { libro -> libro.id }
+                        allBookUser.addAll(ids)
+                        Log.d("tag", "allbooks: $allBookUser")
+                    }
+                    if(inCorsoBooks.isNotEmpty()) {
+                        val ids = inCorsoBooks.map { libro -> libro.id }
+                        allBookUser.addAll(ids)
+                        Log.d("tag", "allbooks: $allBookUser")
+                    }
+
+                    checkBookAdded()
+
                 }
 
                 override fun onCancelled(error: DatabaseError) {
-                    // Gestisci eventuali errori nella lettura dei dati
                     Log.e("TAG", "Errore nel recupero dei dati", error.toException())
                 }
-            })
+            }
+
+            lettiRef.addListenerForSingleValueEvent(eventListener)
+            daLeggereRef.addListenerForSingleValueEvent(eventListener)
+            inCorsoRef.addListenerForSingleValueEvent(eventListener)
+
+            Log.d("tag", "allbooks1: $allBookUser")
+
         }
     }
 
