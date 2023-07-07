@@ -179,6 +179,10 @@ class LibroInCorso : Fragment() {
                 dialog?.dismiss()
             }
 
+            btnCancel.setOnClickListener {
+                dialog?.dismiss()
+            }
+
             dialog = builder.create()
             dialog?.show()
         }
@@ -197,6 +201,10 @@ class LibroInCorso : Fragment() {
                 }else{
                     Toast.makeText(requireContext(), "Errore nell'eliminazione!", Toast.LENGTH_SHORT).show()
                 }
+                dialog?.dismiss()
+            }
+
+            btnCancel.setOnClickListener {
                 dialog?.dismiss()
             }
 

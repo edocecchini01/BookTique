@@ -260,6 +260,10 @@ class CatalogoLetti : Fragment() {
                         dialog?.dismiss()
                     }
 
+                    btnCancel.setOnClickListener {
+                        dialog?.dismiss()
+                    }
+
                     dialog = builder.create()
                     dialog?.show()
                 }
