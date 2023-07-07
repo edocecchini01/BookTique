@@ -183,9 +183,30 @@ class LibroInCorso : Fragment() {
             dialog?.show()
         }
 
+        binding.elimina.setOnClickListener {
+            var dialog: AlertDialog? = null
+            val builder = AlertDialog.Builder(requireContext())
+            val dialogView = layoutInflater.inflate(R.layout.dialog_elimina, null)
+            val btnConfirm = dialogView.findViewById<Button>(R.id.btn_confirm)
+            val btnCancel = dialogView.findViewById<Button>(R.id.btn_cancel)
+            builder.setView(dialogView)
+
+            btnConfirm.setOnClickListener {
+                if (bookId != null) {
+                    removeBook(bookId)
+                }else{
+                    Toast.makeText(requireContext(), "Errore nell'eliminazione!", Toast.LENGTH_SHORT).show()
+                }
+                dialog?.dismiss()
+            }
+
+            dialog = builder.create()
+            dialog?.show()
+        }
+
 
     }
-    
+
     private fun moveBooks(bookId : String, where : Boolean) {
         if (FirebaseAuth.getInstance().currentUser != null) {
             val cUser = FirebaseAuth.getInstance().currentUser!!
@@ -272,6 +293,49 @@ class LibroInCorso : Fragment() {
             }
         }
 
+    }
+
+    private fun removeBook(bookId : String){
+        if (FirebaseAuth.getInstance().currentUser != null) {
+            val cUser = FirebaseAuth.getInstance().currentUser!!
+            val database =
+                FirebaseDatabase.getInstance("https://booktique-87881-default-rtdb.europe-west1.firebasedatabase.app/")
+            val usersRef = database.reference.child("Utenti")
+            val childRef = usersRef.child(cUser.uid)
+            val catalogoRef = childRef.child("Catalogo")
+            val inCorsoRef = catalogoRef.child("InCorso")
+
+            inCorsoRef.addListenerForSingleValueEvent(object : ValueEventListener {
+                override fun onDataChange(dataSnapshot: DataSnapshot) {
+                    for (childSnapshot in dataSnapshot.children) {
+                        val libro = childSnapshot.getValue(LibriDaL::class.java)
+
+                        if (libro != null && libro.id == bookId) {
+                            val libroRef = childSnapshot.ref
+
+                            val navController = findNavController()
+                            navController.navigate(R.id.action_libroInCorso_to_catalogoHome)
+                            libroRef.removeValue()
+                            Toast.makeText(
+                                requireContext(),
+                                "${libro.titolo?.take(50)}, eliminato con successo!",
+                                Toast.LENGTH_SHORT
+                            ).show()
+                            break
+                        }
+                    }
+                }
+
+                override fun onCancelled(error: DatabaseError) {
+                    Toast.makeText(
+                        requireContext(),
+                        "Errore nello spostamento!",
+                        Toast.LENGTH_SHORT
+                    ).show()
+                }
+
+            })
+        }
     }
 
 }

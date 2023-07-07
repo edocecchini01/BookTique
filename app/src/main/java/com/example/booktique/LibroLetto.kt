@@ -8,8 +8,11 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Button
 import android.widget.ImageButton
 import android.widget.TextView
+import android.widget.Toast
+import androidx.appcompat.app.AlertDialog
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.FragmentActivity
 import androidx.navigation.fragment.findNavController
@@ -19,7 +22,10 @@ import com.example.booktique.databinding.FragmentLibroInCorsoBinding
 import com.example.booktique.databinding.FragmentLibroLettoBinding
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
+import com.google.firebase.database.DataSnapshot
+import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.FirebaseDatabase
+import com.google.firebase.database.ValueEventListener
 
 class LibroLetto : Fragment() {
     private lateinit var binding: FragmentLibroLettoBinding
@@ -210,6 +216,27 @@ class LibroLetto : Fragment() {
             }
         }
 
+        binding.elimina.setOnClickListener {
+            var dialog: AlertDialog? = null
+            val builder = AlertDialog.Builder(requireContext())
+            val dialogView = layoutInflater.inflate(R.layout.dialog_elimina, null)
+            val btnConfirm = dialogView.findViewById<Button>(R.id.btn_confirm)
+            val btnCancel = dialogView.findViewById<Button>(R.id.btn_cancel)
+            builder.setView(dialogView)
+
+            btnConfirm.setOnClickListener {
+                if (bookId != null) {
+                    removeBook(bookId)
+                }else{
+                    Toast.makeText(requireContext(), "Errore nell'eliminazione!", Toast.LENGTH_SHORT).show()
+                }
+                dialog?.dismiss()
+            }
+
+            dialog = builder.create()
+            dialog?.show()
+        }
+
     }
 
     fun graphicLike(valAtt : Int?){
@@ -224,4 +251,48 @@ class LibroLetto : Fragment() {
             binding.likeL.setImageResource(R.drawable.pollice_icon)
         }
     }
+
+    private fun removeBook(bookId : String){
+        if (FirebaseAuth.getInstance().currentUser != null) {
+            val cUser = FirebaseAuth.getInstance().currentUser!!
+            val database =
+                FirebaseDatabase.getInstance("https://booktique-87881-default-rtdb.europe-west1.firebasedatabase.app/")
+            val usersRef = database.reference.child("Utenti")
+            val childRef = usersRef.child(cUser.uid)
+            val catalogoRef = childRef.child("Catalogo")
+            val lettiRef = catalogoRef.child("Letti")
+
+            lettiRef.addListenerForSingleValueEvent(object : ValueEventListener {
+                override fun onDataChange(dataSnapshot: DataSnapshot) {
+                    for (childSnapshot in dataSnapshot.children) {
+                        val libro = childSnapshot.getValue(LibriDaL::class.java)
+
+                        if (libro != null && libro.id == bookId) {
+                            val libroRef = childSnapshot.ref
+
+                            val navController = findNavController()
+                            navController.navigate(R.id.action_libroLetto_to_catalogoHome)
+                            libroRef.removeValue()
+                            Toast.makeText(
+                                requireContext(),
+                                "${libro.titolo?.take(50)}, eliminato con successo!",
+                                Toast.LENGTH_SHORT
+                            ).show()
+                            break
+                        }
+                    }
+                }
+
+                override fun onCancelled(error: DatabaseError) {
+                    Toast.makeText(
+                        requireContext(),
+                        "Errore nello spostamento!",
+                        Toast.LENGTH_SHORT
+                    ).show()
+                }
+
+            })
+        }
+    }
+
 }
