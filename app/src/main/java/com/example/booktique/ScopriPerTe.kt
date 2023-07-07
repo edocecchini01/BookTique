@@ -437,6 +437,7 @@ class ScopriPerTe : Fragment() {
                 setupImageButtonClickListener(book, binding.imageButton2)
 
 
+
                 binding.no.setOnClickListener {
                     if (currentIndex < (books.size - 1)){
                         currentIndex++
@@ -480,6 +481,7 @@ class ScopriPerTe : Fragment() {
                             })
 
                             .into(binding.imageButton2)
+                        setupImageButtonClickListener(book, binding.imageButton2)
                     }else{
                         binding.imageButton2.visibility = View.GONE
                         binding.textView7.text = "Libri terminati! Torna più tardi"
@@ -593,14 +595,20 @@ class ScopriPerTe : Fragment() {
 
     private fun setupImageButtonClickListener(book: VolumeDet, imageButton: ImageButton) {
         imageButton.setOnClickListener {
-            BookHolder.book = book
-            val parametro = "ScopriPerTe"
-            val bundle = Bundle()
-            bundle.putString("origin", parametro)
+            val libro = LibriDaL(
+                book.title,
+                book.imageLinks.thumbnail ?: "",
+                book.authors.toString(),
+                book.pageCount?: 0,
+                book.id?:"",
+                book.description,
+                book.categories.toString()
 
-            val intent = Intent(requireContext(), DettaglioLibro::class.java)
-            intent.putExtras(bundle)
-            startActivity(intent)
+            )
+
+            val navController = findNavController()
+            val action = ScopriPerTeDirections.actionScopriPerTeToDettaglioLibroScopri(libro)
+            findNavController().navigate(action)
         }
     }
 
