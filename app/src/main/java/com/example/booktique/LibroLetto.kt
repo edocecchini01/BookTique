@@ -62,7 +62,6 @@ class LibroLetto : Fragment() {
 
         binding.textView22.text = args.LibroLett.titolo
         binding.textView23.text = args.LibroLett.autori
-        binding.textView13.text = args.LibroLett.descrizione
 
         binding.textInputLayout.editText?.setText(review)
 

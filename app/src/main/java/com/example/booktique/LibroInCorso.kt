@@ -67,7 +67,6 @@ class LibroInCorso : Fragment() {
 
         binding.textView22.text = args.LibroInC.titolo
         binding.textView23.text = args.LibroInC.autori
-        binding.textView13.text = args.LibroInC.descrizione
 
         if (args.LibroInC.pagineTot != 0){
             binding.textView26.text = args.LibroInC.pagineTot.toString()
