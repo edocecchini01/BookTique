@@ -56,7 +56,7 @@ class MyAdapterGenere(private val listaLibri: ArrayList<VolumeDet>) :
         Log.d("TAGF", "LIBRI: $currentItem")
 
         Glide.with(holder.itemView.context)
-            .load(currentItem.imageLinks.smallThumbnail)
+            .load(currentItem.imageLinks.thumbnail)
             .into(holder.cover)
 
         holder.titolo.text = abbreviaInfo(currentItem?.title ?: "",25)

@@ -140,13 +140,13 @@ class Scopri : Fragment() {
                                             if (volumeInfo.has("imageLinks")) {
                                                 val imageLinksObject =
                                                     volumeInfo.getJSONObject("imageLinks")
-                                                val smallThumbnail =
-                                                    imageLinksObject.optString("smallThumbnail")
-                                                ImageLinks(smallThumbnail)
+                                                val thumbnail =
+                                                    imageLinksObject.optString("thumbnail")
+                                                ImageLinks(thumbnail)
                                             } else {
-                                                val smallThumbnail =
+                                                val thumbnail =
                                                     "https://thenounproject.com/api/private/icons/2637513/edit/?backgroundShape=SQUARE&backgroundShapeColor=%23000000&backgroundShapeOpacity=0&exportSize=752&flipX=false&flipY=false&foregroundColor=%23000000&foregroundOpacity=1&imageFormat=png&rotation=0"
-                                                ImageLinks(smallThumbnail)
+                                                ImageLinks(thumbnail)
                                             }
                                         val id = book.optString("id")
 
@@ -253,13 +253,13 @@ class Scopri : Fragment() {
                                     if (volumeInfo.has("imageLinks")) {
                                         val imageLinksObject =
                                             volumeInfo.getJSONObject("imageLinks")
-                                        val smallThumbnail =
-                                            imageLinksObject.optString("smallThumbnail")
-                                        ImageLinks(smallThumbnail)
+                                        val thumbnail =
+                                            imageLinksObject.optString("thumbnail")
+                                        ImageLinks(thumbnail)
                                     } else {
-                                        val smallThumbnail =
+                                        val thumbnail =
                                             "https://thenounproject.com/api/private/icons/2637513/edit/?backgroundShape=SQUARE&backgroundShapeColor=%23000000&backgroundShapeOpacity=0&exportSize=752&flipX=false&flipY=false&foregroundColor=%23000000&foregroundOpacity=1&imageFormat=png&rotation=0"
-                                        ImageLinks(smallThumbnail)
+                                        ImageLinks(thumbnail)
                                     }
                                 val id = book.optString("id")
 
@@ -343,7 +343,7 @@ class Scopri : Fragment() {
         if (books != null && books.size >= 6) {
             for (i in 0 until 6) {
                 val book = books[i]
-                val imageUrl = book.imageLinks.smallThumbnail
+                val imageUrl = book.imageLinks.thumbnail
                 Log.d("Image", "imageUrl: $imageUrl")
 
                 Glide.with(requireContext())
@@ -384,7 +384,7 @@ class Scopri : Fragment() {
                 var pag = 0
                 var idL = ""
                 var genere = ""
-                link = book.imageLinks.smallThumbnail ?: ""
+                link = book.imageLinks.thumbnail ?: ""
                 pag = book.pageCount?: 0
                 idL = book.id ?: ""
                 genere = book.categories.toString()
