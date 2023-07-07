@@ -368,7 +368,7 @@ class ScopriPerTe : Fragment() {
                         Log.d("GENERE","Valore autore: $mostAutore")
                         val query1 = "inauthor:\"$mostAutore\""
                         val query2 = "subject:\"$mostGenere\""
-                        perTeBook(query1, query2,"relevance",15,allBookUser)
+                        perTeBook(query1, query2,"relevance",30,allBookUser)
                     }else{
                         binding.imageButton2.visibility = View.GONE
                         binding.textView7.text = "Non ci sono abbastanza informazioni, torna quando avrai letto altri libri!"
@@ -389,7 +389,9 @@ class ScopriPerTe : Fragment() {
     }
 
     private var currentIndex = 0
-    private fun slideBook(books: List<VolumeDet>?) {
+    private fun slideBook(bookss: List<VolumeDet>?) {
+        var books = bookss
+        books = books?.distinctBy { it.id }
         if (books != null) {
             if (books.isNotEmpty()){
                 binding.imageButton2.visibility = View.VISIBLE
