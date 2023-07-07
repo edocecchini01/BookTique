@@ -84,7 +84,7 @@ class ScopriGenere : Fragment() {
                 val libro = getLibro(position)
 
                 val navController = findNavController()
-                val action = ScopriGenereDirections.actionScopriGenereToDettaglioLibroScopri(libro)
+                val action = ScopriGenereDirections.actionScopriGenereToDettaglioLibroScopri(libro, "scopriGenere")
                 findNavController().navigate(action)
             }
 
@@ -233,6 +233,8 @@ class ScopriGenere : Fragment() {
     private fun getSubjectBooks(query:String, ordine: String){
         // Chiamata per ottenere i nuovi libri
         val newReleasesCall = ApiServiceManager.apiService.searchBooks(query,"relevance")
+        val requestUrl = newReleasesCall.request().url
+        Log.d("API URL", "URL: $requestUrl")
         newReleasesCall.enqueue(object : Callback<ResponseBody> {
             override fun onResponse(call: Call<ResponseBody>, response: Response<ResponseBody>) {
                 if (response.isSuccessful) {
@@ -246,6 +248,8 @@ class ScopriGenere : Fragment() {
                             val jsonString = bookResponse.string()
 
                             val jsonObject = JSONObject(jsonString)
+
+                            Log.d("JSON", "jsonString $jsonString")
                             val itemsArray = jsonObject.getJSONArray("items")
 
                             val newBooksList = mutableListOf<VolumeDet>()
@@ -293,6 +297,7 @@ class ScopriGenere : Fragment() {
                                             "https://thenounproject.com/api/private/icons/2637513/edit/?backgroundShape=SQUARE&backgroundShapeColor=%23000000&backgroundShapeOpacity=0&exportSize=752&flipX=false&flipY=false&foregroundColor=%23000000&foregroundOpacity=1&imageFormat=png&rotation=0"
                                         ImageLinks(thumbnail)
                                     }
+
                                 val id = book.optString("id")
 
 

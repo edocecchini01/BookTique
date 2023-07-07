@@ -209,6 +209,9 @@
         <action
             android:id="@+id/action_dettaglioLibroScopri_to_scopriGenere"
             app:destination="@id/scopriGenere" />
+        <argument
+            android:name="origin"
+            app:argType="string" />
     </fragment>
 
 </navigation>

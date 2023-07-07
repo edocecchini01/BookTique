@@ -607,7 +607,7 @@ class ScopriPerTe : Fragment() {
             )
 
             val navController = findNavController()
-            val action = ScopriPerTeDirections.actionScopriPerTeToDettaglioLibroScopri(libro)
+            val action = ScopriPerTeDirections.actionScopriPerTeToDettaglioLibroScopri(libro, "scopriPerTe")
             findNavController().navigate(action)
         }
     }
