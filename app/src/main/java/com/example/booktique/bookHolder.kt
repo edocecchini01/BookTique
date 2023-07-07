@@ -1,4 +1,8 @@
 package com.example.booktique
+
+import kotlinx.parcelize.Parcelize
+
+
 object BookHolder {
     var book: VolumeDet? = null
     var libroInc: LibriInC?= null

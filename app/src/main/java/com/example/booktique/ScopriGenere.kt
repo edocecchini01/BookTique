@@ -6,6 +6,7 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageButton
 import androidx.appcompat.widget.SearchView
 import androidx.core.os.bundleOf
 import androidx.databinding.DataBindingUtil
@@ -29,26 +30,12 @@ class ScopriGenere : Fragment() {
     private var ricerca: Boolean = false
 
 
-    companion object {
-        fun newInstanceS(searchQuery: String): ScopriGenere {
-            val fragment = ScopriGenere()
-            val args = Bundle()
-            args.putString("param", searchQuery)
-            args.putBoolean("ricerca", true)
-            fragment.arguments = args
-            return fragment
-        }
-    }
-
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
         binding = DataBindingUtil.inflate<FragmentScopriGenereBinding>(inflater,
             R.layout.fragment_scopri_genere,container,false)
-
-        recyclerView = binding.listaLibriScopriGenere
-        recyclerView.layoutManager = LinearLayoutManager(requireContext())
 
         arguments?.let { args ->
             ricerca = requireArguments().getBoolean("ricerca")
@@ -73,7 +60,13 @@ class ScopriGenere : Fragment() {
         }
 
         listaLibri = ArrayList()
+        recyclerView = binding.listaLibriScopriGenere
+        recyclerView.layoutManager = LinearLayoutManager(requireContext())
         recyclerView.setHasFixedSize(true)
+
+        adapter = MyAdapterGenere(listaLibri)
+        recyclerView.adapter = adapter
+
         if(!ricerca) {
 
             val queryparameter = "subject:" + param
@@ -84,6 +77,19 @@ class ScopriGenere : Fragment() {
                 getSearchBooks(param)
 
         }
+
+        adapter.setOnCLickItemListener(object: MyAdapterGenere.onItemClickListener{
+
+            override fun dettaglioBook(cover: ImageButton, position: Int) {
+                val libro = getLibro(position)
+
+                val navController = findNavController()
+                val action = ScopriGenereDirections.actionScopriGenereToDettaglioLibroScopri(libro)
+                findNavController().navigate(action)
+            }
+
+
+        })
 
 
     }
@@ -188,7 +194,7 @@ class ScopriGenere : Fragment() {
                                             categoria
                                         )
                                     newBooksList.add(newBook)
-                                    Log.d("Tag", newBook.toString())
+                                    Log.d("Tag", "ciao: $newBook.toString()")
                                 }
 
                                 loadBooks(newBooksList)
@@ -325,11 +331,26 @@ class ScopriGenere : Fragment() {
     private fun loadBooks(books: List<VolumeDet>?){
         if (books != null) {
             listaLibri.addAll(books)
-            Log.d("TAG","LIBRI: $listaLibri" )
-            adapter = MyAdapterGenere(listaLibri)
-            Log.d("TAG","LIBRI:11: $listaLibri" )
-            recyclerView.adapter = adapter
+            adapter.notifyDataSetChanged()
         }
+    }
+
+    private fun getLibro(position: Int): LibriDaL {
+
+
+        val libro = LibriDaL(
+            listaLibri[position].title,
+            listaLibri[position].imageLinks.smallThumbnail ?: "",
+            listaLibri[position].authors.toString(),
+            listaLibri[position].pageCount?: 0,
+            listaLibri[position].id?:"",
+            listaLibri[position].description,
+            listaLibri[position].categories.toString()
+
+        )
+
+        return libro
+
     }
 
 }

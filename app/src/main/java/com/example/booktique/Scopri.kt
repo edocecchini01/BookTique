@@ -380,7 +380,29 @@ class Scopri : Fragment() {
 
                     .into(targetButtons[i])
 
-                setupImageButtonClickListener(book, targetButtons[i])
+                var link = ""
+                var pag = 0
+                var idL = ""
+                var genere = ""
+                link = book.imageLinks.smallThumbnail ?: ""
+                pag = book.pageCount?: 0
+                idL = book.id ?: ""
+                genere = book.categories.toString()
+
+                Log.d("TAG", "Sono qui: $link")
+
+                val libroLeg = LibriDaL(
+                    book.title,
+                    link,
+                    book.authors.toString(),
+                    pag,
+                    idL,
+                    book.description,
+                    genere
+
+                )
+
+                setupImageButtonClickListener(libroLeg, targetButtons[i])
 
             }
         }
@@ -388,11 +410,12 @@ class Scopri : Fragment() {
 
 
 
-    private fun setupImageButtonClickListener(book: VolumeDet, imageButton: ImageButton) {
+    private fun setupImageButtonClickListener(book: LibriDaL, imageButton: ImageButton) {
         imageButton.setOnClickListener {
-            BookHolder.book = book
-            val intent = Intent(requireContext(), DettaglioLibro::class.java)
-            startActivity(intent)
+
+            val navController = findNavController()
+            val action = ScopriDirections.actionScopriToDettaglioLibroScopri(book)
+            findNavController().navigate(action)
         }
     }
 

@@ -63,6 +63,9 @@
                 android:name="parametro"
                 app:argType="string" />
         </action>
+        <action
+            android:id="@+id/action_scopri_to_dettaglioLibroScopri"
+            app:destination="@id/dettaglioLibroScopri" />
     </fragment>
     <fragment
         android:id="@+id/scopriPerTe"
@@ -71,6 +74,9 @@
         <action
             android:id="@+id/action_scopriPerTe_to_scopri"
             app:destination="@id/scopri" />
+        <action
+            android:id="@+id/action_scopriPerTe_to_dettaglioLibroScopri"
+            app:destination="@id/dettaglioLibroScopri" />
     </fragment>
     <fragment
         android:id="@+id/scopriGenere"
@@ -86,6 +92,9 @@
         <argument
             android:name="ricerca"
             app:argType="boolean" />
+        <action
+            android:id="@+id/action_scopriGenere_to_dettaglioLibroScopri"
+            app:destination="@id/dettaglioLibroScopri" />
     </fragment>
     <fragment
         android:id="@+id/catalogoInCorso"
@@ -183,6 +192,23 @@
         <argument
             android:name="origin"
             app:argType="string" />
+    </fragment>
+    <fragment
+        android:id="@+id/dettaglioLibroScopri"
+        android:name="com.example.booktique.DettaglioLibroScopri"
+        android:label="DettaglioLibroScopri" >
+        <action
+            android:id="@+id/action_dettaglioLibroScopri_to_scopriPerTe"
+            app:destination="@id/scopriPerTe" />
+        <action
+            android:id="@+id/action_dettaglioLibroScopri_to_scopri"
+            app:destination="@id/scopri" />
+        <argument
+            android:name="LibroLeggere"
+            app:argType="com.example.booktique.LibriDaL" />
+        <action
+            android:id="@+id/action_dettaglioLibroScopri_to_scopriGenere"
+            app:destination="@id/scopriGenere" />
     </fragment>
 
 </navigation>
