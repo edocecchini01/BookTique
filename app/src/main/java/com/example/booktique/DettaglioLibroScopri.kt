@@ -58,6 +58,10 @@ class DettaglioLibroScopri : Fragment() {
         binding.buttonAggiungi.setOnClickListener {
             aggiungiLibro()
         }
+        binding.imageButton2.setOnClickListener {
+            val navController = findNavController()
+            navController.navigate(R.id.action_dettaglioLibroScopri_to_scopri)
+        }
 
 
     }
