@@ -271,7 +271,7 @@ class LibroLetto : Fragment() {
                             val libroRef = childSnapshot.ref
 
                             val navController = findNavController()
-                            navController.navigate(R.id.action_libroLetto_to_catalogoHome)
+                            navController.navigate(R.id.action_libroLetto_to_catalogoLetti)
                             libroRef.removeValue()
                             Toast.makeText(
                                 requireContext(),
