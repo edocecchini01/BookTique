@@ -192,6 +192,12 @@
         <argument
             android:name="origin"
             app:argType="string" />
+        <action
+            android:id="@+id/action_libroDaLeggere_to_catalogoInCorso"
+            app:destination="@id/catalogoInCorso" />
+        <action
+            android:id="@+id/action_libroDaLeggere_to_catalogoLetti"
+            app:destination="@id/catalogoLetti" />
     </fragment>
     <fragment
         android:id="@+id/dettaglioLibroScopri"
