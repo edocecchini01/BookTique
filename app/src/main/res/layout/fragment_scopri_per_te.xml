@@ -21,30 +21,16 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent">
 
+
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:id="@+id/toolbar3"
                 android:layout_width="match_parent"
-                android:layout_height="150dp"
+                android:layout_height="90dp"
                 android:background="#4D4D4D"
                 android:title="Toolbar"
                 app:layout_constraintEnd_toEndOf="@+id/button1"
                 app:layout_constraintStart_toEndOf="@+id/button1">
 
-
-                <androidx.appcompat.widget.SearchView
-                    android:id="@+id/searchView1"
-                    android:layout_width="311dp"
-                    android:layout_height="47dp"
-                    android:layout_marginStart="37dp"
-                    android:layout_marginTop="5dp"
-                    android:layout_marginEnd="37dp"
-                    android:background="#C6C6C6"
-                    android:queryHint="Cerca"
-                    android:theme="@style/ThemeOverlay.AppCompat.Light"
-                    app:layout_constraintBottom_toTopOf="@+id/buttonPerte"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent" />
 
                 <Button
                     android:id="@+id/buttonScopri"
@@ -52,7 +38,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginStart="17dp"
                     android:layout_marginEnd="32dp"
-                    android:layout_marginBottom="13dp"
+                    android:layout_marginBottom="20dp"
                     android:backgroundTint="#FFBF9B"
                     android:fontFamily="@font/lora_bold_italic"
                     android:text="SCOPRI"
@@ -60,24 +46,21 @@
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toStartOf="@+id/buttonPerte"
                     app:layout_constraintHorizontal_chainStyle="packed"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/searchView1"
-                    app:layout_constraintVertical_bias="0.733" />
+                    app:layout_constraintStart_toStartOf="parent" />
 
                 <Button
                     android:id="@+id/buttonPerte"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginEnd="17dp"
-                    android:layout_marginBottom="5dp"
+                    android:layout_marginBottom="20dp"
                     android:backgroundTint="#FFBF9B"
                     android:fontFamily="@font/lora_bold_italic"
                     android:text="PER TE"
                     android:textColor="#4D4D4D"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toEndOf="@+id/buttonScopri"
-                    app:layout_constraintTop_toBottomOf="@+id/searchView1" />
+                    app:layout_constraintStart_toEndOf="@+id/buttonScopri" />
 
 
             </androidx.constraintlayout.widget.ConstraintLayout>
@@ -92,22 +75,22 @@
                 android:fontFamily="@font/lora_bold_italic"
                 android:text="Titolo"
                 android:textColor="#4D4D4D"
-                android:textSize="25sp" />
+                android:textSize="20sp" />
 
             <ImageButton
                 android:id="@+id/imageButton2"
                 android:layout_width="300dp"
                 android:layout_height="300dp"
                 android:layout_gravity="center"
+                android:layout_marginLeft="45dp"
+                android:layout_marginTop="15dp"
+                android:layout_marginRight="45dp"
+                android:layout_marginBottom="35dp"
                 android:adjustViewBounds="true"
                 android:background="?attr/selectableItemBackgroundBorderless"
                 android:paddingTop="8dp"
                 android:paddingBottom="8dp"
                 android:scaleType="fitCenter"
-                android:layout_marginLeft="45dp"
-                android:layout_marginTop="15dp"
-                android:layout_marginRight="45dp"
-                android:layout_marginBottom="30dp"
                 android:src="@drawable/book_icon" />
 
             <LinearLayout

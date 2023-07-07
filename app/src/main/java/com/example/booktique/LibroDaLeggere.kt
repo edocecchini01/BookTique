@@ -48,7 +48,6 @@ class LibroDaLeggere : Fragment() {
 
         binding.textView26.text = args.LibroDaLeg.titolo
         binding.textView27.text = args.LibroDaLeg.autori
-        binding.textView14.text = args.LibroDaLeg.descrizione
 
         origin = args.origin
 

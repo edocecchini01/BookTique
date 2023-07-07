@@ -75,7 +75,7 @@
                     android:id="@+id/textView27"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginBottom="8dp"
+                    android:layout_marginBottom="30dp"
                     android:fontFamily="@font/lora_bold_italic"
                     android:padding="8dp"
                     android:paddingTop="6dp"
@@ -85,34 +85,35 @@
                     android:textColor="@color/gray"
                     android:textSize="20sp" />
 
-                <Button
-                    android:id="@+id/buttonSposta1"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center"
-                    android:backgroundTint="@color/red"
-                    android:fontFamily="@font/lora_bold_italic"
-                    android:text="SPOSTA" />
-
-                <TextView
-                    android:id="@+id/textView14"
+                <LinearLayout
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:fontFamily="@font/lora_bold_italic"
-                    android:paddingLeft="4pt"
-                    android:paddingTop="10pt"
-                    android:paddingRight="4pt"
-                    android:textAlignment="center"
-                    android:textColor="@color/gray" />
+                    android:layout_height="match_parent"
+                    android:orientation="horizontal"
+                    android:gravity="center">
 
-                <Button
-                    android:id="@+id/button"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center"
-                    android:backgroundTint="@color/red"
-                    android:fontFamily="@font/lora_bold_italic"
-                    android:text="ELIMINA" />
+                    <Button
+                        android:id="@+id/buttonSposta1"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:backgroundTint="@color/red"
+                        android:layout_marginEnd="15dp"
+                        android:fontFamily="@font/lora_bold_italic"
+                        android:textColor="@color/beige"
+                        android:text="SPOSTA" />
+
+                    <Button
+                        android:id="@+id/button"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:backgroundTint="@color/red"
+                        android:layout_marginStart="15dp"
+                        android:fontFamily="@font/lora_bold_italic"
+                        android:textColor="@color/beige"
+                        android:text="ELIMINA" />
+
+                </LinearLayout>
 
             </LinearLayout>
 
