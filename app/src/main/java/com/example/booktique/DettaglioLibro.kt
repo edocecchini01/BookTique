@@ -57,7 +57,7 @@ class DettaglioLibro : AppCompatActivity() {
 
             val imageView = findViewById<ImageView>(R.id.imageView3)
             Glide.with(this)
-                .load(book.imageLinks.smallThumbnail)
+                .load(book.imageLinks.thumbnail)
                 .into(imageView)
 
 
@@ -94,7 +94,7 @@ class DettaglioLibro : AppCompatActivity() {
                 var genere = ""
 
                 if (book!=null){
-                    link = book.imageLinks?.smallThumbnail ?: ""
+                    link = book.imageLinks?.thumbnail ?: ""
                     pag = book.pageCount?: 0
                     id = book.id ?: ""
                     genere = book.categories.toString() ?: ""

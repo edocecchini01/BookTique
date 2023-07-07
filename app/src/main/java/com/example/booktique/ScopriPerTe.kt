@@ -125,13 +125,13 @@ class ScopriPerTe : Fragment() {
                                     if (volumeInfo.has("imageLinks")) {
                                         val imageLinksObject =
                                             volumeInfo.getJSONObject("imageLinks")
-                                        val smallThumbnail =
-                                            imageLinksObject.optString("smallThumbnail")
-                                        ImageLinks(smallThumbnail)
+                                        val thumbnail =
+                                            imageLinksObject.optString("thumbnail")
+                                        ImageLinks(thumbnail)
                                     } else {
-                                        val smallThumbnail =
+                                        val thumbnail =
                                             "android.resource://com.example.booktique/drawable/no_book_icon"
-                                        ImageLinks(smallThumbnail)
+                                        ImageLinks(thumbnail)
                                     }
                                 val id = book.optString("id")
 
@@ -238,13 +238,13 @@ class ScopriPerTe : Fragment() {
                                     if (volumeInfo.has("imageLinks")) {
                                         val imageLinksObject =
                                             volumeInfo.getJSONObject("imageLinks")
-                                        val smallThumbnail =
-                                            imageLinksObject.optString("smallThumbnail")
-                                        ImageLinks(smallThumbnail)
+                                        val thumbnail =
+                                            imageLinksObject.optString("thumbnail")
+                                        ImageLinks(thumbnail)
                                     } else {
-                                        val smallThumbnail =
+                                        val thumbnail =
                                             "android.resource://com.example.booktique/drawable/no_book_icon"
-                                        ImageLinks(smallThumbnail)
+                                        ImageLinks(thumbnail)
                                     }
                                 val id = book.optString("id")
 
@@ -398,7 +398,7 @@ class ScopriPerTe : Fragment() {
                 binding.linearL.visibility = View.VISIBLE
                 val book = books[currentIndex]
                 binding.textView7.text = abbreviaInfo(book.title.toString(),25)
-                val imageUrl = book?.imageLinks?.smallThumbnail
+                val imageUrl = book?.imageLinks?.thumbnail
                 Log.d("Image", "imageUrl: $imageUrl")
 
                 Glide.with(requireContext())
@@ -444,7 +444,7 @@ class ScopriPerTe : Fragment() {
                         val book = books[currentIndex]
                         binding.textView7.text = abbreviaInfo(book.title.toString(), 20)
 
-                        val imageUrl = book?.imageLinks?.smallThumbnail
+                        val imageUrl = book?.imageLinks?.thumbnail
                         Log.d("Image", "imageUrl: $imageUrl")
 
                         Glide.with(requireContext())
@@ -537,7 +537,7 @@ class ScopriPerTe : Fragment() {
             var id = ""
             if (book!=null){
                 title = book.title?: ""
-                link = book.imageLinks?.smallThumbnail ?: ""
+                link = book.imageLinks?.thumbnail ?: ""
                 authors = book.authors[0]
                 pag = book.pageCount?: 0
                 id = book.id ?: ""
