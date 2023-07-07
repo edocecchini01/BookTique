@@ -41,7 +41,7 @@ class LibroDaLeggere : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-            val imageView = binding.imageView5
+        val imageView = binding.imageView5
         Glide.with(this)
             .load(args.LibroDaLeg.copertina)
             .into(imageView)
