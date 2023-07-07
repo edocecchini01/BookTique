@@ -24,6 +24,8 @@ class MyAdapterL (private val listaLibri : ArrayList<LibriL>) :
         fun comment(recensione : TextInputLayout, position: Int)
 
         fun dettaglioBook(cover: ImageButton, position: Int)
+
+        fun remove(button: ImageButton, position: Int)
     }
 
     fun setOnCLickItemListener(listener : onItemClickListener){
@@ -54,6 +56,10 @@ class MyAdapterL (private val listaLibri : ArrayList<LibriL>) :
             itemView.findViewById<ImageButton>(R.id.coverL).setOnClickListener{
                 listener.dettaglioBook(itemView.findViewById(R.id.coverL),bindingAdapterPosition)
 
+            }
+
+            itemView.findViewById<ImageButton>(R.id.deleteL).setOnClickListener {
+                listener.remove(itemView.findViewById(R.id.deleteL),bindingAdapterPosition)
             }
 
         }
