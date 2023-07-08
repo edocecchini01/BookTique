@@ -59,10 +59,10 @@ class MyAdapterGenere(private val listaLibri: ArrayList<VolumeDet>) :
             .load(currentItem.imageLinks.thumbnail)
             .into(holder.cover)
 
-        holder.titolo.text = abbreviaInfo(currentItem?.title ?: "",25)
+        holder.titolo.text = abbreviaInfo(currentItem?.title ?: "",35)
 
         if (currentItem.authors.isNotEmpty()) {
-            holder.autore.text = abbreviaInfo(currentItem.authors.joinToString(", "),25)
+            holder.autore.text = abbreviaInfo(currentItem.authors.joinToString(", "),35)
         } else {
             holder.autore.text = "Autore sconosciuto"
         }
