@@ -152,6 +152,8 @@ class DettaglioLibro : AppCompatActivity() {
             val childRef = usersRef.child(cUser.uid)
             val catalogoRef = childRef.child("Catalogo")
             val daLeggereRef = catalogoRef.child("DaLeggere")
+            val inCorsoRef = catalogoRef.child("InCorso")
+            val lettiRef = catalogoRef.child("Letti")
 
             // Recupera l'ID del libro corrente
             val bookId = book?.id ?: ""

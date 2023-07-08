@@ -42,7 +42,7 @@ class DettaglioLibroScopri : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        checkBookAdded()
+        userBook()
 
         binding.titolo.text = args.LibroLeggere.titolo
         binding.autore.text = args.LibroLeggere.autori
@@ -130,9 +130,11 @@ class DettaglioLibroScopri : Fragment() {
     }
 
     private fun checkBookAdded() {
-        userBook()
+
         val bookId = args.LibroLeggere.id
+        Log.d("tag", "lirbi: $allBookUser")
         if (allBookUser.contains(bookId)) {
+            Log.d("tag", "liber: $allBookUser")
             val grayColor = ContextCompat.getColor(
                 requireContext(),
                 R.color.gray
@@ -186,15 +188,21 @@ class DettaglioLibroScopri : Fragment() {
                     if(lettiBooks.isNotEmpty()) {
                         val ids = lettiBooks.map { libro -> libro.id }
                         allBookUser.addAll(ids)
+                        Log.d("tag", "allbooks: $allBookUser")
+
                     }
                     if(daLeggereBooks.isNotEmpty()) {
                         val ids = daLeggereBooks.map { libro -> libro.id }
                         allBookUser.addAll(ids)
+                        Log.d("tag", "allbooks: $allBookUser")
                     }
                     if(inCorsoBooks.isNotEmpty()) {
                         val ids = inCorsoBooks.map { libro -> libro.id }
                         allBookUser.addAll(ids)
+                        Log.d("tag", "allbooks: $allBookUser")
                     }
+
+                    checkBookAdded()
 
                 }
 
@@ -203,9 +211,11 @@ class DettaglioLibroScopri : Fragment() {
                 }
             }
 
-            lettiRef.addValueEventListener(eventListener)
-            daLeggereRef.addValueEventListener(eventListener)
-            inCorsoRef.addValueEventListener(eventListener)
+            lettiRef.addListenerForSingleValueEvent(eventListener)
+            daLeggereRef.addListenerForSingleValueEvent(eventListener)
+            inCorsoRef.addListenerForSingleValueEvent(eventListener)
+
+            Log.d("tag", "allbooks1: $allBookUser")
 
         }
     }
