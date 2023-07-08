@@ -31,10 +31,10 @@ object ApiServiceManager {
 interface ApiInterface {
 
     @GET("books/v1/volumes")
-    fun getNewReleases(@Query("q") query: String, @Query("orderBy") filter: String,@Query("printType") printType: String = "books",@Query("filter") formatFilter: String = "ebooks",@Query("langRestrict") langRestrict: String = "it"): Call<ResponseBody>
+    fun getNewReleases(@Query("q") query: String, @Query("orderBy") filter: String,@Query("printType") printType: String = "books",@Query("filter") formatFilter: String = "ebooks",@Query("langRestrict") langRestrict: String = "it,en"): Call<ResponseBody>
 
     @GET("books/v1/volumes")
-    fun searchBooks(@Query("q") query: String, @Query("orderBy") filter: String,@Query("printType") printType: String = "books",@Query("filter") formatFilter: String = "ebooks",@Query("langRestrict") langRestrict: String = "it"): Call<ResponseBody>
+    fun searchBooks(@Query("q") query: String, @Query("orderBy") filter: String,@Query("printType") printType: String = "books",@Query("filter") formatFilter: String = "ebooks",@Query("langRestrict") langRestrict: String = "it,en"): Call<ResponseBody>
 
     @GET("books/v1/volumes")
     fun getMostRelevant(@Query("orderBy") filter: String): Call<ResponseBody>
@@ -44,7 +44,7 @@ interface ApiInterface {
     fun getSubjectBooks(@Query("q") query: String, @Query("orderBy") orderBy: String): Call<BookResponse>
 
     @GET("books/v1/volumes")
-    fun getPerTe(@Query("q") query: String, @Query("orderBy") orderBy: String, @Query("maxResults") maxResults: Int,@Query("printType") printType: String = "books",@Query("filter") formatFilter: String = "ebooks",@Query("langRestrict") langRestrict: String = "it"): Call<ResponseBody>
+    fun getPerTe(@Query("q") query: String, @Query("orderBy") orderBy: String, @Query("maxResults") maxResults: Int,@Query("printType") printType: String = "books",@Query("filter") formatFilter: String = "ebooks",@Query("langRestrict") langRestrict: String = "it,en"): Call<ResponseBody>
 
 }
 
