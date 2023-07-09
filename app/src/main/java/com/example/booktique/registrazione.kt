@@ -72,73 +72,73 @@ class registrazione : Fragment() {
             val email = editTextEmail.text.toString()
             val password = editTextPassword.text.toString()
 
-            if(TextUtils.isEmpty(username)){
-                Toast.makeText(requireContext(),"Inserisci un username",Toast.LENGTH_SHORT).show()
+            if (username.isEmpty() || email.isEmpty() || password.isEmpty()) {
+                Toast.makeText(requireContext(), "Compila tutti i campi", Toast.LENGTH_SHORT).show()
+                return@setOnClickListener
             }
 
-            if(TextUtils.isEmpty(email)){
-                Toast.makeText(requireContext(),"Inserisci un email",Toast.LENGTH_SHORT).show()
-            }
+            if (email.isNotEmpty() && password.isNotEmpty()) {
+                mAuth.createUserWithEmailAndPassword(email, password)
+                    .addOnCompleteListener() { task ->
+                        if (task.isSuccessful) {
+                            Toast.makeText(
+                                requireContext(),
+                                "Account creato!",
+                                Toast.LENGTH_SHORT,
+                            ).show()
 
-            if(TextUtils.isEmpty(password)){
-                Toast.makeText(requireContext(),"Inserisci una password",Toast.LENGTH_SHORT).show()
-            }
+                            if (FirebaseAuth.getInstance().currentUser != null) {
+                                cUser = FirebaseAuth.getInstance().currentUser!!
+                                val database =
+                                    FirebaseDatabase.getInstance("https://booktique-87881-default-rtdb.europe-west1.firebasedatabase.app/")
+                                val usersRef = database.reference.child("Utenti")
 
-            mAuth.createUserWithEmailAndPassword(email, password)
-                .addOnCompleteListener() { task ->
-                    if (task.isSuccessful) {
-                        Toast.makeText(
-                            requireContext(),
-                            "Account creato!",
-                            Toast.LENGTH_SHORT,
-                        ).show()
+                                usersRef.child(cUser.uid ?: "")
+                                    .addListenerForSingleValueEvent(object :
+                                        ValueEventListener {
+                                        override fun onDataChange(snapshot: DataSnapshot) {
+                                            if (!snapshot.exists()) {
 
-                        if(FirebaseAuth.getInstance().currentUser != null) {
-                            cUser = FirebaseAuth.getInstance().currentUser!!
-                            val database = FirebaseDatabase.getInstance("https://booktique-87881-default-rtdb.europe-west1.firebasedatabase.app/")
-                            val usersRef = database.reference.child("Utenti")
+                                                val user = Utenti(
+                                                    email = email,
+                                                    password = password,
+                                                    username = username,
+                                                    catalogo = Catalogo(
+                                                        libriDaLeggere = emptyList(),
+                                                        libriInCorso = emptyList(),
+                                                        libriLetti = emptyList()
+                                                    )
+                                                )
+                                                usersRef.child(cUser.uid).setValue(user)
+                                            }
+                                        }
 
-                            usersRef.child(cUser.uid ?: "").addListenerForSingleValueEvent(object :
-                                ValueEventListener {
-                                override fun onDataChange(snapshot: DataSnapshot) {
-                                    if (!snapshot.exists()) {
+                                        override fun onCancelled(error: DatabaseError) {
+                                            Toast.makeText(
+                                                requireContext(),
+                                                "Errore alla chiamata $error",
+                                                Toast.LENGTH_SHORT,
+                                            ).show()
+                                        }
+                                    })
+                            }
 
-                                        val user = Utenti(
-                                            email = email,
-                                            password = password,
-                                            username = username,
-                                            catalogo = Catalogo(
-                                                libriDaLeggere = emptyList(),
-                                                libriInCorso = emptyList(),
-                                                libriLetti = emptyList()
-                                            )
-                                        )
-                                        usersRef.child(cUser.uid).setValue(user)
-                                    }
-                                }
+                            Navigation.findNavController(view)
+                                .navigate(R.id.action_registrazione_to_login)
 
-                                override fun onCancelled(error: DatabaseError) {
-                                    Toast.makeText(
-                                        requireContext(),
-                                        "Errore alla chiamata",
-                                        Toast.LENGTH_SHORT,
-                                    ).show()
-                                }
-                            })
+                        } else {
+                            // If sign in fails, display a message to the user.
+                            val exception = task.exception
+                            if (exception != null) {
+                                val errorMessage = exception.localizedMessage
+                                Toast.makeText(requireContext(), errorMessage, Toast.LENGTH_SHORT).show()
+                            }
                         }
-
-                        Navigation.findNavController(view).navigate(R.id.action_registrazione_to_login)
-
-                    } else {
-                        // If sign in fails, display a message to the user.
-                        Toast.makeText(
-                            requireContext(),
-                            "Creazione fallita!",
-                            Toast.LENGTH_SHORT,
-                        ).show()
                     }
-                }
 
+            }else {
+                Toast.makeText(requireContext(), "Inserisci email e password", Toast.LENGTH_SHORT).show()
+            }
         }
 }
 }

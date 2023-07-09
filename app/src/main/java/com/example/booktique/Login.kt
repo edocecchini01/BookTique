@@ -70,34 +70,36 @@ class Login : Fragment() {
             val email = editTextEmail.text.toString()
             val password = editTextPassword.text.toString()
 
-            if(TextUtils.isEmpty(email)){
-                Toast.makeText(requireContext(),"Inserisci un email", Toast.LENGTH_SHORT).show()
+
+            if ( email.isEmpty() || password.isEmpty()) {
+                Toast.makeText(requireContext(), "Compila tutti i campi", Toast.LENGTH_SHORT).show()
+                return@setOnClickListener
             }
 
-            if(TextUtils.isEmpty(password)){
-                Toast.makeText(requireContext(),"Inserisci una password", Toast.LENGTH_SHORT).show()
-            }
+            if (email.isNotEmpty() && password.isNotEmpty()) {
 
-            mAuth.signInWithEmailAndPassword(email, password)
-                .addOnCompleteListener() { task ->
-                    if (task.isSuccessful) {
-                        Toast.makeText(
-                            requireContext(),
-                            "Login effettuato!",
-                            Toast.LENGTH_SHORT,
-                        ).show()
-                        val intent = Intent(requireContext(), MainActivity::class.java)
-                        startActivity(intent)
-                        requireActivity().finish()
-                    } else {
-                        Toast.makeText(
-                            requireContext(),
-                            "Login fallito!",
-                            Toast.LENGTH_SHORT,
-                        ).show()
+                mAuth.signInWithEmailAndPassword(email, password)
+                    .addOnCompleteListener() { task ->
+                        if (task.isSuccessful) {
+                            Toast.makeText(
+                                requireContext(),
+                                "Login effettuato!",
+                                Toast.LENGTH_SHORT,
+                            ).show()
+                            val intent = Intent(requireContext(), MainActivity::class.java)
+                            startActivity(intent)
+                            requireActivity().finish()
+                        } else {
+                            Toast.makeText(
+                                requireContext(),
+                                "Login fallito!",
+                                Toast.LENGTH_SHORT,
+                            ).show()
+                        }
                     }
-                }
-
+            }else{
+                Toast.makeText(requireContext(), "Inserisci email e password", Toast.LENGTH_SHORT).show()
+            }
         }
     }
 }
