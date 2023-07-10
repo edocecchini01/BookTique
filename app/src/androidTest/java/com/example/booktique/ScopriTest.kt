@@ -1,34 +1,21 @@
 package com.example.booktique
 
-import android.view.KeyEvent
-import androidx.fragment.app.testing.FragmentScenario
-import androidx.fragment.app.testing.launchFragmentInContainer
-import androidx.lifecycle.Lifecycle
 import androidx.test.espresso.Espresso.onView
 import androidx.test.espresso.action.ViewActions.click
-import androidx.test.espresso.action.ViewActions.closeSoftKeyboard
-import androidx.test.espresso.action.ViewActions.pressImeActionButton
-import androidx.test.espresso.action.ViewActions.pressKey
-import androidx.test.espresso.action.ViewActions.typeText
 import androidx.test.espresso.assertion.ViewAssertions.matches
-import androidx.test.espresso.matcher.ViewMatchers.hasDescendant
-import androidx.test.espresso.matcher.ViewMatchers.hasMinimumChildCount
 import androidx.test.espresso.matcher.ViewMatchers.isDisplayed
 import androidx.test.espresso.matcher.ViewMatchers.withId
 import androidx.test.espresso.matcher.ViewMatchers.withText
 import androidx.test.ext.junit.runners.AndroidJUnit4
-import androidx.test.platform.app.InstrumentationRegistry
 import com.google.firebase.auth.FirebaseAuth
-
-
 import org.junit.Test
 import org.junit.runner.RunWith
-
-
 import org.junit.Assert.*
-import org.junit.Before
 import org.junit.Rule
-
+import androidx.test.espresso.action.ViewActions.*
+import androidx.test.espresso.matcher.ViewMatchers.*
+import androidx.test.ext.junit.rules.ActivityScenarioRule
+import org.hamcrest.CoreMatchers.allOf
 
 /**
  * Instrumented test, which will execute on an Android device.
@@ -38,34 +25,74 @@ import org.junit.Rule
 @RunWith(AndroidJUnit4::class)
 class ScopriTest {
 
-    private lateinit var scenario:  FragmentScenario<Scopri>
 
-    @Before
-    fun setUp() {
-        scenario = launchFragmentInContainer (themeResId = R.style.Theme_BookTique)
-        scenario.moveToState(Lifecycle.State.STARTED)
-    }
+    @get:Rule
+     var scenario: ActivityScenarioRule<MainActivity> = ActivityScenarioRule(MainActivity::class.java)
 
 
     @Test
-    fun testSearchBook() {
+    fun testGeneriBook() {
         // Simula l'inserimento di un testo di ricerca
-        //FirebaseAuth.getInstance().signInWithEmailAndPassword("laura@gmail.com", "Lauretta")
-        //Thread.sleep(6000)
-        val query = "Harry Potter"
-        onView(withId(R.id.searchView))
-            .perform(click())
-            .perform(typeText(query), pressKey(KeyEvent.KEYCODE_ENTER))
+        FirebaseAuth.getInstance().signInWithEmailAndPassword("laura@gmail.com", "Lauretta")
 
+        Thread.sleep(6000)
+
+        onView(allOf(withId(R.id.scopriPulsante), isDescendantOfA(withId(R.id.bottomNavigationView))))
+            .perform(click()) // Fai clic sul pulsante di scopri
+        Thread.sleep(6000)
+
+        onView(withId(R.id.book_in_c1))
+            .perform(click())
+
+        onView(withId(R.id.linearLayout4))
+            .check(matches(isDisplayed()))
+        Thread.sleep(2000)
+
+        onView(withId(R.id.imageButton2))
+            .perform(click())
+
+        Thread.sleep(2000)
+        onView(withId(R.id.button3))
+            .perform(click())
+
+        Thread.sleep(6000)
         // Verifica che la RecyclerView dei risultati di ricerca sia visualizzata
         onView(withId(R.id.lista_libri_scopri_genere))
             .check(matches(isDisplayed()))
+        Thread.sleep(2000)
 
-        // Verifica che almeno un elemento nella RecyclerView abbia il titolo "Harry Potter"
-        onView(withText("Harry Potter"))
+        onView(withId(R.id.backbuttonGen))
+            .perform(click())
+
+        Thread.sleep(2000)
+
+        onView(withId(R.id.book_leggere2))
+            .perform(click())
+
+        onView(withId(R.id.linearLayout4))
             .check(matches(isDisplayed()))
+        Thread.sleep(2000)
+
+        onView(withId(R.id.buttonAggiungi))
+            .perform(click())
+        Thread.sleep(2000)
+
+        onView(withId(R.id.buttonAggiungi))
+            .check(matches(withText("Aggiunto")))
+
+        Thread.sleep(2000)
+
+        onView(withId(R.id.imageButton2))
+            .perform(click())
+
+        Thread.sleep(2000)
+
+        onView(withId(R.id.buttonPerTe))
+            .perform(click())
+        Thread.sleep(2000)
+        onView(withId(R.id.linearL))
+            .check(matches(isDisplayed()))
+
     }
-
-
 
 }
