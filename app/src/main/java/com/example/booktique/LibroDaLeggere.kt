@@ -252,7 +252,6 @@ class LibroDaLeggere : Fragment() {
             val childRef = usersRef.child(cUser.uid)
             val catalogoRef = childRef.child("Catalogo")
             val daLeggereRef = catalogoRef.child("DaLeggere")
-
                 daLeggereRef.addListenerForSingleValueEvent(object : ValueEventListener {
                     override fun onDataChange(dataSnapshot: DataSnapshot) {
                         for (childSnapshot in dataSnapshot.children) {

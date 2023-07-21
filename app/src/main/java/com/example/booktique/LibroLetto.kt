@@ -46,15 +46,6 @@ class LibroLetto : Fragment() {
         return binding.root
     }
 
-
-    companion object {
-        fun newInstance(libroLetto: LibriL): LibroLetto {
-            val fragment = LibroLetto()
-            fragment.libroLet = libroLetto
-            return fragment
-        }
-    }
-
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         activity = requireActivity()

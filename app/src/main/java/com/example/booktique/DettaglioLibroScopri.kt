@@ -66,7 +66,7 @@ class DettaglioLibroScopri : Fragment() {
         if (origin == "scopri") {
             binding.imageButton2.setOnClickListener {
                 val navController = findNavController()
-                navController.navigate(R.id.action_dettaglioLibroScopri_to_scopri)
+                navController.popBackStack()
             }
         }
         else if (origin == "scopriPerTe") {

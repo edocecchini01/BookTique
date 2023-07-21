@@ -58,7 +58,7 @@ class CatalogoDaLeggere : Fragment() {
         recyclerView.layoutManager = LinearLayoutManager(requireContext())
         recyclerView.setHasFixedSize(true)
 
-
+        //passa l'arrayList listaLibri all'adapter
         adapter = MyAdapterDL(listaLibri)
         recyclerView.adapter = adapter
 
@@ -66,9 +66,8 @@ class CatalogoDaLeggere : Fragment() {
 
 
         adapter.setOnCLickItemListener(object : MyAdapterDL.onItemClickListener {
-                override fun onItemClick(position: Int) {
-
-                }
+            //implementiamo i metodi definiti nell'interfaccia dell'adapter
+                override fun onItemClick(position: Int) {}
 
                 override fun moveBook(send: ImageButton, position: Int) {
                     val btn = send
@@ -137,22 +136,17 @@ class CatalogoDaLeggere : Fragment() {
         checkBookCatalogo()
 
         }
-    //va fattorizzato
+
     private fun checkBookCatalogo() {
         if (FirebaseAuth.getInstance().currentUser != null) {
             val cUser = FirebaseAuth.getInstance().currentUser!!
-            Log.d("TAG", "Sono :")
+            Log.d("TAG", "Sono qui:")
             val database =
                 FirebaseDatabase.getInstance("https://booktique-87881-default-rtdb.europe-west1.firebasedatabase.app/")
             val usersRef = database.reference.child("Utenti")
             val childRef = usersRef.child(cUser.uid)
             val catalogoRef = childRef.child("Catalogo")
             val daLeggereRef = catalogoRef.child("DaLeggere")
-            /*
-            val lettiRef = catalogoRef.child("Letti")
-            val inCorsoRef = catalogoRef.child("InCorso")
-
-             */
 
             daLeggereRef.addListenerForSingleValueEvent(object : ValueEventListener {
                 override fun onDataChange(snapshot: DataSnapshot) {

@@ -34,16 +34,17 @@ import com.bumptech.glide.request.target.Target
 import com.google.firebase.auth.FirebaseAuth
 import okhttp3.ResponseBody
 import org.json.JSONException
+import androidx.fragment.app.viewModels
+import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProvider
 
 import org.json.JSONObject
 
 
-private lateinit var binding: FragmentScopriBinding
-class Scopri : Fragment() {
 
-    interface ClickListenerPerTe {
-        fun onButtonClick()
-    }
+class Scopri : Fragment() {
+    private lateinit var viewModel: ScopriViewModel
+    private lateinit var binding: FragmentScopriBinding
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -53,16 +54,35 @@ class Scopri : Fragment() {
             inflater,
             R.layout.fragment_scopri, container, false
         )
-        val currentYear = Calendar.getInstance().get(Calendar.YEAR)
-        val startYear = currentYear - 1
-        val endYear = currentYear
-        orderedBooks("published:$startYear..$endYear", "newest")
-        relevantBooks("published:$startYear..$endYear", "relevance")
-
         searchBook()
 
         return binding.root
     }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
+        viewModel = ViewModelProvider(this).get(ScopriViewModel::class.java)
+
+        // Osserva il LiveData newestBooks per ottenere gli aggiornamenti dei dati per i libri più recenti
+        if (!viewModel.newBooks.hasObservers()) {
+            viewModel.newBooks.observe(viewLifecycleOwner, Observer { newestBooksList ->
+                loadImagesIntoImageButtons(newestBooksList, "newest")
+            })
+        }
+
+        if (!viewModel.relevantBooks.hasObservers()) {
+            viewModel.relevantBooks.observe(viewLifecycleOwner, Observer { relevantBooksList ->
+                loadImagesIntoImageButtons(relevantBooksList, "relevance")
+            })
+        }
+
+        viewModel.loadNewBooks()
+        perTeButton()
+        genereButtons()
+    }
+
+
 
     private fun searchBook(){
         val searchview = binding.searchView
@@ -81,238 +101,6 @@ class Scopri : Fragment() {
                 return true
             }
         })
-
-
-    }
-
-    private fun orderedBooks(query:String, tipologia: String){
-        // Chiamata per ottenere i nuovi libri
-                val newReleasesCall = ApiServiceManager.apiService.getNewReleases(query,tipologia)   //forse meglio usare getnewreleases con relevant come parametro oltre la query
-                newReleasesCall.enqueue(object : Callback<ResponseBody> {
-                    override fun onResponse(call: Call<ResponseBody>, response: Response<ResponseBody>) {
-                        if (response.isSuccessful) {
-                            Log.d("TAG", "Messaggio di debug")
-
-                            val bookResponse = response.body()
-                            Log.d("TAG", "bookResponse: $bookResponse")
-
-                            try {
-                                if (bookResponse != null) {
-                                    val jsonString = bookResponse.string()
-
-                                    val jsonObject = JSONObject(jsonString)
-                                    val itemsArray = jsonObject.getJSONArray("items")
-
-                                    val newBooksList = mutableListOf<VolumeDet>()
-
-                                    for (i in 0 until itemsArray.length()) {
-                                        val book = itemsArray.getJSONObject(i)
-                                        val volumeInfo = book.getJSONObject("volumeInfo")
-
-                                        var title = "Titolo non disponibile"
-                                        if (volumeInfo.has("title")) {
-                                            title = volumeInfo.optString("title")
-                                        }
-                                        val authorsList = mutableListOf<String>()
-                                        if (volumeInfo.has("authors")) {
-                                            val authorsArray = volumeInfo.optJSONArray("authors")
-                                            if (authorsArray != null) {
-                                                for (j in 0 until authorsArray.length()) {
-                                                    val author = authorsArray.getString(j)
-                                                    authorsList.add(author)
-                                                }
-                                            }
-                                        }
-                                        val authors = authorsList.toList()
-
-                                        var language = "Lingua non specificata"
-                                        if (volumeInfo.has("language")) {
-                                            language = volumeInfo.optString("language")
-                                        }
-
-                                        var pag = 0
-                                        if (volumeInfo.has("pageCount")) {
-                                            val pageCountString = volumeInfo.optString("pageCount")
-                                            pag = pageCountString.toIntOrNull() ?: 0
-                                        }
-
-                                        val imageLinks: ImageLinks =
-                                            if (volumeInfo.has("imageLinks")) {
-                                                val imageLinksObject =
-                                                    volumeInfo.getJSONObject("imageLinks")
-                                                val thumbnail =
-                                                    imageLinksObject.optString("thumbnail")
-                                                ImageLinks(thumbnail)
-                                            } else {
-                                                val thumbnail =
-                                                    "https://thenounproject.com/api/private/icons/2637513/edit/?backgroundShape=SQUARE&backgroundShapeColor=%23000000&backgroundShapeOpacity=0&exportSize=752&flipX=false&flipY=false&foregroundColor=%23000000&foregroundOpacity=1&imageFormat=png&rotation=0"
-                                                ImageLinks(thumbnail)
-                                            }
-                                        val id = book.optString("id")
-
-                                        var categorieList = mutableListOf<String>()
-                                        if (volumeInfo.has("categories")) {
-                                            val categorieArray = volumeInfo.optJSONArray("categories")
-                                            if (categorieArray != null) {
-                                                for (j in 0 until categorieArray.length()) {
-                                                    val categoria = categorieArray.getString(j)
-                                                    categorieList.add(categoria)
-                                                }
-                                            }
-                                        }
-                                        val categoria = categorieList.toList()
-
-                                        var descrizione = "Descrizione non presente"
-                                        if (volumeInfo.has("description")) {
-                                            descrizione = volumeInfo.optString("description")
-                                        }
-
-                                        val newBook =
-                                            VolumeDet(imageLinks, title, authors, language, pag, id, descrizione, categoria)
-                                        newBooksList.add(newBook)
-                                    }
-                                    newBooksList.shuffle()
-                                    loadImagesIntoImageButtons(newBooksList, tipologia)
-                                }
-                            } catch (e: JSONException) {
-                                // Il parsing del JSON non è valido
-                                // Gestisci l'errore
-                                Log.e("JSON Parsing Error", "Errore nel parsing del JSON: ${e.message}")
-                            }
-
-                        } else {
-                            val statusCode = response.code()
-                            val errorMessage = response.message()
-                            Log.d("API Error", "Status Code: $statusCode")
-                            Log.d("API Error", "Error Message: $errorMessage")
-
-                        }
-                    }
-
-                    override fun onFailure(call: Call<ResponseBody>, t: Throwable) {
-                        Log.d("TAG", "Messaggio di debug11111")
-                        Log.e("TAG", "Errore nella chiamata API: ${t.message}", t)
-
-                    }
-                })
-
-    }
-
-    private fun relevantBooks(query:String, tipologia: String){
-        // Chiamata per ottenere i nuovi libri
-        val newReleasesCall = ApiServiceManager.apiService.getNewReleases(query,tipologia)   //forse meglio usare getnewreleases con relevant come parametro oltre la query
-        newReleasesCall.enqueue(object : Callback<ResponseBody> {
-            override fun onResponse(call: Call<ResponseBody>, response: Response<ResponseBody>) {
-                if (response.isSuccessful) {
-                    Log.d("TAG", "Messaggio di debug")
-
-                    val bookResponse = response.body()
-                    Log.d("TAG", "bookResponse: $bookResponse")
-
-                    try {
-                        if (bookResponse != null) {
-                            val jsonString = bookResponse.string()
-
-                            val jsonObject = JSONObject(jsonString)
-                            val itemsArray = jsonObject.getJSONArray("items")
-
-                            val newBooksList = mutableListOf<VolumeDet>()
-
-                            for (i in 0 until itemsArray.length()) {
-                                val book = itemsArray.getJSONObject(i)
-                                val volumeInfo = book.getJSONObject("volumeInfo")
-
-                                var title = "Titolo non disponibile"
-                                if (volumeInfo.has("title")) {
-                                    title = volumeInfo.optString("title")
-                                }
-                                val authorsList = mutableListOf<String>()
-                                if (volumeInfo.has("authors")) {
-                                    val authorsArray = volumeInfo.optJSONArray("authors")
-                                    if (authorsArray != null) {
-                                        for (j in 0 until authorsArray.length()) {
-                                            val author = authorsArray.getString(j)
-                                            authorsList.add(author)
-                                        }
-                                    }
-                                }
-                                val authors = authorsList.toList()
-
-                                var language = "Lingua non specificata"
-                                if (volumeInfo.has("language")) {
-                                    language = volumeInfo.optString("language")
-                                }
-
-                                var pag = 0
-                                if (volumeInfo.has("pageCount")) {
-                                    val pageCountString = volumeInfo.optString("pageCount")
-                                    pag = pageCountString.toIntOrNull() ?: 0
-                                }
-
-                                val imageLinks: ImageLinks =
-                                    if (volumeInfo.has("imageLinks")) {
-                                        val imageLinksObject =
-                                            volumeInfo.getJSONObject("imageLinks")
-                                        val thumbnail =
-                                            imageLinksObject.optString("thumbnail")
-                                        ImageLinks(thumbnail)
-                                    } else {
-                                        val thumbnail =
-                                            "https://thenounproject.com/api/private/icons/2637513/edit/?backgroundShape=SQUARE&backgroundShapeColor=%23000000&backgroundShapeOpacity=0&exportSize=752&flipX=false&flipY=false&foregroundColor=%23000000&foregroundOpacity=1&imageFormat=png&rotation=0"
-                                        ImageLinks(thumbnail)
-                                    }
-                                val id = book.optString("id")
-
-                                var categorieList = mutableListOf<String>()
-                                if (volumeInfo.has("categories")) {
-
-                                    Log.d("cat", "ccc:")
-                                    val categorieArray = volumeInfo.optJSONArray("categories")
-                                    if (categorieArray != null) {
-                                        for (j in 0 until categorieArray.length()) {
-                                            val categoria = categorieArray.getString(j)
-                                            categorieList.add(categoria)
-                                        }
-                                    }
-                                }
-                                val categoria = categorieList.toList()
-                                Log.d("cat", "c: $categoria")
-
-                                var descrizione = "Descrizione non presente"
-                                if (volumeInfo.has("description")) {
-                                    descrizione = volumeInfo.optString("description")
-                                }
-
-                                val newBook =
-                                    VolumeDet(imageLinks, title, authors, language, pag, id, descrizione, categoria)
-                                Log.d("cat", "ccc: $newBook")
-                                newBooksList.add(newBook)
-                            }
-                            newBooksList.shuffle()
-                            loadImagesIntoImageButtons(newBooksList, tipologia)
-                        }
-                    } catch (e: JSONException) {
-                        // Il parsing del JSON non è valido
-                        // Gestisci l'errore
-                        Log.e("JSON Parsing Error", "Errore nel parsing del JSON: ${e.message}")
-                    }
-
-                } else {
-                    val statusCode = response.code()
-                    val errorMessage = response.message()
-                    Log.d("API Error", "Status Code: $statusCode")
-                    Log.d("API Error", "Error Message: $errorMessage")
-
-                }
-            }
-
-            override fun onFailure(call: Call<ResponseBody>, t: Throwable) {
-                Log.d("TAG", "Messaggio di debug11111")
-                Log.e("TAG", "Errore nella chiamata API: ${t.message}", t)
-
-            }
-        })
-
     }
 
     private fun loadImagesIntoImageButtons(books: List<VolumeDet>?, tipologia: String) {
@@ -420,20 +208,6 @@ class Scopri : Fragment() {
     }
 
 
-
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
-
-        perTeButton()
-        genereButtons()
-/*
-        binding.clickListenerPerTe = object: ClickListenerPerTe {
-            override fun onButtonClick() {
-                Navigation.findNavController(view).navigate(R.id.action_scopri_to_scopriPerTe)
-            }
-        }*/
-
-    }
 
     override fun onResume() {
         super.onResume()

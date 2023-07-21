@@ -53,14 +53,6 @@ class LibroInCorso : Fragment() {
     }
 
 
-    companion object {
-        fun newInstance(libroIncorso: LibriInC): LibroInCorso {
-            val fragment = LibroInCorso()
-            fragment.libroIncorso = libroIncorso
-            return fragment
-        }
-    }
-
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         activity = requireActivity()

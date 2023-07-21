@@ -163,7 +163,6 @@ class CatalogoInCorso : Fragment() {
                                     val pagAconv = pagA.text.toString()
                                     inCorsoRef.child(bookId).child("paginaAtt").setValue(pagAconv.toInt())
                                 }
-                                //metodo da rivedere
                                 val navController = findNavController()
                                 navController.popBackStack()
                                 navController.navigate(R.id.catalogoInCorso)
