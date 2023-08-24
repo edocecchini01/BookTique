@@ -1,7 +1,5 @@
 package com.example.booktique
-import android.util.Log
 import okhttp3.OkHttpClient
-import org.json.JSONObject
 import retrofit2.Call
 import retrofit2.Retrofit
 import retrofit2.http.GET

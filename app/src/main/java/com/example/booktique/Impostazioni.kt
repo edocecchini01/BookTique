@@ -4,19 +4,16 @@ import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.view.Gravity
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
-import android.view.TextureView
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
 import android.widget.TextView
 import androidx.databinding.DataBindingUtil
+import androidx.fragment.app.Fragment
 import com.example.booktique.databinding.FragmentImpostazioniBinding
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
-
-private lateinit var binding: FragmentImpostazioniBinding
 
 class Impostazioni : Fragment() {
 
@@ -24,6 +21,7 @@ class Impostazioni : Fragment() {
     lateinit var btn: Button
     lateinit var textView: TextView
     lateinit var user: FirebaseUser
+    private lateinit var binding: FragmentImpostazioniBinding
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,

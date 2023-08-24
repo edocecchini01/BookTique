@@ -1,9 +1,7 @@
 package com.example.booktique
 
-import android.os.Parcel
 import android.os.Parcelable
 import kotlinx.parcelize.Parcelize
-import java.io.Serializable
 
 data class Utenti(
     val email: String,

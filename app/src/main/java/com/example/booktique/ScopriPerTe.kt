@@ -1,31 +1,27 @@
 package com.example.booktique
 
-import android.content.Intent
 import android.graphics.Color
 import android.graphics.drawable.Drawable
 import android.os.Bundle
 import android.util.Log
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.ArrayAdapter
 import android.widget.Button
 import android.widget.ImageButton
-import android.widget.Spinner
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
-import androidx.appcompat.widget.SearchView
-import androidx.core.content.ContextCompat
 import androidx.databinding.DataBindingUtil
-import androidx.navigation.Navigation
+import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.DataSource
 import com.bumptech.glide.load.engine.GlideException
 import com.bumptech.glide.request.RequestListener
 import com.bumptech.glide.request.target.Target
+
 import com.example.booktique.databinding.FragmentScopriPerTeBinding
+
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
@@ -38,16 +34,18 @@ import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 
-private lateinit var binding:FragmentScopriPerTeBinding
-private val perTeBooksList = mutableListOf<VolumeDet>()
 class ScopriPerTe : Fragment() {
+    private lateinit var binding:FragmentScopriPerTeBinding
+    private val perTeBooksList = mutableListOf<VolumeDet>()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        binding = DataBindingUtil.inflate<FragmentScopriPerTeBinding>(inflater,
-            R.layout.fragment_scopri_per_te,container,false)
+        binding = DataBindingUtil.inflate<FragmentScopriPerTeBinding>(
+            inflater,
+            R.layout.fragment_scopri_per_te, container, false
+        )
         return binding.root
     }
 
@@ -153,7 +151,16 @@ class ScopriPerTe : Fragment() {
                                 }
 
                                 val newBook =
-                                    VolumeDet(imageLinks, title, authors, language, pag, id, descrizione, categoria)
+                                    VolumeDet(
+                                        imageLinks,
+                                        title,
+                                        authors,
+                                        language,
+                                        pag,
+                                        id,
+                                        descrizione,
+                                        categoria
+                                    )
                                 perTeBooksList.add(newBook)
                             }
 
@@ -266,7 +273,16 @@ class ScopriPerTe : Fragment() {
                                 }
 
                                 val newBook =
-                                    VolumeDet(imageLinks, title, authors, language, pag, id, descrizione, categoria)
+                                    VolumeDet(
+                                        imageLinks,
+                                        title,
+                                        authors,
+                                        language,
+                                        pag,
+                                        id,
+                                        descrizione,
+                                        categoria
+                                    )
                                 perTeBooksList.add(newBook)
                             }
 
@@ -364,8 +380,8 @@ class ScopriPerTe : Fragment() {
                         val mostAutore = countAutori.maxByOrNull { it.value }?.key
                         val countGeneri = likeBook.groupingBy { it.categorie }.eachCount()
                         val mostGenere = countGeneri.maxByOrNull { it.value }?.key
-                        Log.d("GENERE","Valore genere: $mostGenere")
-                        Log.d("GENERE","Valore autore: $mostAutore")
+                        Log.d("GENERE", "Valore genere: $mostGenere")
+                        Log.d("GENERE", "Valore autore: $mostAutore")
                         val query1 = "inauthor:\"$mostAutore\""
                         val query2 = "subject:\"$mostGenere\""
                         perTeBook(query1, query2,"relevance",30,allBookUser)
@@ -530,7 +546,8 @@ class ScopriPerTe : Fragment() {
     private fun aggiungiLibro(books: List<VolumeDet>?){
         if(FirebaseAuth.getInstance().currentUser != null) {
             val cUser = FirebaseAuth.getInstance().currentUser!!
-            val database = FirebaseDatabase.getInstance("https://booktique-87881-default-rtdb.europe-west1.firebasedatabase.app/")
+            val database =
+                FirebaseDatabase.getInstance("https://booktique-87881-default-rtdb.europe-west1.firebasedatabase.app/")
             val usersRef = database.reference.child("Utenti")
             val childRef = usersRef.child(cUser.uid)
             val catalogoRef = childRef.child("Catalogo")
@@ -603,15 +620,16 @@ class ScopriPerTe : Fragment() {
                 book.title,
                 book.imageLinks.thumbnail ?: "",
                 book.authors.toString(),
-                book.pageCount?: 0,
-                book.id?:"",
+                book.pageCount ?: 0,
+                book.id ?: "",
                 book.description,
                 book.categories.toString()
 
             )
 
             val navController = findNavController()
-            val action = ScopriPerTeDirections.actionScopriPerTeToDettaglioLibroScopri(libro, "scopriPerTe")
+            val action =
+                ScopriPerTeDirections.actionScopriPerTeToDettaglioLibroScopri(libro, "scopriPerTe")
             findNavController().navigate(action)
         }
     }

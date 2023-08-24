@@ -1,10 +1,8 @@
 package com.example.booktique
 
 import android.animation.ObjectAnimator
-import android.app.Activity
 import android.os.Bundle
 import android.util.Log
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -18,7 +16,10 @@ import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.databinding.DataBindingUtil
+import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentActivity
+import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.Navigation
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -36,14 +37,17 @@ class CatalogoInCorso : Fragment() {
     private lateinit var adapter: MyAdapterIC
     private lateinit var listaLibri: ArrayList<LibriInC>
     private lateinit var select: Spinner
+    private lateinit var viewModel: CatalogoViewModel
     private val sezioni = arrayListOf("Letti","Da Leggere")
     private lateinit var activity : FragmentActivity
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?): View? {
-            binding = DataBindingUtil.inflate<FragmentCatalogoInCorsoBinding>(inflater,
-            R.layout.fragment_catalogo_in_corso,container,false)
+            binding = DataBindingUtil.inflate<FragmentCatalogoInCorsoBinding>(
+                inflater,
+                R.layout.fragment_catalogo_in_corso, container, false
+            )
 
         binding.backbuttonIc.setOnClickListener{
             val navController = findNavController()
@@ -56,6 +60,7 @@ class CatalogoInCorso : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        viewModel = ViewModelProvider(this).get(CatalogoViewModel::class.java)
 
         listaLibri = ArrayList()
 
@@ -67,7 +72,7 @@ class CatalogoInCorso : Fragment() {
         recyclerView.adapter = adapter
         activity = requireActivity()
 
-        adapter.setOnCLickItemListener(object : MyAdapterIC.onItemClickListener{
+        adapter.setOnCLickItemListener(object : MyAdapterIC.onItemClickListener {
             override fun onItemClick(position: Int) {
 
             }
@@ -110,7 +115,11 @@ class CatalogoInCorso : Fragment() {
                                 adapter.notifyDataSetChanged()
                             }
                         } else {
-                            Toast.makeText(requireContext(), "Seleziona un elemento!", Toast.LENGTH_SHORT).show()
+                            Toast.makeText(
+                                requireContext(),
+                                "Seleziona un elemento!",
+                                Toast.LENGTH_SHORT
+                            ).show()
                         }
                         // Chiudi il dialog
                         dialog?.dismiss()
@@ -205,15 +214,25 @@ class CatalogoInCorso : Fragment() {
                 val libro = getLibro(position)
 
                 val navController = findNavController()
-                val action = CatalogoInCorsoDirections.actionCatalogoInCorsoToLibroInCorso(libro, "catalogoInCorso" )
+                val action = CatalogoInCorsoDirections.actionCatalogoInCorsoToLibroInCorso(
+                    libro,
+                    "catalogoInCorso"
+                )
                 findNavController().navigate(action)
             }
 
         })
-        checkBookCatalogo()
+        viewModel.checkBookCatalogo()
+        if (!viewModel.libriInCorso.hasObservers()) {
+            viewModel.libriInCorso.observe(viewLifecycleOwner, Observer { InCorsoBooksList ->
+                loadBooks(InCorsoBooksList)
+            })
+        }
+
     }
 
-    private fun checkBookCatalogo() {
+
+    /*private fun checkBookCatalogo() {
         if (FirebaseAuth.getInstance().currentUser != null) {
             val cUser = FirebaseAuth.getInstance().currentUser!!
             Log.d("TAG", "Sono :")
@@ -223,11 +242,6 @@ class CatalogoInCorso : Fragment() {
             val childRef = usersRef.child(cUser.uid)
             val catalogoRef = childRef.child("Catalogo")
             val inCorsoRef = catalogoRef.child("InCorso")
-            /*
-            val lettiRef = catalogoRef.child("Letti")
-            val inCorsoRef = catalogoRef.child("InCorso")
-
-             */
 
             inCorsoRef.addValueEventListener(object : ValueEventListener {
                 override fun onDataChange(snapshot: DataSnapshot) {
@@ -254,22 +268,7 @@ class CatalogoInCorso : Fragment() {
                 }
             })
         }
-    }
-
-    private fun loadBooks(books: List<LibriInC>?){
-        if (books != null) {
-            listaLibri.addAll(books)
-            adapter.notifyDataSetChanged()
-        }
-    }
-
-    private fun getIdPos(position : Int): String? {
-        if(listaLibri.isNotEmpty()){
-            val bookId = listaLibri[position].id
-            return bookId
-        }
-        return null
-    }
+    }*/
 
     private fun moveBooks(bookId : String, where : Boolean) {
         if (FirebaseAuth.getInstance().currentUser != null) {
@@ -306,7 +305,10 @@ class CatalogoInCorso : Fragment() {
                                         Toast.LENGTH_SHORT
                                     ).show()
 
-                                val navController = Navigation.findNavController(activity, R.id.fragmentContainerView)
+                                val navController = Navigation.findNavController(
+                                    activity,
+                                    R.id.fragmentContainerView
+                                )
                                 navController.navigate(R.id.action_catalogoInCorso_to_catalogoHome)
 
                                 break
@@ -315,7 +317,7 @@ class CatalogoInCorso : Fragment() {
                     }
 
                     override fun onCancelled(error: DatabaseError) {
-                        TODO("Not yet implemented")
+
                     }
 
                 })
@@ -339,7 +341,10 @@ class CatalogoInCorso : Fragment() {
                                     Toast.LENGTH_SHORT
                                 ).show()
 
-                                val navController = Navigation.findNavController(activity, R.id.fragmentContainerView)
+                                val navController = Navigation.findNavController(
+                                    activity,
+                                    R.id.fragmentContainerView
+                                )
                                 navController.navigate(R.id.action_catalogoInCorso_to_catalogoHome)
 
 
@@ -349,7 +354,7 @@ class CatalogoInCorso : Fragment() {
                     }
 
                     override fun onCancelled(error: DatabaseError) {
-                        TODO("Not yet implemented")
+
                     }
 
                 })
@@ -362,6 +367,21 @@ class CatalogoInCorso : Fragment() {
 
         return listaLibri[position]
 
+    }
+
+    private fun loadBooks(books: List<LibriInC>?){
+        if (books != null) {
+            listaLibri.addAll(books)
+            adapter.notifyDataSetChanged()
+        }
+    }
+
+    private fun getIdPos(position : Int): String? {
+        if(listaLibri.isNotEmpty()){
+            val bookId = listaLibri[position].id
+            return bookId
+        }
+        return null
     }
 
 

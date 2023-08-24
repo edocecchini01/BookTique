@@ -3,13 +3,11 @@ package com.example.booktique
 import android.os.Bundle
 import android.util.Log
 import android.widget.ImageView
-import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import com.bumptech.glide.Glide
 import com.example.booktique.databinding.ActivityDettaglioLibroBinding
-import com.example.booktique.databinding.ActivityMainBinding
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.database.DataSnapshot
@@ -17,17 +15,16 @@ import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.ValueEventListener
-import androidx.databinding.DataBindingUtil
-import com.bumptech.glide.request.RequestOptions
 
-
-private lateinit var database: DatabaseReference
 class DettaglioLibro : AppCompatActivity() {
 
     private lateinit var binding: ActivityDettaglioLibroBinding
     private lateinit var cUser : FirebaseUser
     private val book = BookHolder.book
     private val libroIncorso = BookHolder.libroInc
+
+    private lateinit var database: DatabaseReference
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -83,7 +80,8 @@ class DettaglioLibro : AppCompatActivity() {
             if(FirebaseAuth.getInstance().currentUser != null) {
                 cUser = FirebaseAuth.getInstance().currentUser!!
                 Log.d("TAG", "Sono qui")
-                val database = FirebaseDatabase.getInstance("https://booktique-87881-default-rtdb.europe-west1.firebasedatabase.app/")
+                val database =
+                    FirebaseDatabase.getInstance("https://booktique-87881-default-rtdb.europe-west1.firebasedatabase.app/")
                 val usersRef = database.reference.child("Utenti")
                 val childRef = usersRef.child(cUser.uid)
                 val catalogoRef = childRef.child("Catalogo")
@@ -116,7 +114,10 @@ class DettaglioLibro : AppCompatActivity() {
                 val nuovoLibroRef = daLeggereRef.push()
                 nuovoLibroRef.setValue(libroLeg)
                     .addOnSuccessListener {
-                        val grayColor = ContextCompat.getColor(this, R.color.gray) // Ottieni il colore grigio dal tuo file di risorse colors.xml
+                        val grayColor = ContextCompat.getColor(
+                            this,
+                            R.color.gray
+                        ) // Ottieni il colore grigio dal tuo file di risorse colors.xml
                         val whiteColor = ContextCompat.getColor(this, R.color.white)
 
                         binding.buttonAggiungi.isEnabled = false
@@ -147,7 +148,8 @@ class DettaglioLibro : AppCompatActivity() {
         if (FirebaseAuth.getInstance().currentUser != null) {
             val cUser = FirebaseAuth.getInstance().currentUser!!
             Log.d("TAG", "Sono :")
-            val database = FirebaseDatabase.getInstance("https://booktique-87881-default-rtdb.europe-west1.firebasedatabase.app/")
+            val database =
+                FirebaseDatabase.getInstance("https://booktique-87881-default-rtdb.europe-west1.firebasedatabase.app/")
             val usersRef = database.reference.child("Utenti")
             val childRef = usersRef.child(cUser.uid)
             val catalogoRef = childRef.child("Catalogo")
@@ -160,7 +162,8 @@ class DettaglioLibro : AppCompatActivity() {
 
             Log.d("TAG", "Sono : $bookId")
             // Verifica se il libro è stato aggiunto dall'utente
-            daLeggereRef.orderByChild("id").equalTo(bookId).addListenerForSingleValueEvent(object : ValueEventListener {
+            daLeggereRef.orderByChild("id").equalTo(bookId).addListenerForSingleValueEvent(object :
+                ValueEventListener {
                 override fun onDataChange(snapshot: DataSnapshot) {
                     val bookExists = snapshot.exists()
 
@@ -168,7 +171,10 @@ class DettaglioLibro : AppCompatActivity() {
                     binding.buttonAggiungi.isEnabled = !bookExists
 
                     if (bookExists) {
-                        val grayColor = ContextCompat.getColor(this@DettaglioLibro, R.color.gray) // Ottieni il colore grigio dal tuo file di risorse colors.xml
+                        val grayColor = ContextCompat.getColor(
+                            this@DettaglioLibro,
+                            R.color.gray
+                        ) // Ottieni il colore grigio dal tuo file di risorse colors.xml
                         val whiteColor = ContextCompat.getColor(this@DettaglioLibro, R.color.white)
 
                         binding.buttonAggiungi.isEnabled = false

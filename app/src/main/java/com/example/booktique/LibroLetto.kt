@@ -4,21 +4,18 @@ import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
 import android.util.Log
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
-import android.widget.ImageButton
-import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.databinding.DataBindingUtil
+import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentActivity
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import com.bumptech.glide.Glide
-import com.example.booktique.databinding.FragmentLibroInCorsoBinding
 import com.example.booktique.databinding.FragmentLibroLettoBinding
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
@@ -40,8 +37,10 @@ class LibroLetto : Fragment() {
         savedInstanceState: Bundle?
 
     ): View? {
-        binding = DataBindingUtil.inflate<FragmentLibroLettoBinding>(inflater,
-            R.layout.fragment_libro_letto,container,false)
+        binding = DataBindingUtil.inflate<FragmentLibroLettoBinding>(
+            inflater,
+            R.layout.fragment_libro_letto, container, false
+        )
 
         return binding.root
     }
@@ -219,7 +218,11 @@ class LibroLetto : Fragment() {
                 if (bookId != null) {
                     removeBook(bookId)
                 }else{
-                    Toast.makeText(requireContext(), "Errore nell'eliminazione!", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(
+                        requireContext(),
+                        "Errore nell'eliminazione!",
+                        Toast.LENGTH_SHORT
+                    ).show()
                 }
                 dialog?.dismiss()
             }

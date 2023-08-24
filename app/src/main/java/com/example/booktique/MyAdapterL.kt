@@ -49,8 +49,8 @@ class MyAdapterL (private val listaLibri : ArrayList<LibriL>) :
 
             itemView.findViewById<ImageButton>(R.id.commentL).setOnClickListener {
                 listener.hideShow(itemView.findViewById(R.id.hideLayoutL), itemView.findViewById(R.id.commentL))
-                listener.likeDislike(btnLike,btnDislike,bindingAdapterPosition)
-                listener.comment(comment,bindingAdapterPosition)
+                listener.likeDislike(btnLike,btnDislike,absoluteAdapterPosition)
+                listener.comment(comment,absoluteAdapterPosition)
             }
 
             itemView.findViewById<ImageButton>(R.id.coverL).setOnClickListener{
@@ -67,7 +67,8 @@ class MyAdapterL (private val listaLibri : ArrayList<LibriL>) :
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MyViewHolder {
-        val itemView = LayoutInflater.from(parent.context).inflate(R.layout.lista_libri_letti,parent,false)
+        val itemView = LayoutInflater.from(parent.context)
+            .inflate(R.layout.lista_libri_letti,parent,false)
         return MyViewHolder(itemView,bListener)
     }
 

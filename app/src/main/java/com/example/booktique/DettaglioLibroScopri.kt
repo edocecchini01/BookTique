@@ -2,13 +2,13 @@ package com.example.booktique
 
 import android.os.Bundle
 import android.util.Log
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.core.content.ContextCompat
 import androidx.databinding.DataBindingUtil
+import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import com.bumptech.glide.Glide
@@ -20,7 +20,6 @@ import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.ValueEventListener
 
-
 class DettaglioLibroScopri : Fragment() {
 
     private lateinit var binding: FragmentDettaglioLibroScopriBinding
@@ -29,12 +28,15 @@ class DettaglioLibroScopri : Fragment() {
     private var allBookUser = ArrayList<String?>()
 
 
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        binding = DataBindingUtil.inflate<FragmentDettaglioLibroScopriBinding>(inflater,
-            R.layout.fragment_dettaglio_libro_scopri,container,false)
+        binding = DataBindingUtil.inflate<FragmentDettaglioLibroScopriBinding>(
+            inflater,
+            R.layout.fragment_dettaglio_libro_scopri, container, false
+        )
 
         return binding.root
     }
@@ -89,7 +91,8 @@ class DettaglioLibroScopri : Fragment() {
         if(FirebaseAuth.getInstance().currentUser != null) {
             cUser = FirebaseAuth.getInstance().currentUser!!
             Log.d("TAG", "Sono qui")
-            val database = FirebaseDatabase.getInstance("https://booktique-87881-default-rtdb.europe-west1.firebasedatabase.app/")
+            val database =
+                FirebaseDatabase.getInstance("https://booktique-87881-default-rtdb.europe-west1.firebasedatabase.app/")
             val usersRef = database.reference.child("Utenti")
             val childRef = usersRef.child(cUser.uid)
             val catalogoRef = childRef.child("Catalogo")
@@ -103,7 +106,10 @@ class DettaglioLibroScopri : Fragment() {
             val nuovoLibroRef = daLeggereRef.push()
             nuovoLibroRef.setValue(libro)
                 .addOnSuccessListener {
-                    val grayColor = ContextCompat.getColor(requireContext(), R.color.gray) // Ottieni il colore grigio dal tuo file di risorse colors.xml
+                    val grayColor = ContextCompat.getColor(
+                        requireContext(),
+                        R.color.gray
+                    ) // Ottieni il colore grigio dal tuo file di risorse colors.xml
                     val whiteColor = ContextCompat.getColor(requireContext(), R.color.white)
 
                     binding.buttonAggiungi.isEnabled = false

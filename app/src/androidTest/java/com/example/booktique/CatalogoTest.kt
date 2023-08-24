@@ -1,22 +1,13 @@
 package com.example.booktique
 
-import android.content.Intent
-import androidx.core.os.bundleOf
-import androidx.fragment.app.testing.FragmentScenario
-import androidx.fragment.app.testing.launchFragmentInContainer
 import androidx.test.core.app.ActivityScenario
-import androidx.test.core.app.ApplicationProvider
 import androidx.lifecycle.Lifecycle
-import com.example.booktique.MainActivity
 import androidx.test.espresso.Espresso.onData
 import androidx.test.espresso.Espresso.onView
 import androidx.test.espresso.action.ViewActions.click
 import androidx.test.espresso.assertion.ViewAssertions.matches
 import androidx.test.espresso.matcher.ViewMatchers.*
 import androidx.test.ext.junit.runners.AndroidJUnit4
-import androidx.test.filters.LargeTest
-import com.example.booktique.LibroDaLeggere
-import com.example.booktique.LibriDaL
 import com.google.firebase.auth.FirebaseAuth
 import org.hamcrest.CoreMatchers.*
 import org.junit.Assert.assertNotNull
@@ -26,7 +17,6 @@ import org.junit.runner.RunWith
 
 import org.junit.Assert.*
 import org.junit.Before
-import org.junit.Rule
 
 @RunWith(AndroidJUnit4::class)
 class CatalogoTest{

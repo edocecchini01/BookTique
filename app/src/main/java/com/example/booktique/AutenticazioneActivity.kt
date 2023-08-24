@@ -2,7 +2,7 @@ package com.example.booktique
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import androidx.navigation.fragment.findNavController
+import com.example.booktique.R
 
 class AutenticazioneActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {

@@ -1,15 +1,12 @@
 package com.example.booktique
 
-import android.animation.ObjectAnimator
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
 import android.util.Log
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.ArrayAdapter
 import android.widget.Button
 import android.widget.ImageButton
 import android.widget.LinearLayout
@@ -17,10 +14,13 @@ import android.widget.Spinner
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.databinding.DataBindingUtil
+import androidx.fragment.app.Fragment
+import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.example.booktique.databinding.FragmentCatalogoInCorsoBinding
+import com.example.booktique.BookHolder.book
 import com.example.booktique.databinding.FragmentCatalogoLettiBinding
 import com.google.android.material.textfield.TextInputLayout
 import com.google.firebase.auth.FirebaseAuth
@@ -32,6 +32,7 @@ import com.google.firebase.database.ValueEventListener
 class CatalogoLetti : Fragment() {
     private lateinit var binding: FragmentCatalogoLettiBinding
     private lateinit var recyclerView : RecyclerView
+    private lateinit var viewModel: CatalogoViewModel
     private lateinit var adapter: MyAdapterL
     private lateinit var listaLibri: ArrayList<LibriL>
     private lateinit var select: Spinner
@@ -41,8 +42,10 @@ class CatalogoLetti : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-            binding = DataBindingUtil.inflate<FragmentCatalogoLettiBinding>(inflater,
-            R.layout.fragment_catalogo_letti,container,false)
+            binding = DataBindingUtil.inflate<FragmentCatalogoLettiBinding>(
+                inflater,
+                R.layout.fragment_catalogo_letti, container, false
+            )
 
         binding.backbuttonL.setOnClickListener{
             val navController = findNavController()
@@ -55,6 +58,7 @@ class CatalogoLetti : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        viewModel = ViewModelProvider(this).get(CatalogoViewModel::class.java)
 
         listaLibri = ArrayList()
 
@@ -66,7 +70,7 @@ class CatalogoLetti : Fragment() {
         recyclerView.adapter = adapter
 
 
-        adapter.setOnCLickItemListener(object : MyAdapterL.onItemClickListener{
+        adapter.setOnCLickItemListener(object : MyAdapterL.onItemClickListener {
             override fun onItemClick(position: Int) {
 
             }
@@ -85,7 +89,7 @@ class CatalogoLetti : Fragment() {
 
             }
 
-            override fun likeDislike(like: ImageButton, dislike: ImageButton,position: Int) {
+            override fun likeDislike(like: ImageButton, dislike: ImageButton, position: Int) {
                 val btnLike = like
                 val btnDislike = dislike
                 val bookPos = position
@@ -179,8 +183,6 @@ class CatalogoLetti : Fragment() {
 
             override fun comment(recensione: TextInputLayout, position: Int) {
                 val commento = recensione.editText
-                val bookPos = position
-                val bookId = getIdPos(bookPos)
 
                 if (commento != null) {
                     commento.addTextChangedListener(object : TextWatcher {
@@ -205,23 +207,15 @@ class CatalogoLetti : Fragment() {
                         override fun afterTextChanged(s: Editable?) {
                             if(s != null && s.isNotEmpty() && s.last() == '\n'){
                                 s.replace(s.length - 1, s.length, "")
-                                if (FirebaseAuth.getInstance().currentUser != null) {
-                                    val cUser = FirebaseAuth.getInstance().currentUser!!
-                                    Log.d("TAG", "Sono :")
-                                    val database =
-                                        FirebaseDatabase.getInstance("https://booktique-87881-default-rtdb.europe-west1.firebasedatabase.app/")
-                                    val usersRef = database.reference.child("Utenti")
-                                    val childRef = usersRef.child(cUser.uid)
-                                    val catalogoRef = childRef.child("Catalogo")
-                                    val lettiRef = catalogoRef.child("Letti")
+                                val review = s.toString()
+                                val bookPos = position
 
-                                    if (bookId != null) {
-                                        val review = s.toString()
-                                        lettiRef.child(bookId).child("recensione").setValue(review)
-                                    }
-                                    val navController = findNavController()
-                                    navController.popBackStack()
-                                    navController.navigate(R.id.catalogoLetti)
+                                val bookId = getIdPos(bookPos)
+                                if (bookId != null) {
+                                    Log.d("id", "$bookPos")
+                                    Log.d("id", "$bookId")
+                                    viewModel.comment(review, bookId)
+
                                 }
                             }
 
@@ -235,7 +229,8 @@ class CatalogoLetti : Fragment() {
                 val libro = getLibro(position)
 
                 val navController = findNavController()
-                val action = CatalogoLettiDirections.actionCatalogoLettiToLibroLetto(libro, "catalogoLetti" )
+                val action =
+                    CatalogoLettiDirections.actionCatalogoLettiToLibroLetto(libro, "catalogoLetti")
                 findNavController().navigate(action)
             }
 
@@ -253,9 +248,18 @@ class CatalogoLetti : Fragment() {
 
                     btnConfirm.setOnClickListener {
                         if (bookId != null) {
-                            removeBook(bookId)
+                            viewModel.removeBook(bookId)
+                            Toast.makeText(
+                                requireContext(),
+                                "Libro eliminato con successo!",
+                                Toast.LENGTH_SHORT
+                            ).show()
                         }else{
-                            Toast.makeText(requireContext(), "Errore nell'eliminazione!", Toast.LENGTH_SHORT).show()
+                            Toast.makeText(
+                                requireContext(),
+                                "Errore nell'eliminazione!",
+                                Toast.LENGTH_SHORT
+                            ).show()
                         }
                         dialog?.dismiss()
                     }
@@ -271,100 +275,18 @@ class CatalogoLetti : Fragment() {
 
         })
 
-        checkBookCatalogo()
-
-    }
-
-    private fun checkBookCatalogo() {
-        if (FirebaseAuth.getInstance().currentUser != null) {
-            val cUser = FirebaseAuth.getInstance().currentUser!!
-            Log.d("TAG", "Sono :")
-            val database =
-                FirebaseDatabase.getInstance("https://booktique-87881-default-rtdb.europe-west1.firebasedatabase.app/")
-            val usersRef = database.reference.child("Utenti")
-            val childRef = usersRef.child(cUser.uid)
-            val catalogoRef = childRef.child("Catalogo")
-            val lettiRef = catalogoRef.child("Letti")
-            /*
-            val lettiRef = catalogoRef.child("Letti")
-            val inCorsoRef = catalogoRef.child("InCorso")
-
-             */
-
-            lettiRef.addValueEventListener(object : ValueEventListener {
-                override fun onDataChange(snapshot: DataSnapshot) {
-                    val lettiBooks = arrayListOf<LibriL>()
-                    if (snapshot.exists()) {
-                        for (bookSnapshot in snapshot.children) {
-                            val LibriL = bookSnapshot.getValue(LibriL::class.java)
-                            Log.d("TAG", "VolumeDet : ${LibriL}")
-                            lettiBooks.add(LibriL!!)
-
-                        }
-                    }
-
-                    // Richiama la funzione per i libri "DaLeggere"
-
-                    loadBooks(lettiBooks)
-
-                }
-
-                override fun onCancelled(error: DatabaseError) {
-                    // Gestisci eventuali errori nella lettura dei dati
-                    Log.e("TAG", "Errore nel recupero dei dati", error.toException())
-                }
+        viewModel.checkBookCatalogo()
+        viewModel.libriLetti.observe(viewLifecycleOwner, Observer { LettiBooksList ->
+                loadBooks(LettiBooksList)
             })
-        }
-    }
 
-    private fun removeBook(bookId : String){
-        if (FirebaseAuth.getInstance().currentUser != null) {
-            val cUser = FirebaseAuth.getInstance().currentUser!!
-            val database =
-                FirebaseDatabase.getInstance("https://booktique-87881-default-rtdb.europe-west1.firebasedatabase.app/")
-            val usersRef = database.reference.child("Utenti")
-            val childRef = usersRef.child(cUser.uid)
-            val catalogoRef = childRef.child("Catalogo")
-            val lettiRef = catalogoRef.child("Letti")
-
-            lettiRef.addListenerForSingleValueEvent(object : ValueEventListener {
-                override fun onDataChange(dataSnapshot: DataSnapshot) {
-                    for (childSnapshot in dataSnapshot.children) {
-                        val libro = childSnapshot.getValue(LibriDaL::class.java)
-
-                        if (libro != null && libro.id == bookId) {
-                            val libroRef = childSnapshot.ref
-
-                            val navController = findNavController()
-                            navController.popBackStack()
-                            navController.navigate(R.id.catalogoLetti)
-
-                            libroRef.removeValue()
-                            Toast.makeText(
-                                requireContext(),
-                                "${libro.titolo?.take(50)}, eliminato con successo!",
-                                Toast.LENGTH_SHORT
-                            ).show()
-                            break
-                        }
-                    }
-                }
-
-                override fun onCancelled(error: DatabaseError) {
-                    Toast.makeText(
-                        requireContext(),
-                        "Errore nello spostamento!",
-                        Toast.LENGTH_SHORT
-                    ).show()
-                }
-
-            })
-        }
     }
 
     private fun loadBooks(books: List<LibriL>?){
         if (books != null) {
+            listaLibri.clear()
             listaLibri.addAll(books)
+            Log.d("lista", listaLibri.toString())
             adapter.notifyDataSetChanged()
         }
     }
@@ -379,8 +301,23 @@ class CatalogoLetti : Fragment() {
 
     private fun getLibro(position: Int): LibriL {
 
-        return listaLibri[position]
+        val bookId = listaLibri[position].id
+        val bookD: LibriL
 
+        if (FirebaseAuth.getInstance().currentUser != null) {
+            val cUser = FirebaseAuth.getInstance().currentUser!!
+            Log.d("TAG", "Sono :")
+            val database =
+                FirebaseDatabase.getInstance("https://booktique-87881-default-rtdb.europe-west1.firebasedatabase.app/")
+            val usersRef = database.reference.child("Utenti")
+            val childRef = usersRef.child(cUser.uid)
+            val catalogoRef = childRef.child("Catalogo")
+            val lettiRef = catalogoRef.child("Letti")
+            //bookD =  lettiRef.child(bookId!!)
+            //da finire
+
+        }
+        //return bookD
     }
 
 }

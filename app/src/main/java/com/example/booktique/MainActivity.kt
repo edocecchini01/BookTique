@@ -1,13 +1,12 @@
 package com.example.booktique
 
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import androidx.fragment.app.Fragment
+import androidx.appcompat.app.AppCompatActivity
 import androidx.navigation.NavController
 import androidx.navigation.fragment.NavHostFragment
+import com.example.booktique.R
 import com.example.booktique.databinding.ActivityMainBinding
 import com.google.firebase.auth.FirebaseAuth
-
 
 class MainActivity : AppCompatActivity() {
     private lateinit var binding: ActivityMainBinding
@@ -50,4 +49,3 @@ class MainActivity : AppCompatActivity() {
     }
 
     }
-

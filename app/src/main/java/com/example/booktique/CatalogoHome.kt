@@ -3,21 +3,22 @@ package com.example.booktique
 import android.graphics.drawable.Drawable
 import android.os.Bundle
 import android.util.Log
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageButton
 import android.widget.Toast
 import androidx.databinding.DataBindingUtil
+import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentActivity
+import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.fragment.findNavController
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.DataSource
 import com.bumptech.glide.load.engine.GlideException
 import com.bumptech.glide.request.RequestListener
-import com.bumptech.glide.request.RequestOptions
 import com.bumptech.glide.request.target.Target
 import com.example.booktique.databinding.FragmentCatalogoHomeBinding
 import com.google.firebase.auth.FirebaseAuth
@@ -29,6 +30,7 @@ import com.google.firebase.database.ValueEventListener
 class CatalogoHome : Fragment() {
     private lateinit var binding: FragmentCatalogoHomeBinding
     private lateinit var activity : FragmentActivity
+    private lateinit var viewModel: CatalogoViewModel
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -43,6 +45,7 @@ class CatalogoHome : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        viewModel = ViewModelProvider(this).get(CatalogoViewModel::class.java)
 
         activity = binding.root.context as FragmentActivity
         val fragment = requireActivity().supportFragmentManager.findFragmentById(R.id.fragmentContainerView)
@@ -69,7 +72,23 @@ class CatalogoHome : Fragment() {
         //val navHostFragment = requireActivity().supportFragmentManager.findFragmentById(R.id.fragmentContainerView) as NavHostFragment
         //val navController = navHostFragment.navController
 
-        checkBookCatalogo()
+        viewModel.checkBookCatalogo()
+        if (!viewModel.libriDaLeggere.hasObservers()) {
+            viewModel.libriDaLeggere.observe(viewLifecycleOwner, Observer { DaLeggereBooksList ->
+                loadImagesIntoImageButtonsDaLeggere(DaLeggereBooksList)
+            })
+        }
+        if (!viewModel.libriInCorso.hasObservers()) {
+            viewModel.libriInCorso.observe(viewLifecycleOwner, Observer { InCorsoBooksList ->
+                loadImagesIntoImageButtonsInCorso(InCorsoBooksList)
+            })
+        }
+        if (!viewModel.libriLetti.hasObservers()) {
+            viewModel.libriLetti.observe(viewLifecycleOwner, Observer { LettiBooksList ->
+                loadImagesIntoImageButtonsLetti(LettiBooksList)
+            })
+        }
+
 
         if (FirebaseAuth.getInstance().currentUser != null) {
             binding.myButton.setOnClickListener {
@@ -101,98 +120,6 @@ class CatalogoHome : Fragment() {
 
         }
     }
-
-    private fun checkBookCatalogo(){
-        if (FirebaseAuth.getInstance().currentUser != null) {
-            val cUser = FirebaseAuth.getInstance().currentUser!!
-            Log.d("TAG", "Sono :")
-            val database = FirebaseDatabase.getInstance("https://booktique-87881-default-rtdb.europe-west1.firebasedatabase.app/")
-            val usersRef = database.reference.child("Utenti")
-            val childRef = usersRef.child(cUser.uid)
-            val catalogoRef = childRef.child("Catalogo")
-            val daLeggereRef = catalogoRef.child("DaLeggere")
-
-            val lettiRef = catalogoRef.child("Letti")
-            val inCorsoRef = catalogoRef.child("InCorso")
-
-
-
-            daLeggereRef.addListenerForSingleValueEvent(object : ValueEventListener {
-                override fun onDataChange(snapshot: DataSnapshot) {
-                    val daLeggereBooks = arrayListOf<LibriDaL>()
-                    if (snapshot.exists()) {
-                        for (bookSnapshot in snapshot.children) {
-                            val libriDaL = bookSnapshot.getValue(LibriDaL::class.java)
-                            Log.d("TAG", "VolumeDet : $libriDaL")
-                            daLeggereBooks.add(libriDaL!!)
-
-                        }
-                    }
-
-                    // Richiama la funzione per i libri "DaLeggere"
-
-                        loadImagesIntoImageButtonsDaLeggere(daLeggereBooks)
-
-                }
-
-                override fun onCancelled(error: DatabaseError) {
-                    // Gestisci eventuali errori nella lettura dei dati
-                    Log.e("TAG", "Errore nel recupero dei dati", error.toException())
-                }
-            })
-
-
-            lettiRef.addListenerForSingleValueEvent(object : ValueEventListener {
-                override fun onDataChange(snapshot: DataSnapshot) {
-                    val lettiBooks = mutableListOf<LibriL>()
-                    if (snapshot.exists()) {
-                        for (bookSnapshot in snapshot.children) {
-                            val LibriL = bookSnapshot.getValue(LibriL::class.java)
-                            lettiBooks.add(LibriL!!)
-                        }
-                    }
-
-
-                    loadImagesIntoImageButtonsLetti(lettiBooks)
-                }
-
-                override fun onCancelled(error: DatabaseError) {
-                    // Gestisci eventuali errori nella lettura dei dati
-                    Log.e("TAG", "Errore nel recupero dei dati", error.toException())
-                }
-            })
-
-
-            inCorsoRef.addValueEventListener(object : ValueEventListener {
-                override fun onDataChange(snapshot: DataSnapshot) {
-                    val inCorsoBooks = arrayListOf<LibriInC>()
-                    if (snapshot.exists()) {
-                        for (bookSnapshot in snapshot.children) {
-                            val libriInC = bookSnapshot.getValue(LibriInC::class.java)
-                            Log.d("TAG", "VolumeDet : $libriInC")
-                            inCorsoBooks.add(libriInC!!)
-
-                        }
-                    }
-
-                    // Richiama la funzione per i libri "DaLeggere"
-
-                    loadImagesIntoImageButtonsInCorso(inCorsoBooks)
-
-                }
-
-                override fun onCancelled(error: DatabaseError) {
-                    // Gestisci eventuali errori nella lettura dei dati
-                    Log.e("TAG", "Errore nel recupero dei dati", error.toException())
-                }
-            })
-
-
-        }
-
-
-        }
-
 
 
     private fun loadImagesIntoImageButtonsDaLeggere(books: List<LibriDaL>?) {
@@ -371,7 +298,8 @@ class CatalogoHome : Fragment() {
     private fun setupImageButtonClickListener(book: LibriInC, imageButton: ImageButton) {
         imageButton.setOnClickListener {
             val navController = findNavController()
-            val action = CatalogoHomeDirections.actionCatalogoHomeToLibroInCorso(book,"catalogoHome" )
+            val action =
+                CatalogoHomeDirections.actionCatalogoHomeToLibroInCorso(book, "catalogoHome")
             findNavController().navigate(action)
         }
     }
@@ -380,7 +308,8 @@ class CatalogoHome : Fragment() {
         imageButton.setOnClickListener {
 
             val navController = findNavController()
-            val action = CatalogoHomeDirections.actionCatalogoHomeToLibroDaLeggere(book, "catalogoHome" )
+            val action =
+                CatalogoHomeDirections.actionCatalogoHomeToLibroDaLeggere(book, "catalogoHome")
             findNavController().navigate(action)
         }
     }
@@ -388,7 +317,7 @@ class CatalogoHome : Fragment() {
     private fun setupImageButtonClickListenerLetto(book: LibriL, imageButton: ImageButton) {
         imageButton.setOnClickListener {
             val navController = findNavController()
-            val action = CatalogoHomeDirections.actionCatalogoHomeToLibroLetto(book, "catalogoHome" )
+            val action = CatalogoHomeDirections.actionCatalogoHomeToLibroLetto(book, "catalogoHome")
             findNavController().navigate(action)
         }
     }

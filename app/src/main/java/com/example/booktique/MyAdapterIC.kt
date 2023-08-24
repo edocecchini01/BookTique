@@ -1,6 +1,5 @@
 package com.example.booktique
 
-import android.util.Log
 import android.view.Gravity
 import android.view.LayoutInflater
 import android.view.View
@@ -22,7 +21,7 @@ class MyAdapterIC(private val listaLibri : ArrayList<LibriInC>) :
         fun moveBook(send : ImageButton, position: Int)
         fun dettaglioBook(cover: ImageButton, position: Int)
 
-        fun reading(seekBar: SeekBar, pagAtt : TextView, pagTot : TextView, element: LinearLayout,position: Int)
+        fun reading(seekBar: SeekBar, pagAtt : TextView, pagTot : TextView, element: LinearLayout, position: Int)
     }
 
     fun setOnCLickItemListener(listener : onItemClickListener){
@@ -64,7 +63,8 @@ class MyAdapterIC(private val listaLibri : ArrayList<LibriInC>) :
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MyViewHolder {
-        val itemView = LayoutInflater.from(parent.context).inflate(R.layout.lista_libri_in_corso,parent,false)
+        val itemView = LayoutInflater.from(parent.context)
+            .inflate(R.layout.lista_libri_in_corso,parent,false)
         return MyViewHolder(itemView,bListener)
     }
 

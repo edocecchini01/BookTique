@@ -2,29 +2,26 @@ package com.example.booktique
 
 import android.os.Bundle
 import android.util.Log
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ArrayAdapter
 import android.widget.Button
 import android.widget.Spinner
-import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.databinding.DataBindingUtil
+import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import com.bumptech.glide.Glide
 import com.example.booktique.databinding.FragmentLibroDaLeggereBinding
-import com.example.booktique.databinding.FragmentLibroInCorsoBinding
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.ValueEventListener
-
 
 class LibroDaLeggere : Fragment() {
     private lateinit var binding: FragmentLibroDaLeggereBinding
@@ -42,8 +39,10 @@ class LibroDaLeggere : Fragment() {
 
     ): View? {
 
-        binding = DataBindingUtil.inflate<FragmentLibroDaLeggereBinding>(inflater,
-            R.layout.fragment_libro_da_leggere,container,false)
+        binding = DataBindingUtil.inflate<FragmentLibroDaLeggereBinding>(
+            inflater,
+            R.layout.fragment_libro_da_leggere, container, false
+        )
 
 
 
@@ -135,7 +134,11 @@ class LibroDaLeggere : Fragment() {
                 if (bookId != null) {
                     removeBook(bookId)
                 }else{
-                    Toast.makeText(requireContext(), "Errore nell'eliminazione!", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(
+                        requireContext(),
+                        "Errore nell'eliminazione!",
+                        Toast.LENGTH_SHORT
+                    ).show()
                 }
                 dialog?.dismiss()
             }
@@ -210,10 +213,10 @@ class LibroDaLeggere : Fragment() {
                             if (libro != null && libro.id == bookId) {
 
                                 // Hai individuato il libro desiderato
-                                Log.d("Libro","Libro trovato: $libro")
+                                Log.d("Libro", "Libro trovato: $libro")
                                 lettiRef.child(bookId).setValue(libro)
                                 val libroRef = childSnapshot.ref
-                                Log.d("Libro","Libro da eliminare: $libro")
+                                Log.d("Libro", "Libro da eliminare: $libro")
                                 libroRef.removeValue()
                                 Toast.makeText(
                                     requireContext(),
@@ -252,7 +255,7 @@ class LibroDaLeggere : Fragment() {
             val childRef = usersRef.child(cUser.uid)
             val catalogoRef = childRef.child("Catalogo")
             val daLeggereRef = catalogoRef.child("DaLeggere")
-                daLeggereRef.addListenerForSingleValueEvent(object : ValueEventListener {
+            daLeggereRef.addListenerForSingleValueEvent(object : ValueEventListener {
                     override fun onDataChange(dataSnapshot: DataSnapshot) {
                         for (childSnapshot in dataSnapshot.children) {
                             val libro = childSnapshot.getValue(LibriDaL::class.java)

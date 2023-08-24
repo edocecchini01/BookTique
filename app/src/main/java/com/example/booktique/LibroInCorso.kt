@@ -3,20 +3,17 @@ package com.example.booktique
 import android.os.Bundle
 import android.util.Log
 import android.view.Gravity
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ArrayAdapter
 import android.widget.Button
-import android.widget.ImageView
-import android.widget.LinearLayout
 import android.widget.SeekBar
 import android.widget.Spinner
-import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.databinding.DataBindingUtil
+import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentActivity
 import androidx.navigation.Navigation
 import androidx.navigation.fragment.findNavController
@@ -29,7 +26,6 @@ import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.ValueEventListener
-
 
 class LibroInCorso : Fragment() {
     private lateinit var binding: FragmentLibroInCorsoBinding
@@ -46,8 +42,10 @@ class LibroInCorso : Fragment() {
         savedInstanceState: Bundle?
 
     ): View? {
-        binding = DataBindingUtil.inflate<FragmentLibroInCorsoBinding>(inflater,
-            R.layout.fragment_libro_in_corso,container,false)
+        binding = DataBindingUtil.inflate<FragmentLibroInCorsoBinding>(
+            inflater,
+            R.layout.fragment_libro_in_corso, container, false
+        )
 
         return binding.root
     }
@@ -191,7 +189,11 @@ class LibroInCorso : Fragment() {
                 if (bookId != null) {
                     removeBook(bookId)
                 }else{
-                    Toast.makeText(requireContext(), "Errore nell'eliminazione!", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(
+                        requireContext(),
+                        "Errore nell'eliminazione!",
+                        Toast.LENGTH_SHORT
+                    ).show()
                 }
                 dialog?.dismiss()
             }
@@ -242,7 +244,10 @@ class LibroInCorso : Fragment() {
                                     Toast.LENGTH_SHORT
                                 ).show()
 
-                                val navController = Navigation.findNavController(activity, R.id.fragmentContainerView)
+                                val navController = Navigation.findNavController(
+                                    activity,
+                                    R.id.fragmentContainerView
+                                )
                                 navController.navigate(R.id.action_libroInCorso_to_catalogoLetti)
 
                                 break
@@ -275,7 +280,10 @@ class LibroInCorso : Fragment() {
                                     Toast.LENGTH_SHORT
                                 ).show()
 
-                                val navController = Navigation.findNavController(activity, R.id.fragmentContainerView)
+                                val navController = Navigation.findNavController(
+                                    activity,
+                                    R.id.fragmentContainerView
+                                )
                                 navController.navigate(R.id.action_libroInCorso_to_catalogoDaLeggere)
 
 

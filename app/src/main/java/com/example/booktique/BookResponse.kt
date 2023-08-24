@@ -1,6 +1,4 @@
 package com.example.booktique
-import android.icu.text.CaseMap.Title
-import com.google.firebase.database.IgnoreExtraProperties
 import com.squareup.moshi.JsonClass
 
 @JsonClass(generateAdapter = true)
@@ -11,7 +9,7 @@ data class BookResponse(
 data class BookItem(
     val volumeInfo: VolumeDet,
 
-)
+    )
 
 
 data class VolumeDet(

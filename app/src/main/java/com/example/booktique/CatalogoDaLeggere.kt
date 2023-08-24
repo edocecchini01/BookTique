@@ -1,13 +1,10 @@
 package com.example.booktique
 
-import android.animation.ObjectAnimator
 import android.os.Bundle
 import android.util.Log
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.AdapterView
 import android.widget.ArrayAdapter
 import android.widget.Button
 import android.widget.ImageButton
@@ -15,6 +12,9 @@ import android.widget.Spinner
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.databinding.DataBindingUtil
+import androidx.fragment.app.Fragment
+import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -32,12 +32,15 @@ class CatalogoDaLeggere : Fragment() {
     private lateinit var adapter: MyAdapterDL
     private lateinit var listaLibri: ArrayList<LibriDaL>
     private lateinit var select: Spinner
+    private lateinit var viewModel: CatalogoViewModel
     private val sezioni = arrayListOf("In corso","Letti")
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
-            binding = DataBindingUtil.inflate<FragmentCatalogoDaLeggereBinding>(inflater,
-            R.layout.fragment_catalogo_da_leggere,container,false)
+            binding = DataBindingUtil.inflate<FragmentCatalogoDaLeggereBinding>(
+                inflater,
+                R.layout.fragment_catalogo_da_leggere, container, false
+            )
 
         binding.backbuttonDl.setOnClickListener{
             val navController = findNavController()
@@ -50,6 +53,7 @@ class CatalogoDaLeggere : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        viewModel = ViewModelProvider(this).get(CatalogoViewModel::class.java)
 
         // Inizializza la lista dei libri
         listaLibri = ArrayList()
@@ -107,7 +111,11 @@ class CatalogoDaLeggere : Fragment() {
                                     adapter.notifyDataSetChanged()
                                 }
                             } else {
-                                Toast.makeText(requireContext(), "Seleziona un elemento!", Toast.LENGTH_SHORT).show()
+                                Toast.makeText(
+                                    requireContext(),
+                                    "Seleziona un elemento!",
+                                    Toast.LENGTH_SHORT
+                                ).show()
                             }
                             // Chiudi il dialog
                             dialog?.dismiss()
@@ -126,18 +134,24 @@ class CatalogoDaLeggere : Fragment() {
                 val libro = getLibro(position)
 
                 val navController = findNavController()
-                val action = CatalogoDaLeggereDirections.actionCatalogoDaLeggereToLibroDaLeggere(libro, "catalogoDaLeggere" )
+                val action = CatalogoDaLeggereDirections.actionCatalogoDaLeggereToLibroDaLeggere(
+                    libro,
+                    "catalogoDaLeggere"
+                )
                 findNavController().navigate(action)
             }
 
 
             })
-
-        checkBookCatalogo()
+            viewModel.checkBookCatalogo()
+            viewModel.libriDaLeggere.observe(viewLifecycleOwner, Observer { DaLeggereBooksList ->
+                loadBooks(DaLeggereBooksList)
+                Log.d("ciao", "ciao")
+            })
 
         }
 
-    private fun checkBookCatalogo() {
+    /*private fun checkBookCatalogo() {
         if (FirebaseAuth.getInstance().currentUser != null) {
             val cUser = FirebaseAuth.getInstance().currentUser!!
             Log.d("TAG", "Sono qui:")
@@ -172,7 +186,7 @@ class CatalogoDaLeggere : Fragment() {
                 }
             })
         }
-    }
+    }*/
 
     private fun loadBooks(books: List<LibriDaL>?){
         if (books != null) {
@@ -240,10 +254,10 @@ class CatalogoDaLeggere : Fragment() {
                             if (libro != null && libro.id == bookId) {
 
                                 // Hai individuato il libro desiderato
-                                Log.d("Libro","Libro trovato: $libro")
+                                Log.d("Libro", "Libro trovato: $libro")
                                 lettiRef.child(bookId).setValue(libro)
                                 val libroRef = childSnapshot.ref
-                                Log.d("Libro","Libro da eliminare: $libro")
+                                Log.d("Libro", "Libro da eliminare: $libro")
                                 libroRef.removeValue()
                                 Toast.makeText(
                                     requireContext(),

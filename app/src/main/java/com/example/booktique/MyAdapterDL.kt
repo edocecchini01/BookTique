@@ -5,8 +5,6 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageButton
-import android.widget.LinearLayout
-import android.widget.Spinner
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
@@ -60,7 +58,8 @@ class MyAdapterDL(private val listaLibri : ArrayList<LibriDaL>) :
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MyViewHolder {
-        val itemView = LayoutInflater.from(parent.context).inflate(R.layout.lista_libri_da_leggere,parent,false)
+        val itemView = LayoutInflater.from(parent.context)
+            .inflate(R.layout.lista_libri_da_leggere,parent,false)
         val flag = ::bListener.isInitialized
         Log.d("MIAO", "$flag")
         return MyViewHolder(itemView,bListener)
