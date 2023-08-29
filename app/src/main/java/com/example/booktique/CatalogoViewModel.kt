@@ -169,4 +169,58 @@ class CatalogoViewModel: ViewModel() {
         }
     }
 
+    fun removelike(bookId: String){
+        if (FirebaseAuth.getInstance().currentUser != null) {
+            val cUser = FirebaseAuth.getInstance().currentUser!!
+            Log.d("TAG", "Sono :")
+            val database =
+                FirebaseDatabase.getInstance("https://booktique-87881-default-rtdb.europe-west1.firebasedatabase.app/")
+            val usersRef = database.reference.child("Utenti")
+            val childRef = usersRef.child(cUser.uid)
+            val catalogoRef = childRef.child("Catalogo")
+            val lettiRef = catalogoRef.child("Letti")
+
+            if (bookId != null) {
+                val valutazione = 0
+                lettiRef.child(bookId).child("valutazione").setValue(valutazione)
+            }
+        }
+    }
+
+    fun like(bookId: String){
+        if (FirebaseAuth.getInstance().currentUser != null) {
+            val cUser = FirebaseAuth.getInstance().currentUser!!
+            Log.d("TAG", "Sono :")
+            val database =
+                FirebaseDatabase.getInstance("https://booktique-87881-default-rtdb.europe-west1.firebasedatabase.app/")
+            val usersRef = database.reference.child("Utenti")
+            val childRef = usersRef.child(cUser.uid)
+            val catalogoRef = childRef.child("Catalogo")
+            val lettiRef = catalogoRef.child("Letti")
+
+            if (bookId != null) {
+                val valutazione = 1
+                lettiRef.child(bookId).child("valutazione").setValue(valutazione)
+            }
+        }
+    }
+
+    fun dislike(bookId: String){
+        if (FirebaseAuth.getInstance().currentUser != null) {
+            val cUser = FirebaseAuth.getInstance().currentUser!!
+            Log.d("TAG", "Sono :")
+            val database =
+                FirebaseDatabase.getInstance("https://booktique-87881-default-rtdb.europe-west1.firebasedatabase.app/")
+            val usersRef = database.reference.child("Utenti")
+            val childRef = usersRef.child(cUser.uid)
+            val catalogoRef = childRef.child("Catalogo")
+            val lettiRef = catalogoRef.child("Letti")
+
+            if (bookId != null) {
+                val valutazione = 2
+                lettiRef.child(bookId).child("valutazione").setValue(valutazione)
+            }
+        }
+    }
+
 }

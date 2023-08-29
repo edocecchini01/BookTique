@@ -25,6 +25,7 @@ import com.example.booktique.databinding.FragmentScopriBinding
 import com.google.firebase.auth.FirebaseAuth
 
 class Scopri : Fragment() {
+
     private lateinit var viewModel: ScopriViewModel
     private lateinit var binding: FragmentScopriBinding
 

@@ -101,88 +101,42 @@ class CatalogoLetti : Fragment() {
                 val bookId = getIdPos(bookPos)
 
                 btnLike.setOnClickListener {
-                    if (listaLibri[position].valutazione == 1) {
-                        if (FirebaseAuth.getInstance().currentUser != null) {
-                            val cUser = FirebaseAuth.getInstance().currentUser!!
-                            Log.d("TAG", "Sono :")
-                            val database =
-                                FirebaseDatabase.getInstance("https://booktique-87881-default-rtdb.europe-west1.firebasedatabase.app/")
-                            val usersRef = database.reference.child("Utenti")
-                            val childRef = usersRef.child(cUser.uid)
-                            val catalogoRef = childRef.child("Catalogo")
-                            val lettiRef = catalogoRef.child("Letti")
-
+                    lifecycleScope.launch {
+                        if (listaLibri[position].valutazione == 1) {
                             if (bookId != null) {
-                                val valutazione = 0
-                                lettiRef.child(bookId).child("valutazione").setValue(valutazione)
+                                viewModel.removelike(bookId)
+                                btnLike.setImageResource(R.drawable.pollice_icon)
+                                listaLibri[position].valutazione = 0
                             }
-                            val navController = findNavController()
-                            navController.popBackStack()
-                            navController.navigate(R.id.catalogoLetti)
-                        }
-                    }else{
-                        if (FirebaseAuth.getInstance().currentUser != null) {
-                            val cUser = FirebaseAuth.getInstance().currentUser!!
-                            Log.d("TAG", "Sono :")
-                            val database =
-                                FirebaseDatabase.getInstance("https://booktique-87881-default-rtdb.europe-west1.firebasedatabase.app/")
-                            val usersRef = database.reference.child("Utenti")
-                            val childRef = usersRef.child(cUser.uid)
-                            val catalogoRef = childRef.child("Catalogo")
-                            val lettiRef = catalogoRef.child("Letti")
-
+                        } else {
                             if (bookId != null) {
-                                val valutazione = 1
-                                lettiRef.child(bookId).child("valutazione").setValue(valutazione)
+                                viewModel.like(bookId)
+                                btnLike.setImageResource(R.drawable.like_click_icon)
+                                btnDislike.setImageResource(R.drawable.pollice_icon)
+                                listaLibri[position].valutazione = 1
                             }
-                            val navController = findNavController()
-                            navController.popBackStack()
-                            navController.navigate(R.id.catalogoLetti)
                         }
                     }
                 }
 
                 btnDislike.setOnClickListener {
-                    if (listaLibri[position].valutazione == 2) {
-                        if (FirebaseAuth.getInstance().currentUser != null) {
-                            val cUser = FirebaseAuth.getInstance().currentUser!!
-                            Log.d("TAG", "Sono :")
-                            val database =
-                                FirebaseDatabase.getInstance("https://booktique-87881-default-rtdb.europe-west1.firebasedatabase.app/")
-                            val usersRef = database.reference.child("Utenti")
-                            val childRef = usersRef.child(cUser.uid)
-                            val catalogoRef = childRef.child("Catalogo")
-                            val lettiRef = catalogoRef.child("Letti")
-
+                    lifecycleScope.launch {
+                        if (listaLibri[position].valutazione == 2) {
                             if (bookId != null) {
-                                val valutazione = 0
-                                lettiRef.child(bookId).child("valutazione").setValue(valutazione)
+                                viewModel.removelike(bookId)
+                                btnDislike.setImageResource(R.drawable.pollice_icon)
+                                listaLibri[position].valutazione = 0
                             }
-                            val navController = findNavController()
-                            navController.popBackStack()
-                            navController.navigate(R.id.catalogoLetti)
-                        }
-                    }else{
-                        if (FirebaseAuth.getInstance().currentUser != null) {
-                            val cUser = FirebaseAuth.getInstance().currentUser!!
-                            Log.d("TAG", "Sono :")
-                            val database =
-                                FirebaseDatabase.getInstance("https://booktique-87881-default-rtdb.europe-west1.firebasedatabase.app/")
-                            val usersRef = database.reference.child("Utenti")
-                            val childRef = usersRef.child(cUser.uid)
-                            val catalogoRef = childRef.child("Catalogo")
-                            val lettiRef = catalogoRef.child("Letti")
-
+                        } else {
                             if (bookId != null) {
-                                val valutazione = 2
-                                lettiRef.child(bookId).child("valutazione").setValue(valutazione)
+                                viewModel.dislike(bookId)
+                                btnDislike.setImageResource(R.drawable.dislike_click)
+                                btnLike.setImageResource(R.drawable.pollice_icon)
+                                listaLibri[position].valutazione = 2
                             }
-                            val navController = findNavController()
-                            navController.popBackStack()
-                            navController.navigate(R.id.catalogoLetti)
                         }
+
                     }
-
                 }
             }
 

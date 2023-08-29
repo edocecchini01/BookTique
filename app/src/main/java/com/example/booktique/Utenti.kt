@@ -32,7 +32,7 @@ data class LibriL(
     val copertina: String?="",
     val autori: String?="",
     val recensione: String?="",
-    val valutazione: Int?=0,
+    var valutazione: Int?=0,
     val id: String?="",
     val descrizione: String?="",
     val categorie: String?=""
