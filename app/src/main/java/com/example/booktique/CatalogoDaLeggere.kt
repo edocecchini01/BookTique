@@ -132,8 +132,6 @@ class CatalogoDaLeggere : Fragment() {
 
             override fun dettaglioBook(cover: ImageButton, position: Int) {
                 val libro = getLibro(position)
-
-                val navController = findNavController()
                 val action = CatalogoDaLeggereDirections.actionCatalogoDaLeggereToLibroDaLeggere(
                     libro,
                     "catalogoDaLeggere"

@@ -17,6 +17,7 @@ import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -28,6 +29,10 @@ import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.ValueEventListener
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.runBlocking
+import kotlinx.coroutines.tasks.await
 
 class CatalogoLetti : Fragment() {
     private lateinit var binding: FragmentCatalogoLettiBinding
@@ -226,12 +231,16 @@ class CatalogoLetti : Fragment() {
                 }
             }
             override fun dettaglioBook(cover: ImageButton, position: Int) {
-                val libro = getLibro(position)
+                lifecycleScope.launch {
+                    val libro = getLibro(position)
 
-                val navController = findNavController()
-                val action =
-                    CatalogoLettiDirections.actionCatalogoLettiToLibroLetto(libro, "catalogoLetti")
-                findNavController().navigate(action)
+                    val action =
+                        CatalogoLettiDirections.actionCatalogoLettiToLibroLetto(
+                            libro!!,
+                            "catalogoLetti"
+                        )
+                    findNavController().navigate(action)
+                }
             }
 
             override fun remove(button: ImageButton, position: Int) {
@@ -299,25 +308,25 @@ class CatalogoLetti : Fragment() {
         return null
     }
 
-    private fun getLibro(position: Int): LibriL {
-
+    private suspend fun getLibro(position: Int): LibriL? {
         val bookId = listaLibri[position].id
-        val bookD: LibriL
+        var bookD: LibriL? = null
 
         if (FirebaseAuth.getInstance().currentUser != null) {
             val cUser = FirebaseAuth.getInstance().currentUser!!
-            Log.d("TAG", "Sono :")
             val database =
                 FirebaseDatabase.getInstance("https://booktique-87881-default-rtdb.europe-west1.firebasedatabase.app/")
             val usersRef = database.reference.child("Utenti")
             val childRef = usersRef.child(cUser.uid)
             val catalogoRef = childRef.child("Catalogo")
             val lettiRef = catalogoRef.child("Letti")
-            //bookD =  lettiRef.child(bookId!!)
-            //da finire
 
+            if (bookId != null) {
+                val dataSnapshot = lettiRef.child(bookId).get().await()
+                bookD = dataSnapshot.getValue(LibriL::class.java)
+            }
         }
-        //return bookD
+        return bookD
     }
 
 }
