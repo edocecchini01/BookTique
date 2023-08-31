@@ -12,6 +12,7 @@ import android.widget.Button
 import android.widget.EditText
 import android.widget.Toast
 import androidx.databinding.DataBindingUtil
+import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.Navigation
 import com.example.booktique.databinding.FragmentRegistrazioneBinding
 import com.google.android.material.textfield.TextInputEditText
@@ -31,6 +32,7 @@ class registrazione : Fragment() {
     lateinit var buttonReg :Button
     lateinit var mAuth :FirebaseAuth
     lateinit var cUser : FirebaseUser
+    private lateinit var viewModel: AutenticazioneViewModel
 
     public override fun onStart() {
         super.onStart()
@@ -54,6 +56,7 @@ class registrazione : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        viewModel = ViewModelProvider(this).get(AutenticazioneViewModel::class.java)
 
         binding.clickListener = object : ClickListener {
             override fun onScrittaClicked() {
@@ -87,41 +90,7 @@ class registrazione : Fragment() {
                                 Toast.LENGTH_SHORT,
                             ).show()
 
-                            if (FirebaseAuth.getInstance().currentUser != null) {
-                                cUser = FirebaseAuth.getInstance().currentUser!!
-                                val database =
-                                    FirebaseDatabase.getInstance("https://booktique-87881-default-rtdb.europe-west1.firebasedatabase.app/")
-                                val usersRef = database.reference.child("Utenti")
-
-                                usersRef.child(cUser.uid ?: "")
-                                    .addListenerForSingleValueEvent(object :
-                                        ValueEventListener {
-                                        override fun onDataChange(snapshot: DataSnapshot) {
-                                            if (!snapshot.exists()) {
-
-                                                val user = Utenti(
-                                                    email = email,
-                                                    password = password,
-                                                    username = username,
-                                                    catalogo = Catalogo(
-                                                        libriDaLeggere = emptyList(),
-                                                        libriInCorso = emptyList(),
-                                                        libriLetti = emptyList()
-                                                    )
-                                                )
-                                                usersRef.child(cUser.uid).setValue(user)
-                                            }
-                                        }
-
-                                        override fun onCancelled(error: DatabaseError) {
-                                            Toast.makeText(
-                                                requireContext(),
-                                                "Errore alla chiamata $error",
-                                                Toast.LENGTH_SHORT,
-                                            ).show()
-                                        }
-                                    })
-                            }
+                            viewModel.registrazione(username, password, email)
 
                             Navigation.findNavController(view)
                                 .navigate(R.id.action_registrazione_to_login)
