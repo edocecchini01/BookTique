@@ -15,6 +15,8 @@ import androidx.appcompat.app.AlertDialog
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentActivity
+import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.whenResumed
 import androidx.navigation.Navigation
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
@@ -32,6 +34,7 @@ class LibroInCorso : Fragment() {
     private lateinit var cUser : FirebaseUser
     private lateinit var libroIncorso: LibriInC
     private lateinit var activity : FragmentActivity
+    private lateinit var viewModel: CatalogoViewModel
     private val sezioni = arrayListOf("Letti","Da Leggere")
 
     private val args by navArgs<LibroInCorsoArgs>()
@@ -53,6 +56,7 @@ class LibroInCorso : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        viewModel = ViewModelProvider(this).get(CatalogoViewModel::class.java)
         activity = requireActivity()
         val bookId = args.LibroInC.id
         val imageView = binding.imageView3
@@ -84,24 +88,14 @@ class LibroInCorso : Fragment() {
             }
 
             override fun onStopTrackingTouch(seekBar: SeekBar?) {
-                if (FirebaseAuth.getInstance().currentUser != null) {
-                    val cUser = FirebaseAuth.getInstance().currentUser!!
-                    Log.d("TAG", "Sono :")
-                    val database =
-                        FirebaseDatabase.getInstance("https://booktique-87881-default-rtdb.europe-west1.firebasedatabase.app/")
-                    val usersRef = database.reference.child("Utenti")
-                    val childRef = usersRef.child(cUser.uid)
-                    val catalogoRef = childRef.child("Catalogo")
-                    val inCorsoRef = catalogoRef.child("InCorso")
 
-                    if (bookId != null) {
-                        val pagAconv = binding.textView25.text.toString()
-                        inCorsoRef.child(bookId).child("paginaAtt").setValue(pagAconv.toInt())
-                    }
+                if (bookId != null) {
+                    val pagAconv = binding.textView25.text.toString()
+                    viewModel.numPage(bookId, pagAconv)
                 }
 
                 if (binding.textView25.text == binding.textView26.text && bookId != null) {
-                    moveBooks(bookId,false)
+                    viewModel.moveBooks(bookId,false, "in corso")
                     Toast.makeText(
                         activity,
                         "Complimenti hai terminato la tua lettura!",
@@ -160,7 +154,20 @@ class LibroInCorso : Fragment() {
 
                     if (bookId != null) {
                         Log.d("TAG", "idLibro: $bookId")
-                        moveBooks(bookId,where)
+                        viewModel.moveBooks(bookId,where, "in corso")
+                        if(!where) {
+                            val navController = Navigation.findNavController(
+                                activity,
+                                R.id.fragmentContainerView
+                            )
+                            navController.navigate(R.id.action_libroInCorso_to_catalogoLetti)
+                        } else{
+                            val navController = Navigation.findNavController(
+                                activity,
+                                R.id.fragmentContainerView
+                            )
+                            navController.navigate(R.id.action_libroInCorso_to_catalogoDaLeggere)
+                        }
                     }
                 } else {
                     Toast.makeText(requireContext(), "Seleziona un elemento!", Toast.LENGTH_SHORT).show()
@@ -187,7 +194,14 @@ class LibroInCorso : Fragment() {
 
             btnConfirm.setOnClickListener {
                 if (bookId != null) {
-                    removeBook(bookId)
+                    viewModel.removeBook(bookId, "In Corso")
+                    val navController = findNavController()
+                    navController.navigate(R.id.action_libroInCorso_to_catalogoHome)
+                    Toast.makeText(
+                        requireContext(),
+                        "Libro eliminato con successo!",
+                        Toast.LENGTH_SHORT
+                    ).show()
                 }else{
                     Toast.makeText(
                         requireContext(),
@@ -207,143 +221,6 @@ class LibroInCorso : Fragment() {
         }
 
 
-    }
-
-    private fun moveBooks(bookId : String, where : Boolean) {
-        if (FirebaseAuth.getInstance().currentUser != null) {
-            val cUser = FirebaseAuth.getInstance().currentUser!!
-            val database =
-                FirebaseDatabase.getInstance("https://booktique-87881-default-rtdb.europe-west1.firebasedatabase.app/")
-            val usersRef = database.reference.child("Utenti")
-            val childRef = usersRef.child(cUser.uid)
-            val catalogoRef = childRef.child("Catalogo")
-            val daLeggereRef = catalogoRef.child("DaLeggere")
-            val inCorsoRef = catalogoRef.child("InCorso")
-            val lettiRef = catalogoRef.child("Letti")
-
-            Log.d("TAG", "bookId: $bookId")
-
-            if (!where){
-                inCorsoRef.addListenerForSingleValueEvent(object : ValueEventListener {
-                    override fun onDataChange(dataSnapshot: DataSnapshot) {
-                        for (childSnapshot in dataSnapshot.children) {
-                            val libro = childSnapshot.getValue(LibriDaL::class.java)
-
-                            if (libro != null && libro.id == bookId) {
-
-                                // Hai individuato il libro desiderato
-                                Log.d("Libro", "Libro trovato: $libro")
-                                lettiRef.child(bookId).setValue(libro)
-                                val libroRef = childSnapshot.ref
-                                Log.d("Libro", "Libro da eliminare: $libro")
-                                libroRef.removeValue()
-
-                                Toast.makeText(
-                                    activity,
-                                    "${libro.titolo?.take(50)}, spostato in \"Letti\"",
-                                    Toast.LENGTH_SHORT
-                                ).show()
-
-                                val navController = Navigation.findNavController(
-                                    activity,
-                                    R.id.fragmentContainerView
-                                )
-                                navController.navigate(R.id.action_libroInCorso_to_catalogoLetti)
-
-                                break
-                            }
-                        }
-                    }
-
-                    override fun onCancelled(error: DatabaseError) {
-                        TODO("Not yet implemented")
-                    }
-
-                })
-            } else{
-                inCorsoRef.addListenerForSingleValueEvent(object : ValueEventListener {
-                    override fun onDataChange(dataSnapshot: DataSnapshot) {
-                        for (childSnapshot in dataSnapshot.children) {
-                            val libro = childSnapshot.getValue(LibriDaL::class.java)
-
-                            if (libro != null && libro.id == bookId) {
-
-                                // Hai individuato il libro desiderato
-                                Log.d("Libro", "Libro trovato: $libro")
-                                daLeggereRef.child(bookId).setValue(libro)
-                                val libroRef = childSnapshot.ref
-                                Log.d("Libro", "Libro da eliminare: $libro")
-                                libroRef.removeValue()
-                                Toast.makeText(
-                                    activity,
-                                    "${libro.titolo?.take(50)}, spostato in \"Da leggere\"",
-                                    Toast.LENGTH_SHORT
-                                ).show()
-
-                                val navController = Navigation.findNavController(
-                                    activity,
-                                    R.id.fragmentContainerView
-                                )
-                                navController.navigate(R.id.action_libroInCorso_to_catalogoDaLeggere)
-
-
-                                break
-                            }
-                        }
-                    }
-
-                    override fun onCancelled(error: DatabaseError) {
-                        TODO("Not yet implemented")
-                    }
-
-                })
-
-            }
-        }
-
-    }
-
-    private fun removeBook(bookId : String){
-        if (FirebaseAuth.getInstance().currentUser != null) {
-            val cUser = FirebaseAuth.getInstance().currentUser!!
-            val database =
-                FirebaseDatabase.getInstance("https://booktique-87881-default-rtdb.europe-west1.firebasedatabase.app/")
-            val usersRef = database.reference.child("Utenti")
-            val childRef = usersRef.child(cUser.uid)
-            val catalogoRef = childRef.child("Catalogo")
-            val inCorsoRef = catalogoRef.child("InCorso")
-
-            inCorsoRef.addListenerForSingleValueEvent(object : ValueEventListener {
-                override fun onDataChange(dataSnapshot: DataSnapshot) {
-                    for (childSnapshot in dataSnapshot.children) {
-                        val libro = childSnapshot.getValue(LibriDaL::class.java)
-
-                        if (libro != null && libro.id == bookId) {
-                            val libroRef = childSnapshot.ref
-
-                            val navController = findNavController()
-                            navController.navigate(R.id.action_libroInCorso_to_catalogoHome)
-                            libroRef.removeValue()
-                            Toast.makeText(
-                                requireContext(),
-                                "${libro.titolo?.take(50)}, eliminato con successo!",
-                                Toast.LENGTH_SHORT
-                            ).show()
-                            break
-                        }
-                    }
-                }
-
-                override fun onCancelled(error: DatabaseError) {
-                    Toast.makeText(
-                        requireContext(),
-                        "Errore nello spostamento!",
-                        Toast.LENGTH_SHORT
-                    ).show()
-                }
-
-            })
-        }
     }
 
 }

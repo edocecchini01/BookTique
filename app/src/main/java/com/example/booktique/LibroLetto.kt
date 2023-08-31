@@ -13,6 +13,7 @@ import androidx.appcompat.app.AlertDialog
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentActivity
+import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import com.bumptech.glide.Glide
@@ -29,6 +30,7 @@ class LibroLetto : Fragment() {
     private lateinit var cUser : FirebaseUser
     private lateinit var libroLet: LibriL
     private lateinit var activity : FragmentActivity
+    private lateinit var viewModel: CatalogoViewModel
 
     private val args by navArgs<LibroLettoArgs>()
 
@@ -47,6 +49,7 @@ class LibroLetto : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        viewModel = ViewModelProvider(this).get(CatalogoViewModel::class.java)
         activity = requireActivity()
         var valutazione = args.LibroLett.valutazione
         var review = args.LibroLett.recensione
@@ -68,77 +71,32 @@ class LibroLetto : Fragment() {
 
         binding.likeL.setOnClickListener {
             if (valutazione == 1) {
-                if (FirebaseAuth.getInstance().currentUser != null) {
-                    val cUser = FirebaseAuth.getInstance().currentUser!!
-                    Log.d("TAG", "Sono :")
-                    val database =
-                        FirebaseDatabase.getInstance("https://booktique-87881-default-rtdb.europe-west1.firebasedatabase.app/")
-                    val usersRef = database.reference.child("Utenti")
-                    val childRef = usersRef.child(cUser.uid)
-                    val catalogoRef = childRef.child("Catalogo")
-                    val lettiRef = catalogoRef.child("Letti")
-
-                    if (bookId != null) {
-                            valutazione = 0
-                        graphicLike(valutazione)
-                        lettiRef.child(bookId).child("valutazione").setValue(valutazione)
-                    }
+                if (bookId != null) {
+                    viewModel.removelike(bookId)
+                    valutazione=0
+                    graphicLike(valutazione)
                 }
             }else{
-                if (FirebaseAuth.getInstance().currentUser != null) {
-                    val cUser = FirebaseAuth.getInstance().currentUser!!
-                    Log.d("TAG", "Sono :")
-                    val database =
-                        FirebaseDatabase.getInstance("https://booktique-87881-default-rtdb.europe-west1.firebasedatabase.app/")
-                    val usersRef = database.reference.child("Utenti")
-                    val childRef = usersRef.child(cUser.uid)
-                    val catalogoRef = childRef.child("Catalogo")
-                    val lettiRef = catalogoRef.child("Letti")
-
-                    if (bookId != null) {
-                            valutazione = 1
-                        graphicLike(valutazione)
-                        lettiRef.child(bookId).child("valutazione").setValue(valutazione)
-                    }
+                if (bookId != null) {
+                    viewModel.like(bookId)
+                    valutazione=1
+                    graphicLike(valutazione)
                 }
             }
         }
 
         binding.dislikeL.setOnClickListener {
             if (valutazione == 2) {
-                if (FirebaseAuth.getInstance().currentUser != null) {
-                    val cUser = FirebaseAuth.getInstance().currentUser!!
-                    Log.d("TAG", "Sono :")
-                    val database =
-                        FirebaseDatabase.getInstance("https://booktique-87881-default-rtdb.europe-west1.firebasedatabase.app/")
-                    val usersRef = database.reference.child("Utenti")
-                    val childRef = usersRef.child(cUser.uid)
-                    val catalogoRef = childRef.child("Catalogo")
-                    val lettiRef = catalogoRef.child("Letti")
-
-                    if (bookId != null) {
-                            valutazione = 0
-                        graphicLike(valutazione)
-                        lettiRef.child(bookId).child("valutazione").setValue(valutazione)
-                    }
-
+                if (bookId != null) {
+                    valutazione = 0
+                    viewModel.removelike(bookId)
+                    graphicLike(valutazione)
                 }
             }else{
-                if (FirebaseAuth.getInstance().currentUser != null) {
-                    val cUser = FirebaseAuth.getInstance().currentUser!!
-                    Log.d("TAG", "Sono :")
-                    val database =
-                        FirebaseDatabase.getInstance("https://booktique-87881-default-rtdb.europe-west1.firebasedatabase.app/")
-                    val usersRef = database.reference.child("Utenti")
-                    val childRef = usersRef.child(cUser.uid)
-                    val catalogoRef = childRef.child("Catalogo")
-                    val lettiRef = catalogoRef.child("Letti")
-
-                    if (bookId != null) {
-                            valutazione = 2
-                        graphicLike(valutazione)
-                        lettiRef.child(bookId).child("valutazione").setValue(valutazione)
-                    }
+                if (bookId != null) {
+                    valutazione = 2
+                    viewModel.dislike(bookId)
+                    graphicLike(valutazione)
                 }
             }
 
@@ -167,26 +125,13 @@ class LibroLetto : Fragment() {
                 override fun afterTextChanged(s: Editable?) {
                     if(s != null && s.isNotEmpty() && s.last() == '\n'){
                         s.replace(s.length - 1, s.length, "")
-                        if (FirebaseAuth.getInstance().currentUser != null) {
-                            val cUser = FirebaseAuth.getInstance().currentUser!!
-                            Log.d("TAG", "Sono :")
-                            val database =
-                                FirebaseDatabase.getInstance("https://booktique-87881-default-rtdb.europe-west1.firebasedatabase.app/")
-                            val usersRef = database.reference.child("Utenti")
-                            val childRef = usersRef.child(cUser.uid)
-                            val catalogoRef = childRef.child("Catalogo")
-                            val lettiRef = catalogoRef.child("Letti")
-
-                            if (bookId != null) {
-                                    review = s.toString()
-                                lettiRef.child(bookId).child("recensione").setValue(review)
-                            }
-
+                        val review = s.toString()
+                        if (bookId != null) {
+                            viewModel.comment(review, bookId)
                         }
                     }
 
                 }
-
             })
         }
 
@@ -216,7 +161,9 @@ class LibroLetto : Fragment() {
 
             btnConfirm.setOnClickListener {
                 if (bookId != null) {
-                    removeBook(bookId)
+                    viewModel.removeBook(bookId, "letti")
+                    val navController = findNavController()
+                    navController.navigate(R.id.action_libroLetto_to_catalogoHome)
                 }else{
                     Toast.makeText(
                         requireContext(),
@@ -234,7 +181,6 @@ class LibroLetto : Fragment() {
             dialog = builder.create()
             dialog?.show()
         }
-
     }
 
     fun graphicLike(valAtt : Int?){
@@ -247,49 +193,6 @@ class LibroLetto : Fragment() {
         }else{
             binding.dislikeL.setImageResource(R.drawable.dislike_click)
             binding.likeL.setImageResource(R.drawable.pollice_icon)
-        }
-    }
-
-    private fun removeBook(bookId : String){
-        if (FirebaseAuth.getInstance().currentUser != null) {
-            val cUser = FirebaseAuth.getInstance().currentUser!!
-            val database =
-                FirebaseDatabase.getInstance("https://booktique-87881-default-rtdb.europe-west1.firebasedatabase.app/")
-            val usersRef = database.reference.child("Utenti")
-            val childRef = usersRef.child(cUser.uid)
-            val catalogoRef = childRef.child("Catalogo")
-            val lettiRef = catalogoRef.child("Letti")
-
-            lettiRef.addListenerForSingleValueEvent(object : ValueEventListener {
-                override fun onDataChange(dataSnapshot: DataSnapshot) {
-                    for (childSnapshot in dataSnapshot.children) {
-                        val libro = childSnapshot.getValue(LibriDaL::class.java)
-
-                        if (libro != null && libro.id == bookId) {
-                            val libroRef = childSnapshot.ref
-
-                            val navController = findNavController()
-                            navController.navigate(R.id.action_libroLetto_to_catalogoLetti)
-                            libroRef.removeValue()
-                            Toast.makeText(
-                                requireContext(),
-                                "${libro.titolo?.take(50)}, eliminato con successo!",
-                                Toast.LENGTH_SHORT
-                            ).show()
-                            break
-                        }
-                    }
-                }
-
-                override fun onCancelled(error: DatabaseError) {
-                    Toast.makeText(
-                        requireContext(),
-                        "Errore nello spostamento!",
-                        Toast.LENGTH_SHORT
-                    ).show()
-                }
-
-            })
         }
     }
 

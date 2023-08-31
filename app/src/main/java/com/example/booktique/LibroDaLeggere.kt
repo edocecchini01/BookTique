@@ -12,6 +12,8 @@ import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.ViewModelProvider
+import androidx.navigation.Navigation
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import com.bumptech.glide.Glide
@@ -29,8 +31,8 @@ class LibroDaLeggere : Fragment() {
     private lateinit var libroDaL: LibriDaL
     private val args by navArgs<LibroDaLeggereArgs>()
     private lateinit var origin: String
+    private lateinit var viewModel: CatalogoViewModel
     private val sezioni = arrayListOf("In corso","Letti")
-
 
 
     override fun onCreateView(
@@ -44,14 +46,12 @@ class LibroDaLeggere : Fragment() {
             R.layout.fragment_libro_da_leggere, container, false
         )
 
-
-
         return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
+        viewModel = ViewModelProvider(this).get(CatalogoViewModel::class.java)
         val bookId = args.LibroDaLeg.id
         val imageView = binding.imageView5
         Glide.with(this)
@@ -105,7 +105,14 @@ class LibroDaLeggere : Fragment() {
                         where = true
 
                     if (bookId != null) {
-                        moveBooks(bookId, where)
+                        viewModel.moveBooks(bookId, where, "da leggere")
+                        if(!where) {
+                            val navController = findNavController()
+                            navController.navigate(R.id.action_libroDaLeggere_to_catalogoInCorso)
+                        } else{
+                            val navController = findNavController()
+                            navController.navigate(R.id.action_libroDaLeggere_to_catalogoLetti)
+                        }
                     }
                 } else {
                     Toast.makeText(requireContext(), "Seleziona un elemento!", Toast.LENGTH_SHORT).show()
@@ -132,7 +139,14 @@ class LibroDaLeggere : Fragment() {
 
             btnConfirm.setOnClickListener {
                 if (bookId != null) {
-                    removeBook(bookId)
+                    viewModel.removeBook(bookId, "da leggere")
+                    val navController = findNavController()
+                    navController.navigate(R.id.action_libroDaLeggere_to_catalogoDaLeggere)
+                    Toast.makeText(
+                        requireContext(),
+                        "Libro eliminato con successo!",
+                        Toast.LENGTH_SHORT
+                    ).show()
                 }else{
                     Toast.makeText(
                         requireContext(),
@@ -154,7 +168,7 @@ class LibroDaLeggere : Fragment() {
 
     }
 
-    private fun moveBooks(bookId : String, where : Boolean) {
+    /*private fun moveBooks(bookId : String, where : Boolean) {
         if (FirebaseAuth.getInstance().currentUser != null) {
             val cUser = FirebaseAuth.getInstance().currentUser!!
             val database =
@@ -286,6 +300,6 @@ class LibroDaLeggere : Fragment() {
 
                 })
         }
-    }
+    }*/
 
 }

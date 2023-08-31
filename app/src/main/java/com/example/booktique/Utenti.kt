@@ -43,7 +43,7 @@ data class LibriInC(
     val copertina: String?="",
     val autori: String?="",
     val pagineTot: Int?=0,
-    val paginaAtt: Int?=0,
+    var paginaAtt: Int?=0,
     val id: String?="",
     val descrizione: String?="",
     val categorie: String?=""
