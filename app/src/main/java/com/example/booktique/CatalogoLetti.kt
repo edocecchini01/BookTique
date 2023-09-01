@@ -30,6 +30,7 @@ import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.ValueEventListener
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.async
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
 import kotlinx.coroutines.tasks.await
@@ -186,11 +187,11 @@ class CatalogoLetti : Fragment() {
             }
             override fun dettaglioBook(cover: ImageButton, position: Int) {
                 lifecycleScope.launch {
-                    val libro = getLibro(position)
+                    val libro = async {getLibro(position)}
 
                     val action =
                         CatalogoLettiDirections.actionCatalogoLettiToLibroLetto(
-                            libro!!,
+                            libro.await()!!,
                             "catalogoLetti"
                         )
                     findNavController().navigate(action)

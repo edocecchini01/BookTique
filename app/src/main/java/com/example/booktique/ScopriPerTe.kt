@@ -37,6 +37,7 @@ import retrofit2.Response
 class ScopriPerTe : Fragment() {
     private lateinit var binding:FragmentScopriPerTeBinding
     private val perTeBooksList = mutableListOf<VolumeDet>()
+    private lateinit var viewModel: ScopriPerTeViewModel
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -53,6 +54,8 @@ class ScopriPerTe : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         scopriButton()
         userBook()
+
+        //metti cosa viewmodel
     }
 
     override fun onResume() {
@@ -317,91 +320,14 @@ class ScopriPerTe : Fragment() {
         })
     }
 
-    private fun userBook(){
-        //uguale a checkbook letti
-        if (FirebaseAuth.getInstance().currentUser != null) {
-            val cUser = FirebaseAuth.getInstance().currentUser!!
-            Log.d("TAG", "Sono :")
-            val database =
-                FirebaseDatabase.getInstance("https://booktique-87881-default-rtdb.europe-west1.firebasedatabase.app/")
-            val usersRef = database.reference.child("Utenti")
-            val childRef = usersRef.child(cUser.uid)
-            val catalogoRef = childRef.child("Catalogo")
-            val lettiRef = catalogoRef.child("Letti")
-            val daLeggereRef = catalogoRef.child("DaLeggere")
-            val inCorsoRef = catalogoRef.child("InCorso")
-
-            var allBookUser = ArrayList<String?>()
-            val likeBook = arrayListOf<LibriL>()
-
-            val eventListener = object : ValueEventListener {
-                override fun onDataChange(snapshot: DataSnapshot) {
-                    val lettiBooks = arrayListOf<LibriL>()
-                    val daLeggereBooks = arrayListOf<LibriDaL>()
-                    val inCorsoBooks = arrayListOf<LibriInC>()
-
-                    if (snapshot.exists()) {
-                        for (bookSnapshot in snapshot.children) {
-                            val libroL = bookSnapshot.getValue(LibriL::class.java)
-                            val libroDaL = bookSnapshot.getValue(LibriDaL::class.java)
-                            val libroInC = bookSnapshot.getValue(LibriInC::class.java)
-
-                            if (libroL != null) {
-                                lettiBooks.add(libroL)
-                            } else if (libroDaL != null) {
-                                daLeggereBooks.add(libroDaL)
-                            } else if (libroInC != null) {
-                                inCorsoBooks.add(libroInC)
-                            }
-
-                        }
-                    }
-
-                    for(book in lettiBooks){
-                        if(book.valutazione == 1)
-                            likeBook.add(book)
-                    }
-
-                    if(lettiBooks.isNotEmpty()) {
-                        val ids = lettiBooks.map { libro -> libro.id }
-                        allBookUser.addAll(ids)
-                    }
-                    if(daLeggereBooks.isNotEmpty()) {
-                        val ids = daLeggereBooks.map { libro -> libro.id }
-                        allBookUser.addAll(ids)
-                    }
-                    if(inCorsoBooks.isNotEmpty()) {
-                        val ids = inCorsoBooks.map { libro -> libro.id }
-                        allBookUser.addAll(ids)
-                    }
-
-                    if(likeBook.isNotEmpty()) {
-                        val countAutori = likeBook.groupingBy { it.autori }.eachCount()
-                        val mostAutore = countAutori.maxByOrNull { it.value }?.key
-                        val countGeneri = likeBook.groupingBy { it.categorie }.eachCount()
-                        val mostGenere = countGeneri.maxByOrNull { it.value }?.key
-                        Log.d("GENERE", "Valore genere: $mostGenere")
-                        Log.d("GENERE", "Valore autore: $mostAutore")
-                        val query1 = "inauthor:\"$mostAutore\""
-                        val query2 = "subject:\"$mostGenere\""
-                        perTeBook(query1, query2,"relevance",30,allBookUser)
-                    }else{
+    private fun userBook(): ArrayList<String>{
+        val likeBook = viewModel.userTaste()
+                    if(likeBook.isEmpty()) {
                         binding.imageButton2.visibility = View.GONE
                         binding.textView7.text = "Non ci sono abbastanza informazioni, torna quando avrai letto altri libri!"
                         binding.linearL.visibility = View.GONE
-                    }
                 }
-
-                override fun onCancelled(error: DatabaseError) {
-                    Log.e("TAG", "Errore nel recupero dei dati", error.toException())
-                }
-            }
-
-            lettiRef.addValueEventListener(eventListener)
-            daLeggereRef.addValueEventListener(eventListener)
-            inCorsoRef.addValueEventListener(eventListener)
-
-        }
+        return likeBook
     }
 
     private var currentIndex = 0
