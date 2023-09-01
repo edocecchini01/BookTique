@@ -100,31 +100,29 @@ class DettaglioLibroScopri : Fragment() {
 
             val libro = args.LibroLeggere
             Log.d("TAG", "libro: $libro")
+            if (libro.id!=null) {
+                val nuovoLibroRef = daLeggereRef.child(libro.id)
+                nuovoLibroRef.setValue(libro)
+                    .addOnSuccessListener {
+                        val grayColor = ContextCompat.getColor(
+                            requireContext(),
+                            R.color.gray
+                        ) // Ottieni il colore grigio dal tuo file di risorse colors.xml
+                        val whiteColor = ContextCompat.getColor(requireContext(), R.color.white)
 
-
-
-            val nuovoLibroRef = daLeggereRef.push()
-            nuovoLibroRef.setValue(libro)
-                .addOnSuccessListener {
-                    val grayColor = ContextCompat.getColor(
-                        requireContext(),
-                        R.color.gray
-                    ) // Ottieni il colore grigio dal tuo file di risorse colors.xml
-                    val whiteColor = ContextCompat.getColor(requireContext(), R.color.white)
-
-                    binding.buttonAggiungi.isEnabled = false
-                    binding.buttonAggiungi.text = "Aggiunto"
-                    binding.buttonAggiungi.setBackgroundColor(grayColor)
-                    binding.buttonAggiungi.setTextColor(whiteColor)
-                }
-                .addOnFailureListener {
-                    Toast.makeText(
-                        requireContext(),
-                        "Errore durante l'aggiunta del libro",
-                        Toast.LENGTH_SHORT
-                    ).show()
-                }
-
+                        binding.buttonAggiungi.isEnabled = false
+                        binding.buttonAggiungi.text = "Aggiunto"
+                        binding.buttonAggiungi.setBackgroundColor(grayColor)
+                        binding.buttonAggiungi.setTextColor(whiteColor)
+                    }
+                    .addOnFailureListener {
+                        Toast.makeText(
+                            requireContext(),
+                            "Errore durante l'aggiunta del libro",
+                            Toast.LENGTH_SHORT
+                        ).show()
+                    }
+            }
 
         }else{
             Toast.makeText(

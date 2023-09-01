@@ -26,11 +26,16 @@ class MainActivity : AppCompatActivity() {
         navController =
             (supportFragmentManager.findFragmentById(R.id.fragmentContainerView) as NavHostFragment).navController
 
+
         if(FirebaseAuth.getInstance().currentUser != null) {
+            binding.bottomNavigationView.selectedItemId = R.id.scopriPulsante
             binding.bottomNavigationView.setOnItemSelectedListener { menuItem ->
+
+
                 when (menuItem.itemId) {
-                    R.id.catalogoPulsante -> navController.navigate(R.id.catalogoHome)
+
                     R.id.scopriPulsante -> navController.navigate(R.id.scopri)
+                    R.id.catalogoPulsante -> navController.navigate(R.id.catalogoHome)
                     R.id.impostazioniPulsante -> navController.navigate(R.id.impostazioni)
                 }
                 true
@@ -46,6 +51,23 @@ class MainActivity : AppCompatActivity() {
             }
         }
 
+    }
+
+    override fun onBackPressed() {
+        val currentDestinationId = navController.currentDestination?.id
+
+        // Verifica se l'utente è in una delle pagine raggiungibili dalla bottom navigation bar
+        val isBottomNavPage = when (currentDestinationId) {
+            R.id.scopri, R.id.catalogoHome, R.id.impostazioni -> true
+            else -> false
+        }
+
+        if (isBottomNavPage) {
+            finish()
+        } else {
+
+            super.onBackPressed()
+        }
     }
 
     }

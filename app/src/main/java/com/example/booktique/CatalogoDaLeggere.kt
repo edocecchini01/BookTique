@@ -138,11 +138,14 @@ class CatalogoDaLeggere : Fragment() {
                     val libro = getLibro(position)
 
                     val navController = findNavController()
-                    val action = CatalogoDaLeggereDirections.actionCatalogoDaLeggereToLibroDaLeggere(
-                        libro!!,
-                        "catalogoDaLeggere"
-                    )
-                    findNavController().navigate(action)
+                    if (libro != null) {
+                        val action =
+                            CatalogoDaLeggereDirections.actionCatalogoDaLeggereToLibroDaLeggere(
+                                libro,
+                                "catalogoDaLeggere"
+                            )
+                        findNavController().navigate(action)
+                    }
                 }
             }
 
@@ -223,12 +226,14 @@ class CatalogoDaLeggere : Fragment() {
             val childRef = usersRef.child(cUser.uid)
             val catalogoRef = childRef.child("Catalogo")
             val daLeggereRef = catalogoRef.child("DaLeggere")
-
+            Log.d("bookID", "$bookId")
             if (bookId != null) {
                 val dataSnapshot = daLeggereRef.child(bookId).get().await()
                 bookD = dataSnapshot.getValue(LibriDaL::class.java)
+                Log.d("bookPrimaD", "$dataSnapshot")
             }
         }
+        Log.d("bookD", "$bookD")
         return bookD
     }
 
