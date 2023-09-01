@@ -175,6 +175,8 @@ class CatalogoHome : Fragment() {
                     setupImageButtonClickListenerDaLeggere(book, imageButtons[i])
                 }
             }
+        }else{
+
         }
     }
 

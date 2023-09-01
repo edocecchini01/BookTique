@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/catalogo"
-    app:startDestination="@id/catalogoHome">
+    app:startDestination="@id/scopri">
     <fragment
         android:id="@+id/catalogoHome"
         android:name="com.example.booktique.CatalogoHome"

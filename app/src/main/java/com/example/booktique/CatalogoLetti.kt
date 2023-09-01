@@ -212,7 +212,7 @@ class CatalogoLetti : Fragment() {
 
                     btnConfirm.setOnClickListener {
                         if (bookId != null) {
-                            viewModel.removeBook(bookId)
+                            viewModel.removeBook(bookId, "letti")
                             Toast.makeText(
                                 requireContext(),
                                 "Libro eliminato con successo!",
@@ -247,8 +247,8 @@ class CatalogoLetti : Fragment() {
     }
 
     private fun loadBooks(books: List<LibriL>?){
+        listaLibri.clear()
         if (books != null) {
-            listaLibri.clear()
             listaLibri.addAll(books)
             Log.d("lista", listaLibri.toString())
             adapter.notifyDataSetChanged()
