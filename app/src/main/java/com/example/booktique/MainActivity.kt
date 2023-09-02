@@ -1,5 +1,6 @@
 package com.example.booktique
 
+import android.content.Context
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.navigation.NavController
@@ -51,7 +52,18 @@ class MainActivity : AppCompatActivity() {
             }
         }
 
+        val sharedPrefs = getSharedPreferences("MyPrefs", Context.MODE_PRIVATE)
+        if (!sharedPrefs.contains("currentIndex")) {
+            val editor = sharedPrefs.edit()
+            editor.putInt("currentIndex", 0)
+            editor.apply()
+        }else{
+            val currentIndex = 0
+            sharedPrefs.edit().putInt("currentIndex", currentIndex).apply()
+        }
+
     }
+
 
     override fun onBackPressed() {
         val currentDestinationId = navController.currentDestination?.id

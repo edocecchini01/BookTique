@@ -1,5 +1,7 @@
 package com.example.booktique
 
+import android.content.Context
+import android.content.SharedPreferences
 import android.graphics.Color
 import android.graphics.drawable.Drawable
 import android.os.Bundle
@@ -13,6 +15,9 @@ import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.DataSource
@@ -27,6 +32,9 @@ import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.ValueEventListener
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.async
+import kotlinx.coroutines.launch
 import okhttp3.ResponseBody
 import org.json.JSONException
 import org.json.JSONObject
@@ -38,6 +46,7 @@ class ScopriPerTe : Fragment() {
     private lateinit var binding:FragmentScopriPerTeBinding
     private val perTeBooksList = mutableListOf<VolumeDet>()
     private lateinit var viewModel: ScopriPerTeViewModel
+    private lateinit var sharedPrefs: SharedPreferences
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -52,10 +61,26 @@ class ScopriPerTe : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        scopriButton()
-        userBook()
+        viewModel = ViewModelProvider(this).get(ScopriPerTeViewModel::class.java)
+        sharedPrefs = requireContext().getSharedPreferences("MyPrefs", Context.MODE_PRIVATE)
 
-        //metti cosa viewmodel
+        viewModel.perTeBooksList.observe(viewLifecycleOwner, Observer { PerTeBookList ->
+            Log.d("SLIDE","Pertebookssss:$PerTeBookList")
+            loadBooks(PerTeBookList)
+            slideBook()
+        })
+
+        scopriButton()
+        lifecycleScope.launch() {
+            val go = likeBook()
+            if(go == true) {
+                val call1 = async { viewModel.authorCall("relevance", 15) }
+                val call2 = async { viewModel.genCall("relevance", 15) }
+                call1.await()
+                call2.await()
+            }
+        }
+
     }
 
     override fun onResume() {
@@ -71,274 +96,27 @@ class ScopriPerTe : Fragment() {
         }
     }
 
-    private fun perTeBook(query1: String, query2: String, order: String, maxResults: Int, allBookUser: ArrayList<String?>) {
-        val perTeCall1 = ApiServiceManager.apiService.getPerTe(query1,order,maxResults)
-        val perTeCall2 = ApiServiceManager.apiService.getPerTe(query2,order,maxResults)
-        var completedCalls = 0
-        //autore
-        perTeCall1.enqueue(object : Callback<ResponseBody> {
-            override fun onResponse(call: Call<ResponseBody>, response: Response<ResponseBody>) {
-                if (response.isSuccessful) {
-                    Log.d("TAG", "Messaggio di debug")
-
-                    val bookResponse = response.body()
-                    Log.d("TAG", "bookResponse: $bookResponse")
-
-                    try {
-                        if (bookResponse != null) {
-                            val jsonString = bookResponse.string()
-
-                            val jsonObject = JSONObject(jsonString)
-                            val itemsArray = jsonObject.getJSONArray("items")
-
-                            for (i in 0 until itemsArray.length()) {
-                                val book = itemsArray.getJSONObject(i)
-                                val volumeInfo = book.getJSONObject("volumeInfo")
-
-                                var title = "Titolo non disponibile"
-                                if (volumeInfo.has("title")) {
-                                    title = volumeInfo.optString("title")
-                                }
-                                val authorsList = mutableListOf<String>()
-                                if (volumeInfo.has("authors")) {
-                                    val authorsArray = volumeInfo.optJSONArray("authors")
-                                    if (authorsArray != null) {
-                                        for (j in 0 until authorsArray.length()) {
-                                            val author = authorsArray.getString(j)
-                                            authorsList.add(author)
-                                        }
-                                    }
-                                }
-                                val authors = authorsList.toList()
-
-                                var language = "Lingua non specificata"
-                                if (volumeInfo.has("language")) {
-                                    language = volumeInfo.optString("language")
-                                }
-
-                                var pag = 0
-                                if (volumeInfo.has("pageCount")) {
-                                    val pageCountString = volumeInfo.optString("pageCount")
-                                    pag = pageCountString.toIntOrNull() ?: 0
-                                }
-
-                                val imageLinks: ImageLinks =
-                                    if (volumeInfo.has("imageLinks")) {
-                                        val imageLinksObject =
-                                            volumeInfo.getJSONObject("imageLinks")
-                                        val thumbnail =
-                                            imageLinksObject.optString("thumbnail")
-                                        ImageLinks(thumbnail)
-                                    } else {
-                                        val thumbnail =
-                                            "android.resource://com.example.booktique/drawable/no_book_icon"
-                                        ImageLinks(thumbnail)
-                                    }
-                                val id = book.optString("id")
-
-                                var categorieList = mutableListOf<String>()
-                                if (volumeInfo.has("categories")) {
-                                    val categorieArray = volumeInfo.optJSONArray("categories")
-                                    if (categorieArray != null) {
-                                        for (j in 0 until categorieArray.length()) {
-                                            val categoria = categorieArray.getString(j)
-                                            categorieList.add(categoria)
-                                        }
-                                    }
-                                }
-                                val categoria = categorieList.toList()
-
-                                var descrizione = "Descrizione non presente"
-                                if (volumeInfo.has("description")) {
-                                    descrizione = volumeInfo.optString("description")
-                                }
-
-                                val newBook =
-                                    VolumeDet(
-                                        imageLinks,
-                                        title,
-                                        authors,
-                                        language,
-                                        pag,
-                                        id,
-                                        descrizione,
-                                        categoria
-                                    )
-                                perTeBooksList.add(newBook)
-                            }
-
-                            val allBookU = allBookUser
-                            perTeBooksList.removeAll{ libro -> allBookU.contains(libro.id)}
-
-                            completedCalls++
-
-                            if (completedCalls == 2) {
-                                perTeBooksList.shuffle()
-                                slideBook(perTeBooksList)
-                            }
-                        }
-                    } catch (e: JSONException) {
-                        // Il parsing del JSON non è valido
-                        // Gestisci l'errore
-                        Log.e("JSON Parsing Error", "Errore nel parsing del JSON: ${e.message}")
-                    }
-
-                } else {
-                    val statusCode = response.code()
-                    val errorMessage = response.message()
-                    Log.d("API Error", "Status Code: $statusCode")
-                    Log.d("API Error", "Error Message: $errorMessage")
-                }
-            }
-
-            override fun onFailure(call: Call<ResponseBody>, t: Throwable) {
-                Log.d("TAG", "Messaggio di debug11111")
-                Log.e("TAG", "Errore nella chiamata API: ${t.message}", t)
-            }
-        })
-
-        //genere
-        perTeCall2.enqueue(object : Callback<ResponseBody> {
-            override fun onResponse(call: Call<ResponseBody>, response: Response<ResponseBody>) {
-                if (response.isSuccessful) {
-                    Log.d("TAG", "Messaggio di debug")
-
-                    val bookResponse = response.body()
-                    Log.d("TAG", "bookResponse: $bookResponse")
-
-                    try {
-                        if (bookResponse != null) {
-                            val jsonString = bookResponse.string()
-
-                            val jsonObject = JSONObject(jsonString)
-                            val itemsArray = jsonObject.getJSONArray("items")
-
-                            for (i in 0 until itemsArray.length()) {
-                                val book = itemsArray.getJSONObject(i)
-                                val volumeInfo = book.getJSONObject("volumeInfo")
-
-                                var title = "Titolo non disponibile"
-                                if (volumeInfo.has("title")) {
-                                    title = volumeInfo.optString("title")
-                                }
-                                val authorsList = mutableListOf<String>()
-                                if (volumeInfo.has("authors")) {
-                                    val authorsArray = volumeInfo.optJSONArray("authors")
-                                    if (authorsArray != null) {
-                                        for (j in 0 until authorsArray.length()) {
-                                            val author = authorsArray.getString(j)
-                                            authorsList.add(author)
-                                        }
-                                    }
-                                }
-                                val authors = authorsList.toList()
-
-                                var language = "Lingua non specificata"
-                                if (volumeInfo.has("language")) {
-                                    language = volumeInfo.optString("language")
-                                }
-
-                                var pag = 0
-                                if (volumeInfo.has("pageCount")) {
-                                    val pageCountString = volumeInfo.optString("pageCount")
-                                    pag = pageCountString.toIntOrNull() ?: 0
-                                }
-
-                                val imageLinks: ImageLinks =
-                                    if (volumeInfo.has("imageLinks")) {
-                                        val imageLinksObject =
-                                            volumeInfo.getJSONObject("imageLinks")
-                                        val thumbnail =
-                                            imageLinksObject.optString("thumbnail")
-                                        ImageLinks(thumbnail)
-                                    } else {
-                                        val thumbnail =
-                                            "android.resource://com.example.booktique/drawable/no_book_icon"
-                                        ImageLinks(thumbnail)
-                                    }
-                                val id = book.optString("id")
-
-                                var categorieList = mutableListOf<String>()
-                                if (volumeInfo.has("categories")) {
-                                    val categorieArray = volumeInfo.optJSONArray("categories")
-                                    if (categorieArray != null) {
-                                        for (j in 0 until categorieArray.length()) {
-                                            val categoria = categorieArray.getString(j)
-                                            categorieList.add(categoria)
-                                        }
-                                    }
-                                }
-                                val categoria = categorieList.toList()
-
-                                var descrizione = "Descrizione non presente"
-                                if (volumeInfo.has("description")) {
-                                    descrizione = volumeInfo.optString("description")
-                                }
-
-                                val newBook =
-                                    VolumeDet(
-                                        imageLinks,
-                                        title,
-                                        authors,
-                                        language,
-                                        pag,
-                                        id,
-                                        descrizione,
-                                        categoria
-                                    )
-                                perTeBooksList.add(newBook)
-                            }
-
-                            val allBookU = allBookUser
-                            perTeBooksList.removeAll{ libro -> allBookU.contains(libro.id)}
-
-                            completedCalls++
-                            if (completedCalls == 2) {
-                                perTeBooksList.shuffle()
-                                slideBook(perTeBooksList)
-                            }
-                        }
-                    } catch (e: JSONException) {
-                        // Il parsing del JSON non è valido
-                        // Gestisci l'errore
-                        Log.e("JSON Parsing Error", "Errore nel parsing del JSON: ${e.message}")
-                    }
-
-                } else {
-                    val statusCode = response.code()
-                    val errorMessage = response.message()
-                    Log.d("API Error", "Status Code: $statusCode")
-                    Log.d("API Error", "Error Message: $errorMessage")
-                }
-
-            }
-
-            override fun onFailure(call: Call<ResponseBody>, t: Throwable) {
-                Log.d("TAG", "Messaggio di debug11111")
-                Log.e("TAG", "Errore nella chiamata API: ${t.message}", t)
-            }
-        })
+    private suspend fun likeBook() : Boolean{
+        var go = true
+        val likeBook = viewModel.likeBook()
+        if(likeBook.isEmpty()) {
+            binding.imageButton2.visibility = View.GONE
+            binding.textView7.text = "Non ci sono abbastanza informazioni, torna quando avrai letto altri libri!"
+            binding.linearL.visibility = View.GONE
+            go = false
+        }
+        return go
     }
 
-    private fun userBook(): ArrayList<String>{
-        val likeBook = viewModel.userTaste()
-                    if(likeBook.isEmpty()) {
-                        binding.imageButton2.visibility = View.GONE
-                        binding.textView7.text = "Non ci sono abbastanza informazioni, torna quando avrai letto altri libri!"
-                        binding.linearL.visibility = View.GONE
-                }
-        return likeBook
-    }
 
-    private var currentIndex = 0
-    private fun slideBook(bookss: List<VolumeDet>?) {
-        var books = bookss
-        books = books?.distinctBy { it.id }
-        if (books != null) {
-            if (books.isNotEmpty()){
+    private fun slideBook() {
+        Log.d("SLIDE","Pertebook:$perTeBooksList")
+        var currentIndex = sharedPrefs.getInt("currentIndex", 0)
+        if (perTeBooksList != null) {
+            if (perTeBooksList.isNotEmpty()){
                 binding.imageButton2.visibility = View.VISIBLE
                 binding.linearL.visibility = View.VISIBLE
-                val book = books[currentIndex]
+                val book = perTeBooksList[currentIndex]
                 binding.textView7.text = abbreviaInfo(book.title.toString(),25)
                 val imageUrl = book?.imageLinks?.thumbnail
                 Log.d("Image", "imageUrl: $imageUrl")
@@ -381,10 +159,11 @@ class ScopriPerTe : Fragment() {
 
 
                 binding.no.setOnClickListener {
-                    if (currentIndex < (books.size - 1)){
+                    if (currentIndex < (perTeBooksList.size - 1)){
                         currentIndex++
+                        sharedPrefs.edit().putInt("currentIndex", currentIndex).apply()
 
-                        val book = books[currentIndex]
+                        val book = perTeBooksList[currentIndex]
                         binding.textView7.text = abbreviaInfo(book.title.toString(), 20)
 
                         val imageUrl = book?.imageLinks?.thumbnail
@@ -429,6 +208,7 @@ class ScopriPerTe : Fragment() {
                         binding.textView7.text = "Libri terminati! Torna più tardi"
                         binding.linearL.visibility = View.GONE
                         currentIndex = 0
+                        sharedPrefs.edit().putInt("currentIndex", currentIndex).apply()
                     }
                 }
 
@@ -441,7 +221,7 @@ class ScopriPerTe : Fragment() {
                     builder.setView(dialogView)
 
                     btnConfirm.setOnClickListener {
-                        aggiungiLibro(books)
+                        aggiungiLibro()
                         dialog?.dismiss()
                     }
 
@@ -469,76 +249,18 @@ class ScopriPerTe : Fragment() {
         }
     }
 
-    private fun aggiungiLibro(books: List<VolumeDet>?){
-        if(FirebaseAuth.getInstance().currentUser != null) {
-            val cUser = FirebaseAuth.getInstance().currentUser!!
-            val database =
-                FirebaseDatabase.getInstance("https://booktique-87881-default-rtdb.europe-west1.firebasedatabase.app/")
-            val usersRef = database.reference.child("Utenti")
-            val childRef = usersRef.child(cUser.uid)
-            val catalogoRef = childRef.child("Catalogo")
-            val daLeggereRef = catalogoRef.child("DaLeggere")
-            val book = books?.get(currentIndex)
-            var title = ""
-            var link = ""
-            var authors = ""
-            var pag = 0
-            var id = ""
-            if (book!=null){
-                title = book.title?: ""
-                link = book.imageLinks?.thumbnail ?: ""
-                authors = book.authors[0]
-                pag = book.pageCount?: 0
-                id = book.id ?: ""
+    private fun aggiungiLibro(){
+        var currentIndex = sharedPrefs.getInt("currentIndex", 0)
+        val last = viewModel.aggiungiLibro(currentIndex)
+        if (last == false) {
+                currentIndex++
+                sharedPrefs.edit().putInt("currentIndex", currentIndex).apply()
+            } else{
+                binding.imageButton2.visibility = View.GONE
+                binding.textView7.text = "Libri terminati! Torna più tardi"
+                binding.linearL.visibility = View.GONE
             }
-            Log.d("TAG", "Sono qui: $link")
-
-            val libroLeg = LibriDaL(
-                title,
-                link,
-                authors,
-                pag,
-                id
-            )
-
-            val nuovoLibroRef = daLeggereRef.push()
-            nuovoLibroRef.setValue(libroLeg)
-                .addOnSuccessListener {
-                    Toast.makeText(
-                        requireContext(),
-                        "Libro aggiunto con successo",
-                        Toast.LENGTH_SHORT
-                    ).show()
-
-                    if (books != null) {
-                        if (currentIndex < (books.size -1)) {
-                            currentIndex++
-                            slideBook(books)
-                        } else{
-                            binding.imageButton2.visibility = View.GONE
-                            binding.textView7.text = "Libri terminati! Torna più tardi"
-                            binding.linearL.visibility = View.GONE
-                            currentIndex = 0
-                        }
-                    }
-                }
-                .addOnFailureListener {
-                    Toast.makeText(
-                        requireContext(),
-                        "Errore durante l'aggiunta del libro",
-                        Toast.LENGTH_SHORT
-                    ).show()
-                }
-
-
-        }else{
-            Toast.makeText(
-                requireContext(),
-                "Errore",
-                Toast.LENGTH_SHORT,
-            ).show()
         }
-    }
 
     private fun setupImageButtonClickListener(book: VolumeDet, imageButton: ImageButton) {
         imageButton.setOnClickListener {
@@ -560,6 +282,13 @@ class ScopriPerTe : Fragment() {
         }
     }
 
-
+    private fun loadBooks(books: List<VolumeDet>?){
+        var bookk = books
+        bookk = bookk?.distinctBy { it.id }
+        if (bookk != null) {
+            perTeBooksList.addAll(bookk)
+            Log.d("LOADBOOKS","$perTeBooksList")
+        }
+    }
 
 }
