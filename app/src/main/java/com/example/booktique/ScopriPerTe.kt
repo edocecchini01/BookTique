@@ -116,93 +116,16 @@ class ScopriPerTe : Fragment() {
             if (perTeBooksList.isNotEmpty()){
                 binding.imageButton2.visibility = View.VISIBLE
                 binding.linearL.visibility = View.VISIBLE
-                val book = perTeBooksList[currentIndex]
-                binding.textView7.text = abbreviaInfo(book.title.toString(),25)
-                val imageUrl = book?.imageLinks?.thumbnail
-                Log.d("Image", "imageUrl: $imageUrl")
-
-                Glide.with(requireContext())
-                    .load(imageUrl)
-                    .listener(object : RequestListener<Drawable> {
-                        override fun onLoadFailed(
-                            e: GlideException?,
-                            model: Any?,
-                            target: Target<Drawable>?,
-                            isFirstResource: Boolean
-                        ): Boolean {
-                            e?.let {
-                                // Ottieni la lista delle cause radice dell'eccezione
-                                val rootCauses = e.rootCauses
-                                for (cause in rootCauses) {
-                                    // Stampa le informazioni sulla causa dell'errore
-                                    Log.e("Glide1", "Root cause: ${cause.message}")
-                                }
-                            }
-                            return false
-                        }
-
-                        override fun onResourceReady(
-                            resource: Drawable?,
-                            model: Any?,
-                            target: Target<Drawable>?,
-                            dataSource: DataSource?,
-                            isFirstResource: Boolean
-                        ): Boolean {
-                            // L'immagine è stata caricata con successo
-                            return false
-                        }
-                    })
-
-                    .into(binding.imageButton2)
-                setupImageButtonClickListener(book, binding.imageButton2)
-
-
+                showBook(currentIndex)
 
                 binding.no.setOnClickListener {
+                    Log.d("SLIDENO","size:${perTeBooksList.size}")
                     if (currentIndex < (perTeBooksList.size - 1)){
                         currentIndex++
                         sharedPrefs.edit().putInt("currentIndex", currentIndex).apply()
+                        Log.d("SLIDENO","Index: $currentIndex")
+                        showBook(currentIndex)
 
-                        val book = perTeBooksList[currentIndex]
-                        binding.textView7.text = abbreviaInfo(book.title.toString(), 20)
-
-                        val imageUrl = book?.imageLinks?.thumbnail
-                        Log.d("Image", "imageUrl: $imageUrl")
-
-                        Glide.with(requireContext())
-                            .load(imageUrl)
-                            .listener(object : RequestListener<Drawable> {
-                                override fun onLoadFailed(
-                                    e: GlideException?,
-                                    model: Any?,
-                                    target: Target<Drawable>?,
-                                    isFirstResource: Boolean
-                                ): Boolean {
-                                    e?.let {
-                                        // Ottieni la lista delle cause radice dell'eccezione
-                                        val rootCauses = e.rootCauses
-                                        for (cause in rootCauses) {
-                                            // Stampa le informazioni sulla causa dell'errore
-                                            Log.e("Glide1", "Root cause: ${cause.message}")
-                                        }
-                                    }
-                                    return false
-                                }
-
-                                override fun onResourceReady(
-                                    resource: Drawable?,
-                                    model: Any?,
-                                    target: Target<Drawable>?,
-                                    dataSource: DataSource?,
-                                    isFirstResource: Boolean
-                                ): Boolean {
-                                    // L'immagine è stata caricata con successo
-                                    return false
-                                }
-                            })
-
-                            .into(binding.imageButton2)
-                        setupImageButtonClickListener(book, binding.imageButton2)
                     }else{
                         binding.imageButton2.visibility = View.GONE
                         binding.textView7.text = "Libri terminati! Torna più tardi"
@@ -222,6 +145,8 @@ class ScopriPerTe : Fragment() {
 
                     btnConfirm.setOnClickListener {
                         aggiungiLibro()
+                        currentIndex = sharedPrefs.getInt("currentIndex", 0)
+                        showBook(currentIndex)
                         dialog?.dismiss()
                     }
 
@@ -252,9 +177,11 @@ class ScopriPerTe : Fragment() {
     private fun aggiungiLibro(){
         var currentIndex = sharedPrefs.getInt("currentIndex", 0)
         val last = viewModel.aggiungiLibro(currentIndex)
+        Log.d("AGGIUNGI LIBRO", "last:$last")
         if (last == false) {
                 currentIndex++
                 sharedPrefs.edit().putInt("currentIndex", currentIndex).apply()
+            Log.d("AGGIUNGI LIBRO", "currentindex:$currentIndex")
             } else{
                 binding.imageButton2.visibility = View.GONE
                 binding.textView7.text = "Libri terminati! Torna più tardi"
@@ -275,7 +202,6 @@ class ScopriPerTe : Fragment() {
 
             )
 
-            val navController = findNavController()
             val action =
                 ScopriPerTeDirections.actionScopriPerTeToDettaglioLibroScopri(libro, "scopriPerTe")
             findNavController().navigate(action)
@@ -289,6 +215,49 @@ class ScopriPerTe : Fragment() {
             perTeBooksList.addAll(bookk)
             Log.d("LOADBOOKS","$perTeBooksList")
         }
+    }
+
+    private fun showBook(currentIndex : Int){
+        val book = perTeBooksList[currentIndex]
+        binding.textView7.text = abbreviaInfo(book.title.toString(), 20)
+
+        val imageUrl = book?.imageLinks?.thumbnail
+        Log.d("Image", "imageUrl: $imageUrl")
+
+        Glide.with(requireContext())
+            .load(imageUrl)
+            .listener(object : RequestListener<Drawable> {
+                override fun onLoadFailed(
+                    e: GlideException?,
+                    model: Any?,
+                    target: Target<Drawable>?,
+                    isFirstResource: Boolean
+                ): Boolean {
+                    e?.let {
+                        // Ottieni la lista delle cause radice dell'eccezione
+                        val rootCauses = e.rootCauses
+                        for (cause in rootCauses) {
+                            // Stampa le informazioni sulla causa dell'errore
+                            Log.e("Glide1", "Root cause: ${cause.message}")
+                        }
+                    }
+                    return false
+                }
+
+                override fun onResourceReady(
+                    resource: Drawable?,
+                    model: Any?,
+                    target: Target<Drawable>?,
+                    dataSource: DataSource?,
+                    isFirstResource: Boolean
+                ): Boolean {
+                    // L'immagine è stata caricata con successo
+                    return false
+                }
+            })
+
+            .into(binding.imageButton2)
+        setupImageButtonClickListener(book, binding.imageButton2)
     }
 
 }
