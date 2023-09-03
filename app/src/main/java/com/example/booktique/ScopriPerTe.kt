@@ -11,7 +11,6 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
 import android.widget.ImageButton
-import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
@@ -27,26 +26,15 @@ import com.bumptech.glide.request.target.Target
 
 import com.example.booktique.databinding.FragmentScopriPerTeBinding
 
-import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.database.DataSnapshot
-import com.google.firebase.database.DatabaseError
-import com.google.firebase.database.FirebaseDatabase
-import com.google.firebase.database.ValueEventListener
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.async
 import kotlinx.coroutines.launch
-import okhttp3.ResponseBody
-import org.json.JSONException
-import org.json.JSONObject
-import retrofit2.Call
-import retrofit2.Callback
-import retrofit2.Response
 
 class ScopriPerTe : Fragment() {
     private lateinit var binding:FragmentScopriPerTeBinding
     private val perTeBooksList = mutableListOf<VolumeDet>()
     private lateinit var viewModel: ScopriPerTeViewModel
     private lateinit var sharedPrefs: SharedPreferences
+    private var bookLoaded = false
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -66,18 +54,22 @@ class ScopriPerTe : Fragment() {
 
         viewModel.perTeBooksList.observe(viewLifecycleOwner, Observer { PerTeBookList ->
             Log.d("SLIDE","Pertebookssss:$PerTeBookList")
-            loadBooks(PerTeBookList)
+            if(bookLoaded == false) {
+                loadBooks(PerTeBookList)
+            }
             slideBook()
         })
 
         scopriButton()
-        lifecycleScope.launch() {
-            val go = likeBook()
-            if(go == true) {
-                val call1 = async { viewModel.authorCall("relevance", 15) }
-                val call2 = async { viewModel.genCall("relevance", 15) }
-                call1.await()
-                call2.await()
+        if(perTeBooksList.isEmpty()) {
+            lifecycleScope.launch() {
+                val go = likeBook()
+                if (go == true) {
+                    val call1 = async { viewModel.authorCall("relevance", 15) }
+                    val call2 = async { viewModel.genCall("relevance", 15) }
+                    call1.await()
+                    call2.await()
+                }
             }
         }
 
@@ -176,9 +168,9 @@ class ScopriPerTe : Fragment() {
 
     private fun aggiungiLibro(){
         var currentIndex = sharedPrefs.getInt("currentIndex", 0)
-        val last = viewModel.aggiungiLibro(currentIndex)
-        Log.d("AGGIUNGI LIBRO", "last:$last")
-        if (last == false) {
+        val book = perTeBooksList[currentIndex]
+        viewModel.aggiungiLibro(book)
+        if (currentIndex<(perTeBooksList.size-1)) {
                 currentIndex++
                 sharedPrefs.edit().putInt("currentIndex", currentIndex).apply()
             Log.d("AGGIUNGI LIBRO", "currentindex:$currentIndex")
@@ -213,12 +205,21 @@ class ScopriPerTe : Fragment() {
         bookk = bookk?.distinctBy { it.id }
         if (bookk != null) {
             perTeBooksList.addAll(bookk)
-            Log.d("LOADBOOKS","$perTeBooksList")
+            perTeBooksList.shuffle()
+            bookLoaded = true
         }
     }
 
-    private fun showBook(currentIndex : Int){
-        val book = perTeBooksList[currentIndex]
+    private fun showBook(Index : Int){
+        val book : VolumeDet
+        var currentIndex = Index
+        if(currentIndex < (perTeBooksList.size-1)) {
+            book = perTeBooksList[currentIndex]
+        }else{
+            currentIndex = 0
+            sharedPrefs.edit().putInt("currentIndex", currentIndex).apply()
+            book = perTeBooksList[currentIndex]
+        }
         binding.textView7.text = abbreviaInfo(book.title.toString(), 20)
 
         val imageUrl = book?.imageLinks?.thumbnail

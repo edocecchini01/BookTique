@@ -1,33 +1,22 @@
 package com.example.booktique
 
-import android.content.Context
 import android.util.Log
-import android.view.View
-import android.widget.Toast
-import androidx.core.content.ContentProviderCompat.requireContext
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.booktique.ApiServiceManager
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.ValueEventListener
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.async
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
 import okhttp3.ResponseBody
-import org.jetbrains.annotations.Async
 import org.json.JSONException
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 import org.json.JSONObject
-import java.util.concurrent.atomic.AtomicInteger
 import kotlin.coroutines.resume
 import kotlin.coroutines.suspendCoroutine
 
@@ -431,10 +420,7 @@ class ScopriPerTeViewModel : ViewModel() {
         }
     }
 
-    fun aggiungiLibro(cIndex : Int) : Boolean{
-        val books = _perTeBooksList.value
-        var currentIndex = cIndex
-        var last = false
+    fun aggiungiLibro(book: VolumeDet){
         if(FirebaseAuth.getInstance().currentUser != null) {
             val cUser = FirebaseAuth.getInstance().currentUser!!
             val database =
@@ -443,17 +429,16 @@ class ScopriPerTeViewModel : ViewModel() {
             val childRef = usersRef.child(cUser.uid)
             val catalogoRef = childRef.child("Catalogo")
             val daLeggereRef = catalogoRef.child("DaLeggere")
-            val book = books?.get(currentIndex)
             var title = ""
             var link = ""
             var authors = ""
             var pag = 0
             var id = ""
-            if (book!=null){
-                title = book.title?: ""
+            if (book != null) {
+                title = book.title ?: ""
                 link = book.imageLinks?.thumbnail ?: ""
                 authors = book.authors[0]
-                pag = book.pageCount?: 0
+                pag = book.pageCount ?: 0
                 id = book.id ?: ""
             }
             Log.d("TAG", "Sono qui: $link")
@@ -469,18 +454,13 @@ class ScopriPerTeViewModel : ViewModel() {
             val nuovoLibroRef = daLeggereRef.push()
             nuovoLibroRef.setValue(libroLeg)
                 .addOnSuccessListener {
-                    if (books != null) {
-                        if (currentIndex == (books.size -1)) {
-                            last = true
-                        }
-                    }
+
                 }
                 .addOnFailureListener {
 
                 }
 
         }
-        return last
     }
 
 
