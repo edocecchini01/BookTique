@@ -451,7 +451,7 @@ class ScopriPerTeViewModel : ViewModel() {
                 id
             )
 
-            val nuovoLibroRef = daLeggereRef.push()
+            val nuovoLibroRef = daLeggereRef.child(id)
             nuovoLibroRef.setValue(libroLeg)
                 .addOnSuccessListener {
 

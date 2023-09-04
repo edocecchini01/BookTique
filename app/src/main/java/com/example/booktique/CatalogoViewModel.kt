@@ -3,6 +3,7 @@ package com.example.booktique
 import android.graphics.drawable.Drawable
 import android.util.Log
 import android.widget.Toast
+import androidx.core.content.ContextCompat
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -19,6 +20,7 @@ import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.ValueEventListener
 import com.google.firebase.database.ktx.getValue
+import kotlinx.coroutines.tasks.await
 
 class CatalogoViewModel: ViewModel() {
 
@@ -104,6 +106,31 @@ class CatalogoViewModel: ViewModel() {
                 }
             })
         }
+    }
+
+    suspend fun addBook(libro: LibriDaL): Boolean{
+        var check = false
+        if(FirebaseAuth.getInstance().currentUser != null) {
+            val cUser = FirebaseAuth.getInstance().currentUser!!
+            Log.d("TAG", "Sono qui")
+            val database =
+                FirebaseDatabase.getInstance("https://booktique-87881-default-rtdb.europe-west1.firebasedatabase.app/")
+            val usersRef = database.reference.child("Utenti")
+            val childRef = usersRef.child(cUser.uid)
+            val catalogoRef = childRef.child("Catalogo")
+            val daLeggereRef = catalogoRef.child("DaLeggere")
+
+            if (libro.id!=null) {
+                val nuovoLibroRef = daLeggereRef.child(libro.id)
+                try {
+                    nuovoLibroRef.setValue(libro).await()
+                    check=true
+                } catch (e: Exception) {
+                    check = false
+                }
+            }
+        }
+        return check
     }
 
      fun removeBook(bookId : String, tipologia: String){
