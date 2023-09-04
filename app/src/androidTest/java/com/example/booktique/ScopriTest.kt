@@ -15,6 +15,7 @@ import org.junit.Rule
 import androidx.test.espresso.action.ViewActions.*
 import androidx.test.espresso.matcher.ViewMatchers.*
 import androidx.test.ext.junit.rules.ActivityScenarioRule
+import com.example.booktique.view.MainActivity
 import org.hamcrest.CoreMatchers.allOf
 
 /**

@@ -6,7 +6,7 @@
 <FrameLayout
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".LibroLetto">
+    tools:context=".view.LibroLetto">
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"

@@ -18,14 +18,14 @@
         android:usesCleartextTraffic="true"
         tools:targetApi="31">
         <activity
-            android:name=".DettaglioLibro"
+            android:name=".view.DettaglioLibro"
             android:exported="false" />
         <activity
-            android:name=".AutenticazioneActivity"
+            android:name=".view.AutenticazioneActivity"
             android:exported="true">
         </activity>
         <activity
-            android:name=".MainActivity"
+            android:name=".view.MainActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

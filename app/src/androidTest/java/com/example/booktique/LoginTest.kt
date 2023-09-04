@@ -9,6 +9,7 @@ import androidx.test.espresso.action.ViewActions.closeSoftKeyboard
 import androidx.test.espresso.action.ViewActions.typeText
 import androidx.test.espresso.matcher.ViewMatchers.withId
 import androidx.test.ext.junit.runners.AndroidJUnit4
+import com.example.booktique.view.Login
 import com.google.firebase.auth.FirebaseAuth
 
 

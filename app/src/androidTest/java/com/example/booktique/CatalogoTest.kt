@@ -8,6 +8,7 @@ import androidx.test.espresso.action.ViewActions.click
 import androidx.test.espresso.assertion.ViewAssertions.matches
 import androidx.test.espresso.matcher.ViewMatchers.*
 import androidx.test.ext.junit.runners.AndroidJUnit4
+import com.example.booktique.view.MainActivity
 import com.google.firebase.auth.FirebaseAuth
 import org.hamcrest.CoreMatchers.*
 import org.junit.Assert.assertNotNull
