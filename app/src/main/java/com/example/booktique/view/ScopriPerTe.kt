@@ -1,4 +1,4 @@
-package com.example.booktique
+package com.example.booktique.view
 
 import android.content.Context
 import android.content.SharedPreferences
@@ -23,8 +23,13 @@ import com.bumptech.glide.load.DataSource
 import com.bumptech.glide.load.engine.GlideException
 import com.bumptech.glide.request.RequestListener
 import com.bumptech.glide.request.target.Target
+import com.example.booktique.R
+import com.example.booktique.view.ScopriPerTeDirections
+import com.example.booktique.dataModel.LibriDaL
+import com.example.booktique.dataModel.VolumeDet
 
 import com.example.booktique.databinding.FragmentScopriPerTeBinding
+import com.example.booktique.viewModel.ScopriPerTeViewModel
 
 import kotlinx.coroutines.async
 import kotlinx.coroutines.launch

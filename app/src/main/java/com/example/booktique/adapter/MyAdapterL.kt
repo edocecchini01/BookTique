@@ -1,4 +1,4 @@
-package com.example.booktique
+package com.example.booktique.adapter
 
 import android.view.LayoutInflater
 import android.view.View
@@ -8,6 +8,8 @@ import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
+import com.example.booktique.dataModel.LibriL
+import com.example.booktique.R
 import com.google.android.material.textfield.TextInputLayout
 
 class MyAdapterL (private val listaLibri : ArrayList<LibriL>) :

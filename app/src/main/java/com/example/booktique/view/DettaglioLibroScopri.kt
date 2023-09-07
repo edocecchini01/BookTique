@@ -1,4 +1,4 @@
-package com.example.booktique
+package com.example.booktique.view
 
 import android.os.Bundle
 import android.util.Log
@@ -9,25 +9,26 @@ import android.widget.Toast
 import androidx.core.content.ContextCompat
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import com.bumptech.glide.Glide
+import com.example.booktique.view.DettaglioLibroScopriArgs
+import com.example.booktique.R
 import com.example.booktique.databinding.FragmentDettaglioLibroScopriBinding
-import com.google.firebase.auth.FirebaseAuth
+import com.example.booktique.viewModel.CatalogoViewModel
 import com.google.firebase.auth.FirebaseUser
-import com.google.firebase.database.DataSnapshot
-import com.google.firebase.database.DatabaseError
-import com.google.firebase.database.FirebaseDatabase
-import com.google.firebase.database.ValueEventListener
+import kotlinx.coroutines.launch
 
 class DettaglioLibroScopri : Fragment() {
 
     private lateinit var binding: FragmentDettaglioLibroScopriBinding
     private lateinit var cUser : FirebaseUser
     private val args by navArgs<DettaglioLibroScopriArgs>()
-    private var allBookUser = ArrayList<String?>()
-
-
+    private var allBookUser = mutableListOf<String?>()
+    private lateinit var viewModel: CatalogoViewModel
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -43,14 +44,12 @@ class DettaglioLibroScopri : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        viewModel = ViewModelProvider(this).get(CatalogoViewModel::class.java)
 
-        userBook()
 
         binding.titolo.text = args.LibroLeggere.titolo
         binding.autore.text = args.LibroLeggere.autori
         binding.descrizione.text = args.LibroLeggere.descrizione
-
-
 
 
         val imageView = binding.copertina
@@ -59,7 +58,28 @@ class DettaglioLibroScopri : Fragment() {
             .into(imageView)
 
         binding.buttonAggiungi.setOnClickListener {
-            aggiungiLibro()
+            lifecycleScope.launch {
+                val check = viewModel.addBook(args.LibroLeggere)
+                Log.d("check", "$check")
+                if (check == true) {
+                    val grayColor = ContextCompat.getColor(
+                        requireContext(),
+                        R.color.gray
+                    ) // Ottieni il colore grigio dal tuo file di risorse colors.xml
+                    val whiteColor = ContextCompat.getColor(requireContext(), R.color.white)
+
+                    binding.buttonAggiungi.isEnabled = false
+                    binding.buttonAggiungi.text = "Aggiunto"
+                    binding.buttonAggiungi.setBackgroundColor(grayColor)
+                    binding.buttonAggiungi.setTextColor(whiteColor)
+                } else {
+                    Toast.makeText(
+                        requireContext(),
+                        "Errore durante l'aggiunta del libro",
+                        Toast.LENGTH_SHORT
+                    ).show()
+                }
+            }
         }
 
 
@@ -82,12 +102,12 @@ class DettaglioLibroScopri : Fragment() {
                 navController.popBackStack()
             }
         }
-
+        userBook()
 
     }
 
 
-    private fun aggiungiLibro(){
+    /*private fun aggiungiLibro(){
         if(FirebaseAuth.getInstance().currentUser != null) {
             cUser = FirebaseAuth.getInstance().currentUser!!
             Log.d("TAG", "Sono qui")
@@ -131,7 +151,7 @@ class DettaglioLibroScopri : Fragment() {
                 Toast.LENGTH_SHORT,
             ).show()
         }
-    }
+    }*/
 
     private fun checkBookAdded() {
 
@@ -153,8 +173,32 @@ class DettaglioLibroScopri : Fragment() {
     }
 
     private fun userBook(){
-        //uguale a checkbook letti
-        if (FirebaseAuth.getInstance().currentUser != null) {
+        Log.d("userbook", "sono arrivato qui")
+        viewModel.checkBookCatalogo()
+        if (!viewModel.libriDaLeggere.hasObservers()) {
+            viewModel.libriDaLeggere.observe(viewLifecycleOwner, Observer { DaLeggereBooksList ->
+                allBookUser.addAll(DaLeggereBooksList.map { it.id })
+                checkBookAdded()
+            })
+        }
+
+        if (!viewModel.libriInCorso.hasObservers()) {
+            viewModel.libriInCorso.observe(viewLifecycleOwner, Observer { InCorsoBooksList ->
+                allBookUser.addAll(InCorsoBooksList.map { it.id })
+                checkBookAdded()
+            })
+        }
+
+        if (!viewModel.libriLetti.hasObservers()) {
+            viewModel.libriLetti.observe(viewLifecycleOwner, Observer { LettiBooksList ->
+                allBookUser.addAll(LettiBooksList.map { it.id })
+                checkBookAdded()
+            })
+        }
+
+
+
+        /*if (FirebaseAuth.getInstance().currentUser != null) {
             val cUser = FirebaseAuth.getInstance().currentUser!!
             Log.d("TAG", "Sono :")
             val database =
@@ -221,7 +265,8 @@ class DettaglioLibroScopri : Fragment() {
 
             Log.d("tag", "allbooks1: $allBookUser")
 
-        }
+        }*/
+
     }
 
 

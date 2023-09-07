@@ -1,4 +1,4 @@
-package com.example.booktique
+package com.example.booktique.view
 
 import android.os.Bundle
 import android.util.Log
@@ -13,13 +13,13 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.example.booktique.R
+import com.example.booktique.view.ScopriGenereDirections
+import com.example.booktique.adapter.MyAdapterGenere
+import com.example.booktique.dataModel.LibriDaL
+import com.example.booktique.dataModel.VolumeDet
 import com.example.booktique.databinding.FragmentScopriGenereBinding
-import okhttp3.ResponseBody
-import org.json.JSONException
-import org.json.JSONObject
-import retrofit2.Call
-import retrofit2.Callback
-import retrofit2.Response
+import com.example.booktique.viewModel.ScopriViewModel
 
 class ScopriGenere : Fragment() {
     private lateinit var binding: FragmentScopriGenereBinding

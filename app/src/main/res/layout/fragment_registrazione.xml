@@ -6,12 +6,12 @@
     <data>
         <variable
             name="clickListener"
-            type="com.example.booktique.registrazione.ClickListener" />
+            type="com.example.booktique.view.registrazione.ClickListener" />
     </data>
     <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        tools:context=".registrazione">
+        tools:context=".view.registrazione">
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"

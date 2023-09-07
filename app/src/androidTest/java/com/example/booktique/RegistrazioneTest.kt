@@ -7,6 +7,7 @@ import androidx.test.espresso.Espresso
 import androidx.test.espresso.action.ViewActions
 import androidx.test.espresso.matcher.ViewMatchers
 import androidx.test.ext.junit.runners.AndroidJUnit4
+import com.example.booktique.view.registrazione
 import com.google.firebase.auth.FirebaseAuth
 import org.junit.Assert
 import org.junit.Before
@@ -15,7 +16,7 @@ import org.junit.runner.RunWith
 
 
 @RunWith(AndroidJUnit4::class)
-class RegistrazioneFragmentTest {
+class RegistrazioneTest {
 
     private lateinit var scenario: FragmentScenario<registrazione>
 
@@ -25,41 +26,42 @@ class RegistrazioneFragmentTest {
         scenario.moveToState(Lifecycle.State.STARTED)
     }
 
-   /* @Test
-    fun testRegisterSuccess() {
-        FirebaseAuth.getInstance().signOut()
-        Thread.sleep(6000)
-        // Simula l'inserimento di un'email e password validi
-        Espresso.onView(ViewMatchers.withId(R.id.username))
-            .perform(ViewActions.typeText("prova"), ViewActions.closeSoftKeyboard())
+    /*@Test
+fun testRegisterSuccess() {
 
-        Espresso.onView(ViewMatchers.withId(R.id.email))
-            .perform(ViewActions.typeText("laura2251@gmail.com"), ViewActions.closeSoftKeyboard())
-        Espresso.onView(ViewMatchers.withId(R.id.password))
-            .perform(ViewActions.typeText("Lauretta"), ViewActions.closeSoftKeyboard())
+    FirebaseAuth.getInstance().signOut()
+    Thread.sleep(6000)
+    // Simula l'inserimento di un'email e password validi
+    Espresso.onView(ViewMatchers.withId(R.id.username))
+        .perform(ViewActions.typeText("prova"), ViewActions.closeSoftKeyboard())
 
-        // Fai clic sul pulsante di login
-        Espresso.onView(ViewMatchers.withId(R.id.btn_register)).perform(ViewActions.click())
+    Espresso.onView(ViewMatchers.withId(R.id.email))
+        .perform(ViewActions.typeText("laura2@gmail.com"), ViewActions.closeSoftKeyboard())
+    Espresso.onView(ViewMatchers.withId(R.id.password))
+        .perform(ViewActions.typeText("Lauretta"), ViewActions.closeSoftKeyboard())
 
-        // Aspetta un po' per consentire il completamento del processo di login
-        Thread.sleep(6000)
+    // Fai clic sul pulsante di login
+    Espresso.onView(ViewMatchers.withId(R.id.btn_register)).perform(ViewActions.click())
 
-        // Verifica se l'utente è autenticato
-        val firebaseAuth = FirebaseAuth.getInstance()
-        val user = firebaseAuth.currentUser
-        Thread.sleep(6000)
+    // Aspetta un po' per consentire il completamento del processo di login
+    Thread.sleep(6000)
 
-        // Assicurati che l'utente sia autenticato
-        Assert.assertNotNull(user)
-        Thread.sleep(6000)
+    // Verifica se l'utente è autenticato
+    val firebaseAuth = FirebaseAuth.getInstance()
+    val user = firebaseAuth.currentUser
+    Thread.sleep(6000)
 
-        FirebaseAuth.getInstance().signOut()
+    // Assicurati che l'utente sia autenticato
+    Assert.assertNotNull(user)
+    Thread.sleep(6000)
 
-    }*/
+    FirebaseAuth.getInstance().signOut()
+
+}*/
 
     @Test
    fun testRegisterFailure() {
-        FirebaseAuth.getInstance().signOut()
+        //FirebaseAuth.getInstance().signOut()
         Thread.sleep(6000)
         // Simula l'inserimento di un'email e password non validi
         Espresso.onView(ViewMatchers.withId(R.id.username))

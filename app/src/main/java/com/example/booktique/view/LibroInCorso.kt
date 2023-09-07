@@ -1,4 +1,4 @@
-package com.example.booktique
+package com.example.booktique.view
 
 import android.os.Bundle
 import android.util.Log
@@ -16,18 +16,15 @@ import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentActivity
 import androidx.lifecycle.ViewModelProvider
-import androidx.lifecycle.whenResumed
 import androidx.navigation.Navigation
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import com.bumptech.glide.Glide
+import com.example.booktique.dataModel.LibriInC
+import com.example.booktique.R
 import com.example.booktique.databinding.FragmentLibroInCorsoBinding
-import com.google.firebase.auth.FirebaseAuth
+import com.example.booktique.viewModel.CatalogoViewModel
 import com.google.firebase.auth.FirebaseUser
-import com.google.firebase.database.DataSnapshot
-import com.google.firebase.database.DatabaseError
-import com.google.firebase.database.FirebaseDatabase
-import com.google.firebase.database.ValueEventListener
 
 class LibroInCorso : Fragment() {
     private lateinit var binding: FragmentLibroInCorsoBinding
@@ -156,18 +153,14 @@ class LibroInCorso : Fragment() {
                         Log.d("TAG", "idLibro: $bookId")
                         viewModel.moveBooks(bookId,where, "in corso")
                         if(!where) {
-                            val navController = Navigation.findNavController(
-                                activity,
-                                R.id.fragmentContainerView
-                            )
-                            navController.navigate(R.id.action_libroInCorso_to_catalogoLetti)
+                            Toast.makeText(requireContext(), "Libro spostato nella sezione Letti!", Toast.LENGTH_SHORT).show()
+
                         } else{
-                            val navController = Navigation.findNavController(
-                                activity,
-                                R.id.fragmentContainerView
-                            )
-                            navController.navigate(R.id.action_libroInCorso_to_catalogoDaLeggere)
+                            Toast.makeText(requireContext(), "Libro spostato nella sezione Da Leggere!", Toast.LENGTH_SHORT).show()
                         }
+
+                        val navController = findNavController()
+                        navController.navigate(R.id.action_libroInCorso_to_catalogoHome)
                     }
                 } else {
                     Toast.makeText(requireContext(), "Seleziona un elemento!", Toast.LENGTH_SHORT).show()

@@ -1,10 +1,16 @@
-package com.example.booktique
+package com.example.booktique.viewModel
 
 import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.example.booktique.ApiServiceManager
+import com.example.booktique.dataModel.ImageLinks
+import com.example.booktique.dataModel.LibriDaL
+import com.example.booktique.dataModel.LibriInC
+import com.example.booktique.dataModel.LibriL
+import com.example.booktique.dataModel.VolumeDet
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
@@ -433,6 +439,7 @@ class ScopriPerTeViewModel : ViewModel() {
             var link = ""
             var authors = ""
             var pag = 0
+            var description = ""
             var id = ""
             if (book != null) {
                 title = book.title ?: ""
@@ -440,6 +447,7 @@ class ScopriPerTeViewModel : ViewModel() {
                 authors = book.authors[0]
                 pag = book.pageCount ?: 0
                 id = book.id ?: ""
+                description = book.description ?: ""
             }
             Log.d("TAG", "Sono qui: $link")
 
@@ -448,10 +456,11 @@ class ScopriPerTeViewModel : ViewModel() {
                 link,
                 authors,
                 pag,
-                id
+                id,
+                description
             )
 
-            val nuovoLibroRef = daLeggereRef.push()
+            val nuovoLibroRef = daLeggereRef.child(id)
             nuovoLibroRef.setValue(libroLeg)
                 .addOnSuccessListener {
 

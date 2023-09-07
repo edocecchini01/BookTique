@@ -1,4 +1,4 @@
-package com.example.booktique
+package com.example.booktique.view
 
 import android.graphics.drawable.Drawable
 import android.os.Bundle
@@ -20,12 +20,13 @@ import com.bumptech.glide.load.DataSource
 import com.bumptech.glide.load.engine.GlideException
 import com.bumptech.glide.request.RequestListener
 import com.bumptech.glide.request.target.Target
+import com.example.booktique.dataModel.LibriDaL
+import com.example.booktique.dataModel.LibriInC
+import com.example.booktique.dataModel.LibriL
+import com.example.booktique.R
 import com.example.booktique.databinding.FragmentCatalogoHomeBinding
+import com.example.booktique.viewModel.CatalogoViewModel
 import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.database.DataSnapshot
-import com.google.firebase.database.DatabaseError
-import com.google.firebase.database.FirebaseDatabase
-import com.google.firebase.database.ValueEventListener
 
 class CatalogoHome : Fragment() {
     private lateinit var binding: FragmentCatalogoHomeBinding
@@ -73,21 +74,24 @@ class CatalogoHome : Fragment() {
         //val navController = navHostFragment.navController
 
         viewModel.checkBookCatalogo()
-        if (!viewModel.libriDaLeggere.hasObservers()) {
-            viewModel.libriDaLeggere.observe(viewLifecycleOwner, Observer { DaLeggereBooksList ->
+
+        viewModel.libriLetti.observe(viewLifecycleOwner, Observer { LettiBooksList ->
+            loadImagesIntoImageButtonsLetti(LettiBooksList)
+        })
+
+
+        viewModel.libriDaLeggere.observe(viewLifecycleOwner, Observer { DaLeggereBooksList ->
+                Log.d("da leggere", "$DaLeggereBooksList")
                 loadImagesIntoImageButtonsDaLeggere(DaLeggereBooksList)
             })
-        }
-        if (!viewModel.libriInCorso.hasObservers()) {
+
+
             viewModel.libriInCorso.observe(viewLifecycleOwner, Observer { InCorsoBooksList ->
+                Log.d("incorso", "$InCorsoBooksList")
                 loadImagesIntoImageButtonsInCorso(InCorsoBooksList)
             })
-        }
-        if (!viewModel.libriLetti.hasObservers()) {
-            viewModel.libriLetti.observe(viewLifecycleOwner, Observer { LettiBooksList ->
-                loadImagesIntoImageButtonsLetti(LettiBooksList)
-            })
-        }
+
+
 
 
         if (FirebaseAuth.getInstance().currentUser != null) {

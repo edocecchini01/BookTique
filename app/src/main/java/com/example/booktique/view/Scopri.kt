@@ -1,4 +1,4 @@
-package com.example.booktique
+package com.example.booktique.view
 
 import android.graphics.Color
 import android.graphics.drawable.Drawable
@@ -21,7 +21,12 @@ import com.bumptech.glide.load.DataSource
 import com.bumptech.glide.load.engine.GlideException
 import com.bumptech.glide.request.RequestListener
 import com.bumptech.glide.request.target.Target
+import com.example.booktique.R
+import com.example.booktique.view.ScopriDirections
+import com.example.booktique.dataModel.LibriDaL
+import com.example.booktique.dataModel.VolumeDet
 import com.example.booktique.databinding.FragmentScopriBinding
+import com.example.booktique.viewModel.ScopriViewModel
 import com.google.firebase.auth.FirebaseAuth
 
 class Scopri : Fragment() {

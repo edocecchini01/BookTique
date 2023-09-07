@@ -6,7 +6,7 @@
     app:startDestination="@id/scopri">
     <fragment
         android:id="@+id/catalogoHome"
-        android:name="com.example.booktique.CatalogoHome"
+        android:name="com.example.booktique.view.CatalogoHome"
         android:label="CatalogoHome" >
         <action
             android:id="@+id/action_catalogoHome_to_catalogoDaLeggere"
@@ -35,7 +35,7 @@
     </fragment>
     <fragment
         android:id="@+id/catalogoDaLeggere"
-        android:name="com.example.booktique.CatalogoDaLeggere"
+        android:name="com.example.booktique.view.CatalogoDaLeggere"
         android:label="fragment_catalogo_da_leggere"
         tools:layout="@layout/fragment_catalogo_da_leggere" >
 
@@ -48,7 +48,7 @@
     </fragment>
     <fragment
         android:id="@+id/scopri"
-        android:name="com.example.booktique.Scopri"
+        android:name="com.example.booktique.view.Scopri"
         android:label="Scopri" >
         <action
             android:id="@+id/action_scopri_to_catalogoHome"
@@ -69,7 +69,7 @@
     </fragment>
     <fragment
         android:id="@+id/scopriPerTe"
-        android:name="com.example.booktique.ScopriPerTe"
+        android:name="com.example.booktique.view.ScopriPerTe"
         android:label="ScopriPerTe" >
         <action
             android:id="@+id/action_scopriPerTe_to_scopri"
@@ -80,7 +80,7 @@
     </fragment>
     <fragment
         android:id="@+id/scopriGenere"
-        android:name="com.example.booktique.ScopriGenere"
+        android:name="com.example.booktique.view.ScopriGenere"
         android:label="ScopriGenere" >
         <argument
             android:name="parametro"
@@ -98,7 +98,7 @@
     </fragment>
     <fragment
         android:id="@+id/catalogoInCorso"
-        android:name="com.example.booktique.CatalogoInCorso"
+        android:name="com.example.booktique.view.CatalogoInCorso"
         android:label="CatalogoInCorso"
         tools:layout="@layout/fragment_catalogo_in_corso">
         <action
@@ -110,7 +110,7 @@
     </fragment>
     <fragment
         android:id="@+id/catalogoLetti"
-        android:name="com.example.booktique.CatalogoLetti"
+        android:name="com.example.booktique.view.CatalogoLetti"
         android:label="CatalogoLetti"
         tools:layout="@layout/fragment_catalogo_letti">
         <action
@@ -122,12 +122,12 @@
     </fragment>
     <fragment
         android:id="@+id/impostazioni"
-        android:name="com.example.booktique.Impostazioni"
+        android:name="com.example.booktique.view.Impostazioni"
         android:label="Impostazioni" />
 
     <fragment
         android:id="@+id/catalogoHomeBlock"
-        android:name="com.example.booktique.CatalogoHomeBlock"
+        android:name="com.example.booktique.view.CatalogoHomeBlock"
         android:label="CatalogoHomeBlock" >
         <action
             android:id="@+id/action_catalogoHomeBlock_to_scopri"
@@ -137,15 +137,15 @@
             app:destination="@id/impostazioni" />
         <argument
             android:name="LibridaLeggere"
-            app:argType="com.example.booktique.LibriDaL" />
+            app:argType="com.example.booktique.dataModel.LibriDaL" />
     </fragment>
     <fragment
         android:id="@+id/libroLetto"
-        android:name="com.example.booktique.LibroLetto"
+        android:name="com.example.booktique.view.LibroLetto"
         android:label="LibroLetto" >
         <argument
             android:name="LibroLett"
-            app:argType="com.example.booktique.LibriL" />
+            app:argType="com.example.booktique.dataModel.LibriL" />
         <action
             android:id="@+id/action_libroLetto_to_catalogoLetti"
             app:destination="@id/catalogoLetti" />
@@ -158,11 +158,11 @@
     </fragment>
     <fragment
         android:id="@+id/libroInCorso"
-        android:name="com.example.booktique.LibroInCorso"
+        android:name="com.example.booktique.view.LibroInCorso"
         android:label="LibroInCorso" >
         <argument
             android:name="LibroInC"
-            app:argType="com.example.booktique.LibriInC" />
+            app:argType="com.example.booktique.dataModel.LibriInC" />
         <action
             android:id="@+id/action_libroInCorso_to_catalogoLetti"
             app:destination="@id/catalogoLetti" />
@@ -181,11 +181,11 @@
     </fragment>
     <fragment
         android:id="@+id/libroDaLeggere"
-        android:name="com.example.booktique.LibroDaLeggere"
+        android:name="com.example.booktique.view.LibroDaLeggere"
         android:label="LibroDaLeggere" >
         <argument
             android:name="LibroDaLeg"
-            app:argType="com.example.booktique.LibriDaL" />
+            app:argType="com.example.booktique.dataModel.LibriDaL" />
         <action
             android:id="@+id/action_libroDaLeggere_to_catalogoHome"
             app:destination="@id/catalogoHome" />
@@ -204,7 +204,7 @@
     </fragment>
     <fragment
         android:id="@+id/dettaglioLibroScopri"
-        android:name="com.example.booktique.DettaglioLibroScopri"
+        android:name="com.example.booktique.view.DettaglioLibroScopri"
         android:label="DettaglioLibroScopri" >
         <action
             android:id="@+id/action_dettaglioLibroScopri_to_scopriPerTe"
@@ -214,7 +214,7 @@
             app:destination="@id/scopri" />
         <argument
             android:name="LibroLeggere"
-            app:argType="com.example.booktique.LibriDaL" />
+            app:argType="com.example.booktique.dataModel.LibriDaL" />
         <action
             android:id="@+id/action_dettaglioLibroScopri_to_scopriGenere"
             app:destination="@id/scopriGenere" />

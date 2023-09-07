@@ -1,4 +1,4 @@
-package com.example.booktique
+package com.example.booktique.view
 
 import android.animation.ObjectAnimator
 import android.os.Bundle
@@ -25,12 +25,13 @@ import androidx.navigation.Navigation
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.example.booktique.dataModel.LibriInC
+import com.example.booktique.adapter.MyAdapterIC
+import com.example.booktique.R
 import com.example.booktique.databinding.FragmentCatalogoInCorsoBinding
+import com.example.booktique.viewModel.CatalogoViewModel
 import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.database.DataSnapshot
-import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.FirebaseDatabase
-import com.google.firebase.database.ValueEventListener
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.tasks.await
 
@@ -116,6 +117,15 @@ class CatalogoInCorso : Fragment() {
                             if (bookId != null) {
                                 Log.d("TAG", "idLibro: $bookId")
                                 viewModel.moveBooks(bookId, where, "in corso")
+
+                                if(!where) {
+                                    Toast.makeText(requireContext(), "Libro spostato nella sezione Letti!", Toast.LENGTH_SHORT).show()
+
+                                } else{
+                                    Toast.makeText(requireContext(), "Libro spostato nella sezione Da Leggere!", Toast.LENGTH_SHORT).show()
+                                }
+                                val navController = findNavController()
+                                navController.navigate(R.id.action_catalogoInCorso_to_catalogoHome)
                             }
                         } else {
                             Toast.makeText(

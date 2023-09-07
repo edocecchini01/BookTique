@@ -1,4 +1,4 @@
-package com.example.booktique
+package com.example.booktique.dataModel
 import com.squareup.moshi.JsonClass
 
 @JsonClass(generateAdapter = true)
@@ -23,7 +23,6 @@ data class VolumeDet(
     val categories: List<String> = emptyList()
 
 )
-
 
 data class ImageLinks(
 

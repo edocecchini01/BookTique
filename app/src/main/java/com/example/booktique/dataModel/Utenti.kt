@@ -1,4 +1,4 @@
-package com.example.booktique
+package com.example.booktique.dataModel
 
 import android.os.Parcelable
 import kotlinx.parcelize.Parcelize

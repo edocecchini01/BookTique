@@ -7,7 +7,7 @@
 
     <fragment
         android:id="@+id/login"
-        android:name="com.example.booktique.Login"
+        android:name="com.example.booktique.view.Login"
         android:label="Login" >
         <action
             android:id="@+id/action_login_to_registrazione"
@@ -18,7 +18,7 @@
     </fragment>
     <fragment
         android:id="@+id/registrazione"
-        android:name="com.example.booktique.registrazione"
+        android:name="com.example.booktique.view.registrazione"
         android:label="registrazione" >
         <action
             android:id="@+id/action_registrazione_to_login"

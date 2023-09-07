@@ -5,7 +5,7 @@
 <FrameLayout
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".CatalogoLetti">
+    tools:context=".view.CatalogoLetti">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -28,6 +28,19 @@
                 android:layout_marginStart="30dp"
                 android:background="?attr/selectableItemBackgroundBorderless"
                 app:srcCompat="@drawable/back_icon" />
+
+            <TextView
+                android:id="@+id/textLetti"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:fontFamily="@font/lora_bold_italic"
+                android:text="Letti"
+                android:textColor="#FFBF9B"
+                android:textSize="26sp"
+                android:textStyle="bold"
+                />
+
 
         </androidx.appcompat.widget.Toolbar>
 

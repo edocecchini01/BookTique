@@ -1,4 +1,4 @@
-package com.example.booktique
+package com.example.booktique.view
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle

@@ -1,4 +1,4 @@
-package com.example.booktique
+package com.example.booktique.adapter
 
 import android.view.Gravity
 import android.view.LayoutInflater
@@ -10,6 +10,8 @@ import android.widget.SeekBar
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
+import com.example.booktique.dataModel.LibriInC
+import com.example.booktique.R
 
 class MyAdapterIC(private val listaLibri : ArrayList<LibriInC>) :
     RecyclerView.Adapter<MyAdapterIC.MyViewHolder>() {

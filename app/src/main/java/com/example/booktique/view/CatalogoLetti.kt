@@ -1,4 +1,4 @@
-package com.example.booktique
+package com.example.booktique.view
 
 import android.os.Bundle
 import android.text.Editable
@@ -21,18 +21,16 @@ import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.example.booktique.BookHolder.book
+import com.example.booktique.dataModel.LibriL
+import com.example.booktique.adapter.MyAdapterL
+import com.example.booktique.R
 import com.example.booktique.databinding.FragmentCatalogoLettiBinding
+import com.example.booktique.viewModel.CatalogoViewModel
 import com.google.android.material.textfield.TextInputLayout
 import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.database.DataSnapshot
-import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.FirebaseDatabase
-import com.google.firebase.database.ValueEventListener
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.async
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.runBlocking
 import kotlinx.coroutines.tasks.await
 
 class CatalogoLetti : Fragment() {

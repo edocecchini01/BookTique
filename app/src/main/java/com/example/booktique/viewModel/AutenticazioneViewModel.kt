@@ -1,7 +1,8 @@
-package com.example.booktique
+package com.example.booktique.viewModel
 
-import android.widget.Toast
 import androidx.lifecycle.ViewModel
+import com.example.booktique.dataModel.Catalogo
+import com.example.booktique.dataModel.Utenti
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.database.DataSnapshot

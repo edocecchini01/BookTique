@@ -9,6 +9,7 @@ import androidx.test.espresso.action.ViewActions.closeSoftKeyboard
 import androidx.test.espresso.action.ViewActions.typeText
 import androidx.test.espresso.matcher.ViewMatchers.withId
 import androidx.test.ext.junit.runners.AndroidJUnit4
+import com.example.booktique.view.Login
 import com.google.firebase.auth.FirebaseAuth
 
 
@@ -26,7 +27,7 @@ import org.junit.Before
  * See [testing documentation](http://d.android.com/tools/testing).
  */
 @RunWith(AndroidJUnit4::class)
-class LoginFragmentTest {
+class LoginTest {
 
     private lateinit var scenario:  FragmentScenario<Login>
 
