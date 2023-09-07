@@ -24,7 +24,6 @@ data class VolumeDet(
 
 )
 
-
 data class ImageLinks(
 
     val thumbnail: String?=""

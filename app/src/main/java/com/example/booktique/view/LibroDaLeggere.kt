@@ -103,12 +103,12 @@ class LibroDaLeggere : Fragment() {
                     if (bookId != null) {
                         viewModel.moveBooks(bookId, where, "da leggere")
                         if(!where) {
-                            val navController = findNavController()
-                            navController.navigate(R.id.action_libroDaLeggere_to_catalogoInCorso)
+                            Toast.makeText(requireContext(), "Libro spostato nella sezione In Corso!", Toast.LENGTH_SHORT).show()
                         } else{
-                            val navController = findNavController()
-                            navController.navigate(R.id.action_libroDaLeggere_to_catalogoLetti)
+                            Toast.makeText(requireContext(), "Libro spostato nella sezione Letti!", Toast.LENGTH_SHORT).show()
                         }
+                        val navController = findNavController()
+                        navController.navigate(R.id.action_libroDaLeggere_to_catalogoHome)
                     }
                 } else {
                     Toast.makeText(requireContext(), "Seleziona un elemento!", Toast.LENGTH_SHORT).show()
@@ -137,7 +137,7 @@ class LibroDaLeggere : Fragment() {
                 if (bookId != null) {
                     viewModel.removeBook(bookId, "da leggere")
                     val navController = findNavController()
-                    navController.navigate(R.id.action_libroDaLeggere_to_catalogoDaLeggere)
+                    navController.navigate(R.id.action_libroDaLeggere_to_catalogoHome)
                     Toast.makeText(
                         requireContext(),
                         "Libro eliminato con successo!",
@@ -163,139 +163,5 @@ class LibroDaLeggere : Fragment() {
 
 
     }
-
-    /*private fun moveBooks(bookId : String, where : Boolean) {
-        if (FirebaseAuth.getInstance().currentUser != null) {
-            val cUser = FirebaseAuth.getInstance().currentUser!!
-            val database =
-                FirebaseDatabase.getInstance("https://booktique-87881-default-rtdb.europe-west1.firebasedatabase.app/")
-            val usersRef = database.reference.child("Utenti")
-            val childRef = usersRef.child(cUser.uid)
-            val catalogoRef = childRef.child("Catalogo")
-            val daLeggereRef = catalogoRef.child("DaLeggere")
-            val inCorsoRef = catalogoRef.child("InCorso")
-            val lettiRef = catalogoRef.child("Letti")
-
-            Log.d("TAG", "bookId: $bookId")
-            if (!where){
-                daLeggereRef.addListenerForSingleValueEvent(object : ValueEventListener {
-                    override fun onDataChange(dataSnapshot: DataSnapshot) {
-                        for (childSnapshot in dataSnapshot.children) {
-                            val libro = childSnapshot.getValue(LibriDaL::class.java)
-
-                            if (libro != null && libro.id == bookId) {
-
-                                // Hai individuato il libro desiderato
-                                Log.d("Libro", "Libro trovato: $libro")
-                                inCorsoRef.child(bookId).setValue(libro)
-                                val libroRef = childSnapshot.ref
-                                Log.d("Libro", "Libro da eliminare: $libro")
-                                libroRef.removeValue()
-                                Toast.makeText(
-                                    requireContext(),
-                                    "${libro.titolo?.take(50)}, spostato in \"In corso\"",
-                                    Toast.LENGTH_SHORT
-                                ).show()
-
-                                val navController = findNavController()
-                                navController.navigate(R.id.action_libroDaLeggere_to_catalogoInCorso)
-
-                                break
-                            }
-                        }
-                    }
-
-                    override fun onCancelled(error: DatabaseError) {
-                        Toast.makeText(
-                            requireContext(),
-                            "Errore nello spostamento!",
-                            Toast.LENGTH_SHORT
-                        ).show()
-                    }
-
-                })
-            }else{
-                daLeggereRef.addListenerForSingleValueEvent(object : ValueEventListener {
-                    override fun onDataChange(dataSnapshot: DataSnapshot) {
-                        for (childSnapshot in dataSnapshot.children) {
-                            val libro = childSnapshot.getValue(LibriDaL::class.java)
-
-                            if (libro != null && libro.id == bookId) {
-
-                                // Hai individuato il libro desiderato
-                                Log.d("Libro", "Libro trovato: $libro")
-                                lettiRef.child(bookId).setValue(libro)
-                                val libroRef = childSnapshot.ref
-                                Log.d("Libro", "Libro da eliminare: $libro")
-                                libroRef.removeValue()
-                                Toast.makeText(
-                                    requireContext(),
-                                    "${libro.titolo?.take(50)}, spostato in \"Letti\"",
-                                    Toast.LENGTH_SHORT
-                                ).show()
-
-                                val navController = findNavController()
-                                navController.navigate(R.id.action_libroDaLeggere_to_catalogoLetti)
-
-                                break
-                            }
-                        }
-                    }
-
-                    override fun onCancelled(error: DatabaseError) {
-                        Toast.makeText(
-                            requireContext(),
-                            "Errore nello spostamento!",
-                            Toast.LENGTH_SHORT
-                        ).show()
-                    }
-
-                })
-            }
-        }
-
-    }
-
-    private fun removeBook(bookId : String){
-        if (FirebaseAuth.getInstance().currentUser != null) {
-            val cUser = FirebaseAuth.getInstance().currentUser!!
-            val database =
-                FirebaseDatabase.getInstance("https://booktique-87881-default-rtdb.europe-west1.firebasedatabase.app/")
-            val usersRef = database.reference.child("Utenti")
-            val childRef = usersRef.child(cUser.uid)
-            val catalogoRef = childRef.child("Catalogo")
-            val daLeggereRef = catalogoRef.child("DaLeggere")
-            daLeggereRef.addListenerForSingleValueEvent(object : ValueEventListener {
-                    override fun onDataChange(dataSnapshot: DataSnapshot) {
-                        for (childSnapshot in dataSnapshot.children) {
-                            val libro = childSnapshot.getValue(LibriDaL::class.java)
-
-                            if (libro != null && libro.id == bookId) {
-                                val libroRef = childSnapshot.ref
-
-                                val navController = findNavController()
-                                navController.navigate(R.id.action_libroDaLeggere_to_catalogoHome)
-                                libroRef.removeValue()
-                                Toast.makeText(
-                                    requireContext(),
-                                    "${libro.titolo?.take(50)}, eliminato con successo!",
-                                    Toast.LENGTH_SHORT
-                                ).show()
-                                break
-                            }
-                        }
-                    }
-
-                    override fun onCancelled(error: DatabaseError) {
-                        Toast.makeText(
-                            requireContext(),
-                            "Errore nello spostamento!",
-                            Toast.LENGTH_SHORT
-                        ).show()
-                    }
-
-                })
-        }
-    }*/
 
 }

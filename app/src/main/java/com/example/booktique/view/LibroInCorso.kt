@@ -153,18 +153,14 @@ class LibroInCorso : Fragment() {
                         Log.d("TAG", "idLibro: $bookId")
                         viewModel.moveBooks(bookId,where, "in corso")
                         if(!where) {
-                            val navController = Navigation.findNavController(
-                                activity,
-                                R.id.fragmentContainerView
-                            )
-                            navController.navigate(R.id.action_libroInCorso_to_catalogoLetti)
+                            Toast.makeText(requireContext(), "Libro spostato nella sezione Letti!", Toast.LENGTH_SHORT).show()
+
                         } else{
-                            val navController = Navigation.findNavController(
-                                activity,
-                                R.id.fragmentContainerView
-                            )
-                            navController.navigate(R.id.action_libroInCorso_to_catalogoDaLeggere)
+                            Toast.makeText(requireContext(), "Libro spostato nella sezione Da Leggere!", Toast.LENGTH_SHORT).show()
                         }
+
+                        val navController = findNavController()
+                        navController.navigate(R.id.action_libroInCorso_to_catalogoHome)
                     }
                 } else {
                     Toast.makeText(requireContext(), "Seleziona un elemento!", Toast.LENGTH_SHORT).show()

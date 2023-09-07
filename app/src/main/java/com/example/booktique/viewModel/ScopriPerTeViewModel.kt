@@ -439,6 +439,7 @@ class ScopriPerTeViewModel : ViewModel() {
             var link = ""
             var authors = ""
             var pag = 0
+            var description = ""
             var id = ""
             if (book != null) {
                 title = book.title ?: ""
@@ -446,6 +447,7 @@ class ScopriPerTeViewModel : ViewModel() {
                 authors = book.authors[0]
                 pag = book.pageCount ?: 0
                 id = book.id ?: ""
+                description = book.description ?: ""
             }
             Log.d("TAG", "Sono qui: $link")
 
@@ -454,7 +456,8 @@ class ScopriPerTeViewModel : ViewModel() {
                 link,
                 authors,
                 pag,
-                id
+                id,
+                description
             )
 
             val nuovoLibroRef = daLeggereRef.child(id)

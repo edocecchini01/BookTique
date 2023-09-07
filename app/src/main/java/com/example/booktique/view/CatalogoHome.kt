@@ -74,21 +74,24 @@ class CatalogoHome : Fragment() {
         //val navController = navHostFragment.navController
 
         viewModel.checkBookCatalogo()
-        if (!viewModel.libriDaLeggere.hasObservers()) {
-            viewModel.libriDaLeggere.observe(viewLifecycleOwner, Observer { DaLeggereBooksList ->
+
+        viewModel.libriLetti.observe(viewLifecycleOwner, Observer { LettiBooksList ->
+            loadImagesIntoImageButtonsLetti(LettiBooksList)
+        })
+
+
+        viewModel.libriDaLeggere.observe(viewLifecycleOwner, Observer { DaLeggereBooksList ->
+                Log.d("da leggere", "$DaLeggereBooksList")
                 loadImagesIntoImageButtonsDaLeggere(DaLeggereBooksList)
             })
-        }
-        if (!viewModel.libriInCorso.hasObservers()) {
+
+
             viewModel.libriInCorso.observe(viewLifecycleOwner, Observer { InCorsoBooksList ->
+                Log.d("incorso", "$InCorsoBooksList")
                 loadImagesIntoImageButtonsInCorso(InCorsoBooksList)
             })
-        }
-        if (!viewModel.libriLetti.hasObservers()) {
-            viewModel.libriLetti.observe(viewLifecycleOwner, Observer { LettiBooksList ->
-                loadImagesIntoImageButtonsLetti(LettiBooksList)
-            })
-        }
+
+
 
 
         if (FirebaseAuth.getInstance().currentUser != null) {

@@ -27,7 +27,7 @@ import org.junit.Before
  * See [testing documentation](http://d.android.com/tools/testing).
  */
 @RunWith(AndroidJUnit4::class)
-class LoginFragmentTest {
+class LoginTest {
 
     private lateinit var scenario:  FragmentScenario<Login>
 

@@ -21,6 +21,7 @@ import androidx.fragment.app.FragmentActivity
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
+import androidx.navigation.Navigation
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -116,6 +117,15 @@ class CatalogoInCorso : Fragment() {
                             if (bookId != null) {
                                 Log.d("TAG", "idLibro: $bookId")
                                 viewModel.moveBooks(bookId, where, "in corso")
+
+                                if(!where) {
+                                    Toast.makeText(requireContext(), "Libro spostato nella sezione Letti!", Toast.LENGTH_SHORT).show()
+
+                                } else{
+                                    Toast.makeText(requireContext(), "Libro spostato nella sezione Da Leggere!", Toast.LENGTH_SHORT).show()
+                                }
+                                val navController = findNavController()
+                                navController.navigate(R.id.action_catalogoInCorso_to_catalogoHome)
                             }
                         } else {
                             Toast.makeText(

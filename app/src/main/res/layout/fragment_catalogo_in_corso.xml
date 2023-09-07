@@ -28,6 +28,18 @@
                 android:layout_marginStart="30dp"
                 android:background="?attr/selectableItemBackgroundBorderless"
                 app:srcCompat="@drawable/back_icon" />
+            <TextView
+                android:id="@+id/textInCorso"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:fontFamily="@font/lora_bold_italic"
+                android:text="In corso"
+                android:textColor="#FFBF9B"
+                android:textSize="26sp"
+                android:textStyle="bold"
+                />
+
 
         </androidx.appcompat.widget.Toolbar>
 

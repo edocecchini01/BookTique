@@ -34,12 +34,12 @@ class ScopriTest {
     @Test
     fun testGeneriBook() {
         // Simula l'inserimento di un testo di ricerca
-        FirebaseAuth.getInstance().signInWithEmailAndPassword("laura@gmail.com", "Lauretta")
+        //FirebaseAuth.getInstance().signInWithEmailAndPassword("laura@gmail.com", "Lauretta")
 
-        Thread.sleep(6000)
+        //Thread.sleep(6000)
 
-        onView(allOf(withId(R.id.scopriPulsante), isDescendantOfA(withId(R.id.bottomNavigationView))))
-            .perform(click()) // Fai clic sul pulsante di scopri
+        //onView(allOf(withId(R.id.scopriPulsante), isDescendantOfA(withId(R.id.bottomNavigationView))))
+          //  .perform(click()) // Fai clic sul pulsante di scopri
         Thread.sleep(6000)
 
         onView(withId(R.id.book_in_c1))
@@ -65,7 +65,7 @@ class ScopriTest {
         onView(withId(R.id.backbuttonGen))
             .perform(click())
 
-        Thread.sleep(2000)
+        Thread.sleep(4000)
 
         onView(withId(R.id.book_leggere2))
             .perform(click())
