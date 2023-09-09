@@ -80,6 +80,7 @@ class CatalogoLetti : Fragment() {
             }
 
             override fun hideShow(element: LinearLayout, comment: ImageButton) {
+                // Gestione del click per mostrare/nascondere un sezione
                 val linearL = element
                 val btn = comment
                 if(linearL.visibility == View.GONE) {
@@ -94,6 +95,7 @@ class CatalogoLetti : Fragment() {
             }
 
             override fun likeDislike(like: ImageButton, dislike: ImageButton, position: Int) {
+                // Gestione del click sui pulsanti "Mi piace" e "Non mi piace"
                 val btnLike = like
                 val btnDislike = dislike
                 val bookPos = position
@@ -140,6 +142,7 @@ class CatalogoLetti : Fragment() {
             }
 
             override fun comment(recensione: TextInputLayout, position: Int) {
+                // Gestione dell'inserimento di un commento su un libro letto
                 val commento = recensione.editText
 
                 if (commento != null) {
@@ -170,8 +173,6 @@ class CatalogoLetti : Fragment() {
 
                                 val bookId = getIdPos(bookPos)
                                 if (bookId != null) {
-                                    Log.d("id", "$bookPos")
-                                    Log.d("id", "$bookId")
                                     viewModel.comment(review, bookId)
 
                                 }
@@ -184,6 +185,7 @@ class CatalogoLetti : Fragment() {
                 }
             }
             override fun dettaglioBook(cover: ImageButton, position: Int) {
+                // Gestione del click sulla copertina per visualizzare i dettagli di un libro letto
                 lifecycleScope.launch {
                     val libro = async {getLibro(position)}
 
@@ -197,6 +199,7 @@ class CatalogoLetti : Fragment() {
             }
 
             override fun remove(button: ImageButton, position: Int) {
+                // Gestione del click sul pulsante rappresentante una x per rimuovere un libro letto
                 val dButton = button
                 val bookPos = position
                 val bookId = getIdPos(bookPos)
@@ -245,15 +248,16 @@ class CatalogoLetti : Fragment() {
     }
 
     private fun loadBooks(books: List<LibriL>?){
+        // Carica i libri letti nella lista listaLibri
         listaLibri.clear()
         if (books != null) {
             listaLibri.addAll(books)
-            Log.d("lista", listaLibri.toString())
             adapter.notifyDataSetChanged()
         }
     }
 
     private fun getIdPos(position : Int): String? {
+        // Ottiene l'ID del libro in una deteerminata posizione
         if(listaLibri.isNotEmpty()){
             val bookId = listaLibri[position].id
             return bookId
@@ -262,6 +266,7 @@ class CatalogoLetti : Fragment() {
     }
 
     private suspend fun getLibro(position: Int): LibriL? {
+        // Ottiene i dettagli di un libro letto dal database Firebase
         val bookId = listaLibri[position].id
         var bookD: LibriL? = null
 

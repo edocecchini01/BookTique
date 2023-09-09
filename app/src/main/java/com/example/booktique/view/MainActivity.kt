@@ -1,6 +1,7 @@
 package com.example.booktique.view
 
 import android.content.Context
+import android.content.pm.ActivityInfo
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.navigation.NavController
@@ -15,7 +16,7 @@ class MainActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
+        setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
 
         if (supportActionBar != null) {
             supportActionBar!!.hide()
@@ -27,7 +28,7 @@ class MainActivity : AppCompatActivity() {
         navController =
             (supportFragmentManager.findFragmentById(R.id.fragmentContainerView) as NavHostFragment).navController
 
-
+        //gestione della bottomNavigationBar
         if(FirebaseAuth.getInstance().currentUser != null) {
             binding.bottomNavigationView.selectedItemId = R.id.scopriPulsante
             binding.bottomNavigationView.setOnItemSelectedListener { menuItem ->
@@ -64,7 +65,7 @@ class MainActivity : AppCompatActivity() {
 
     }
 
-
+    //gestione del pulsante indietro al fine di uscire dall'applicazione se l'utente va indietro da determinate pagine
     override fun onBackPressed() {
         val currentDestinationId = navController.currentDestination?.id
 

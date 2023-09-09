@@ -70,7 +70,7 @@ class LibroInCorso : Fragment() {
         binding.seekBar4.progress = args.LibroInC.paginaAtt!!
         binding.textView25.text = args.LibroInC.paginaAtt.toString()
 
-
+        //gestione dell'elemento seekBar usato per salvare il numero di pagina attuale
         binding.seekBar4.setOnSeekBarChangeListener(object : SeekBar.OnSeekBarChangeListener {
             override fun onProgressChanged(
                 seekBar: SeekBar?,
@@ -109,7 +109,7 @@ class LibroInCorso : Fragment() {
             binding.textView25.gravity = Gravity.CENTER
     }
         val origin = args.origin
-
+        //gestione del pulsante indietro in base alla pagina di provenienza
         if (origin == "catalogoInCorso") {
             binding.imageButton.setOnClickListener {
                 val navController = findNavController()
@@ -122,7 +122,7 @@ class LibroInCorso : Fragment() {
                 navController.navigate(R.id.action_libroInCorso_to_catalogoHome)
             }
         }
-
+        //gestione del click sul pulsante sposta
         binding.buttonSposta.setOnClickListener {
             var dialog: AlertDialog? = null
             val builder = AlertDialog.Builder(requireContext())
@@ -150,7 +150,6 @@ class LibroInCorso : Fragment() {
                         where = true
 
                     if (bookId != null) {
-                        Log.d("TAG", "idLibro: $bookId")
                         viewModel.moveBooks(bookId,where, "in corso")
                         if(!where) {
                             Toast.makeText(requireContext(), "Libro spostato nella sezione Letti!", Toast.LENGTH_SHORT).show()
@@ -176,7 +175,7 @@ class LibroInCorso : Fragment() {
             dialog = builder.create()
             dialog?.show()
         }
-
+        //gestione del click sul pulsante elimina
         binding.elimina.setOnClickListener {
             var dialog: AlertDialog? = null
             val builder = AlertDialog.Builder(requireContext())

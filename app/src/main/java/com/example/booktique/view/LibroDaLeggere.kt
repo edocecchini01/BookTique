@@ -59,7 +59,7 @@ class LibroDaLeggere : Fragment() {
         binding.textView15.text = args.LibroDaLeg.descrizione
 
         origin = args.origin
-
+        //gestione del click sul pulsante indietro in base alla pagina di provenienza
         if (origin == "catalogoDaLeggere") {
             binding.imageButton2.setOnClickListener {
                 val navController = findNavController()
@@ -73,6 +73,7 @@ class LibroDaLeggere : Fragment() {
             }
         }
 
+        //gesione del click sul pulsante sposta
         binding.buttonSposta1.setOnClickListener {
             var dialog: AlertDialog? = null
             val builder = AlertDialog.Builder(requireContext())
@@ -124,7 +125,7 @@ class LibroDaLeggere : Fragment() {
             dialog = builder.create()
             dialog?.show()
         }
-
+        //gestione del click sul pulsante elimina
         binding.elimina.setOnClickListener {
             var dialog: AlertDialog? = null
             val builder = AlertDialog.Builder(requireContext())

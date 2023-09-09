@@ -65,7 +65,7 @@ class LibroLetto : Fragment() {
 
         val bookId = args.LibroLett.id
 
-
+        //gestione dei pulsanti mi piace/non mi piace
         binding.likeL.setOnClickListener {
             if (valutazione == 1) {
                 if (bookId != null) {
@@ -134,7 +134,7 @@ class LibroLetto : Fragment() {
 
 
         val origin = args.origin
-
+        //gestione del pulsante indietro in base alla pagina di provenienza
         if (origin == "catalogoLetti") {
             binding.imageButton.setOnClickListener {
                 val navController = findNavController()
@@ -147,7 +147,7 @@ class LibroLetto : Fragment() {
                 navController.navigate(R.id.action_libroLetto_to_catalogoHome)
             }
         }
-
+        //gestione del pulsante elimina
         binding.elimina.setOnClickListener {
             var dialog: AlertDialog? = null
             val builder = AlertDialog.Builder(requireContext())
@@ -179,7 +179,7 @@ class LibroLetto : Fragment() {
             dialog?.show()
         }
     }
-
+    //gestisce la grafica dei pulsanti raffigurante un ollice in su
     fun graphicLike(valAtt : Int?){
         if(valAtt == 0){
             binding.likeL.setImageResource(R.drawable.pollice_icon)

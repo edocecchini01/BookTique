@@ -39,6 +39,8 @@ class LoginTest {
 
     @Test
     fun testLoginSuccess() {
+        FirebaseAuth.getInstance().signOut()
+        Thread.sleep(3000)
         // Simula l'inserimento di un'email e password validi
         onView(withId(R.id.email)).perform(typeText("laura@gmail.com"), closeSoftKeyboard())
         onView(withId(R.id.password)).perform(typeText("Lauretta"), closeSoftKeyboard())
@@ -62,6 +64,8 @@ class LoginTest {
 
         @Test
         fun testLoginFailure() {
+            FirebaseAuth.getInstance().signOut()
+            Thread.sleep(3000)
             // Simula l'inserimento di un'email e password non validi
             onView(withId(R.id.email)).perform(typeText("example@gmail.com"), closeSoftKeyboard())
             onView(withId(R.id.password)).perform(typeText("wrongpassword"), closeSoftKeyboard())

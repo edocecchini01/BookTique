@@ -46,7 +46,7 @@ class CatalogoDaLeggere : Fragment() {
                 inflater,
                 R.layout.fragment_catalogo_da_leggere, container, false
             )
-
+        //gestione del click sulla freccia indietro
         binding.backbuttonDl.setOnClickListener{
             val navController = findNavController()
             navController.navigate(R.id.action_catalogoDaLeggere_to_catalogoHome)
@@ -71,14 +71,12 @@ class CatalogoDaLeggere : Fragment() {
         adapter = MyAdapterDL(listaLibri)
         recyclerView.adapter = adapter
 
-        Log.d("TAG", "ADAPTER")
-
-
         adapter.setOnCLickItemListener(object : MyAdapterDL.onItemClickListener {
             //implementiamo i metodi definiti nell'interfaccia dell'adapter
                 override fun onItemClick(position: Int) {}
 
                 override fun moveBook(send: ImageButton, position: Int) {
+                    // Gestione del click sul pulsante per spostare i libri
                     val btn = send
 
                     btn.setOnClickListener {
@@ -111,7 +109,6 @@ class CatalogoDaLeggere : Fragment() {
                                     where = true
 
                                 if (bookId != null) {
-                                    Log.d("TAG", "idLibro: $bookId")
                                     viewModel.moveBooks(bookId, where, "da leggere")
 
                                     if(!where) {
@@ -144,6 +141,7 @@ class CatalogoDaLeggere : Fragment() {
                 }
 
             override fun dettaglioBook(cover: ImageButton, position: Int) {
+                //gestione del click sulla copertina del libro
                 lifecycleScope.launch {
                     val libro = getLibro(position)
 
@@ -154,7 +152,7 @@ class CatalogoDaLeggere : Fragment() {
                                 libro,
                                 "catalogoDaLeggere"
                             )
-                        findNavController().navigate(action)
+                        navController.navigate(action)
                     }
                 }
             }
@@ -164,21 +162,21 @@ class CatalogoDaLeggere : Fragment() {
             if(!viewModel.libriDaLeggere.hasObservers()) {
                 viewModel.libriDaLeggere.observe(viewLifecycleOwner, Observer { DaLeggereBooksList ->
                     loadBooks(DaLeggereBooksList)
-                    Log.d("ciao", "ciao")
                 })
         }
 
         }
 
+    //aggiornamento della lista dei libri listaLibri
     private fun loadBooks(books: List<LibriDaL>?){
         listaLibri.clear()
         if (books != null) {
             listaLibri.addAll(books)
-            Log.d("lista", listaLibri.toString())
             adapter.notifyDataSetChanged()
         }
     }
 
+    // Ottiene l'ID del libro in base alla posizione nell'elenco
     private fun getIdPos(position : Int): String? {
         if(listaLibri.isNotEmpty()){
             val bookId = listaLibri[position].id
@@ -187,6 +185,7 @@ class CatalogoDaLeggere : Fragment() {
         return null
     }
 
+    // estrae i dettagli di un libro dal DB in base alla posizione nella lista dei libri
     private suspend fun getLibro(position: Int): LibriDaL? {
         val bookId = listaLibri[position].id
         var bookD: LibriDaL? = null
@@ -199,55 +198,12 @@ class CatalogoDaLeggere : Fragment() {
             val childRef = usersRef.child(cUser.uid)
             val catalogoRef = childRef.child("Catalogo")
             val daLeggereRef = catalogoRef.child("DaLeggere")
-            Log.d("bookID", "$bookId")
             if (bookId != null) {
                 val dataSnapshot = daLeggereRef.child(bookId).get().await()
                 bookD = dataSnapshot.getValue(LibriDaL::class.java)
-                Log.d("bookPrimaD", "$dataSnapshot")
             }
         }
-        Log.d("bookD", "$bookD")
         return bookD
     }
 
 }
-
-
-
-
-/*private fun checkBookCatalogo() {
-    if (FirebaseAuth.getInstance().currentUser != null) {
-        val cUser = FirebaseAuth.getInstance().currentUser!!
-        Log.d("TAG", "Sono qui:")
-        val database =
-            FirebaseDatabase.getInstance("https://booktique-87881-default-rtdb.europe-west1.firebasedatabase.app/")
-        val usersRef = database.reference.child("Utenti")
-        val childRef = usersRef.child(cUser.uid)
-        val catalogoRef = childRef.child("Catalogo")
-        val daLeggereRef = catalogoRef.child("DaLeggere")
-
-        daLeggereRef.addListenerForSingleValueEvent(object : ValueEventListener {
-            override fun onDataChange(snapshot: DataSnapshot) {
-                val daLeggereBooks = arrayListOf<LibriDaL>()
-                if (snapshot.exists()) {
-                    for (bookSnapshot in snapshot.children) {
-                        val libriDaL = bookSnapshot.getValue(LibriDaL::class.java)
-                        Log.d("TAG", "VolumeDet : $libriDaL")
-                        daLeggereBooks.add(libriDaL!!)
-
-                    }
-                }
-
-                // Richiama la funzione per i libri "DaLeggere"
-
-                loadBooks(daLeggereBooks)
-
-            }
-
-            override fun onCancelled(error: DatabaseError) {
-                // Gestisci eventuali errori nella lettura dei dati
-                Log.e("TAG", "Errore nel recupero dei dati", error.toException())
-            }
-        })
-    }
-}*/

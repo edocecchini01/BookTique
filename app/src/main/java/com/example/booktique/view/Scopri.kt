@@ -58,7 +58,7 @@ class Scopri : Fragment() {
                 loadImagesIntoImageButtons(newestBooksList, "newest")
             })
         }
-
+        // Osserva il LiveData relevantBooks per ottenere gli aggiornamenti dei dati per i libri più rilevanti
         if (!viewModel.relevantBooks.hasObservers()) {
             viewModel.relevantBooks.observe(viewLifecycleOwner, Observer { relevantBooksList ->
                 loadImagesIntoImageButtons(relevantBooksList, "relevance")
@@ -71,7 +71,8 @@ class Scopri : Fragment() {
     }
 
 
-
+    //gestisce l'interazione con l'elemento searchView
+    //e la navigation verso la pagina che mostra i risultati della ricerca con i parametri desiderati
     private fun searchBook(){
         val searchview = binding.searchView
         searchview.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
@@ -91,6 +92,7 @@ class Scopri : Fragment() {
         })
     }
 
+    //caricamento delle immagini di copertina dei libri negli imageButtons
     private fun loadImagesIntoImageButtons(books: List<VolumeDet>?, tipologia: String) {
         val imageButtons = listOf(
             binding.bookInC1,
@@ -120,7 +122,6 @@ class Scopri : Fragment() {
             for (i in 0 until 6) {
                 val book = books[i]
                 val imageUrl = book.imageLinks.thumbnail
-                Log.d("Image", "imageUrl: $imageUrl")
 
                 Glide.with(requireContext())
                     .load(imageUrl)
@@ -132,10 +133,8 @@ class Scopri : Fragment() {
                             isFirstResource: Boolean
                         ): Boolean {
                             e?.let {
-                                // Ottieni la lista delle cause radice dell'eccezione
                                 val rootCauses = e.rootCauses
                                 for (cause in rootCauses) {
-                                    // Stampa le informazioni sulla causa dell'errore
                                     Log.e("Glide1", "Root cause: ${cause.message}")
                                 }
                             }
@@ -149,7 +148,6 @@ class Scopri : Fragment() {
                             dataSource: DataSource?,
                             isFirstResource: Boolean
                         ): Boolean {
-                            // L'immagine è stata caricata con successo
                             return false
                         }
                     })
@@ -165,7 +163,6 @@ class Scopri : Fragment() {
                 idL = book.id ?: ""
                 genere = book.categories.toString()
 
-                Log.d("TAG", "Sono qui: $link")
 
                 val libroLeg = LibriDaL(
                     book.title,
@@ -203,6 +200,7 @@ class Scopri : Fragment() {
         binding.button1.setTextColor(Color.parseColor("#FFF4E0"))
     }
 
+    //gestione del click sul bottone per te in base alla condizione dell'utente (se autenticato o no)
     private fun perTeButton(){
         if (FirebaseAuth.getInstance().currentUser != null) {
             binding.buttonPerTe.setOnClickListener {
@@ -222,6 +220,8 @@ class Scopri : Fragment() {
         }
     }
 
+    //gestisce i pulsanti dei genere
+    //e la navigation verso la pagina che mostra i risultati della ricerca con i parametri desiderati
     private fun genereButtons() {
 
         binding.button3.setOnClickListener {

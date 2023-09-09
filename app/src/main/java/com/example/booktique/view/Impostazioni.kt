@@ -43,8 +43,6 @@ class Impostazioni : Fragment() {
             auth = FirebaseAuth.getInstance()
             btn = binding.logout
             textView = binding.username
-            val btn2 = binding.modificaUtente
-            btn2.visibility = View.VISIBLE
             user = auth.currentUser!!
             if (user == null) {
                 //qualcosa che manda al login
@@ -61,8 +59,6 @@ class Impostazioni : Fragment() {
         } else {
             textView = binding.username
             textView.setText("Utente non loggato")
-            val btn2 = binding.modificaUtente
-            btn2.visibility = View.GONE
             btn = binding.logout
             btn.setText("LOGIN")
             btn.gravity = Gravity.CENTER

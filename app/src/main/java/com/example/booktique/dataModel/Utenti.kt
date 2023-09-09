@@ -3,18 +3,22 @@ package com.example.booktique.dataModel
 import android.os.Parcelable
 import kotlinx.parcelize.Parcelize
 
+//modello dati degli utenti salvati nel DB, all'interno c'è anche il catalogo personale
 data class Utenti(
     val email: String,
     val password: String,
     val username: String,
     val catalogo: Catalogo
 )
+
+//modello dati del catalogo personale al cui interno sono presenti le liste dei libri suddivisi nelle varie tipologie
 data class Catalogo(
     val libriDaLeggere: List<LibriDaL>,
     val libriInCorso: List<LibriInC>,
     val libriLetti: List<LibriL>
 )
 
+//modello dati dei libri nella sezione "da leggere"
 @Parcelize
 data class LibriDaL(
     val titolo: String?="",
@@ -26,6 +30,7 @@ data class LibriDaL(
     val categorie: String?=""
 ): Parcelable
 
+//modello dati dei libri nella sezione "letti"
 @Parcelize
 data class LibriL(
     val titolo: String?="",
@@ -37,6 +42,8 @@ data class LibriL(
     val descrizione: String?="",
     val categorie: String?=""
 ):Parcelable
+
+//modello dati dei libri nella sezione "in corso"
 @Parcelize
 data class LibriInC(
     val titolo: String?="",

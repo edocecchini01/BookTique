@@ -53,12 +53,11 @@ class CatalogoInCorso : Fragment() {
                 inflater,
                 R.layout.fragment_catalogo_in_corso, container, false
             )
-
+        // Configura il click sulla freccia indietro
         binding.backbuttonIc.setOnClickListener{
             val navController = findNavController()
             navController.navigate(R.id.action_catalogoInCorso_to_catalogoHome)
         }
-
 
         return binding.root
     }
@@ -83,6 +82,7 @@ class CatalogoInCorso : Fragment() {
             }
 
             override fun moveBook(send: ImageButton, position: Int) {
+                // Gestione del clic sul pulsante per spostare un libro
                 val btn = send
 
                 btn.setOnClickListener {
@@ -148,6 +148,7 @@ class CatalogoInCorso : Fragment() {
             }
 
             override fun reading(seekBar: SeekBar, pagAtt: TextView, pagTot : TextView, element: LinearLayout, position: Int) {
+                // Gestione del progresso di lettura di un libro, in particolare dell'interazione con la seekBar
                 val seek = seekBar
                 val pagA = pagAtt
                 val pagT = pagTot
@@ -192,6 +193,7 @@ class CatalogoInCorso : Fragment() {
             }
 
             override fun hideShow(element: LinearLayout, arrow : ImageButton) {
+                // Gestione del click per mostrare/nascondere un sezione
                 val linearL = element
                 val btn = arrow
                 if(linearL.visibility == View.GONE) {
@@ -211,6 +213,7 @@ class CatalogoInCorso : Fragment() {
             }
 
             override fun dettaglioBook(cover: ImageButton, position: Int) {
+                // Gestione del click sulla copertina per visualizzare i dettagli di un libro in corso
                 lifecycleScope.launch {
                     val libro = getLibro(position)
 
@@ -234,6 +237,7 @@ class CatalogoInCorso : Fragment() {
     }
 
     private suspend fun getLibro(position: Int): LibriInC? {
+        // Ottiene i dettagli di un libro in corso dal database Firebase
         val bookId = listaLibri[position].id
         var bookD: LibriInC? = null
 
@@ -255,14 +259,15 @@ class CatalogoInCorso : Fragment() {
     }
 
     private fun loadBooks(books: List<LibriInC>?){
+        // Carica i libri in corso nella lista listaLibri
         if (books != null) {
             listaLibri.clear()
             listaLibri.addAll(books)
-            Log.d("lista", listaLibri.toString())
             adapter.notifyDataSetChanged()
         }
     }
     private fun getIdPos(position : Int): String? {
+        // Ottiene l'ID del libro in una deteerminata posizione
         if(listaLibri.isNotEmpty()){
             val bookId = listaLibri[position].id
             return bookId

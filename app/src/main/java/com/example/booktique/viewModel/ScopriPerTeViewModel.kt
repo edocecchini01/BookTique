@@ -38,7 +38,6 @@ class ScopriPerTeViewModel : ViewModel() {
 
         if (FirebaseAuth.getInstance().currentUser != null) {
             val cUser = FirebaseAuth.getInstance().currentUser!!
-
             val database =
                 FirebaseDatabase.getInstance("https://booktique-87881-default-rtdb.europe-west1.firebasedatabase.app/")
             val usersRef = database.reference.child("Utenti")
@@ -61,12 +60,10 @@ class ScopriPerTeViewModel : ViewModel() {
                             }
                         }
                     }
-                    Log.d("LIKEBOOK", "likebook: $likeBook")
                     continuation.resume(likeBook)
                 }
 
                 override fun onCancelled(error: DatabaseError) {
-                    // Gestisci eventuali errori nella lettura dei dati
                     Log.e("TAG", "Errore nel recupero dei dati", error.toException())
                     continuation.resume(emptyList()) // Tratta l'errore come lista vuota
                 }
@@ -85,14 +82,11 @@ class ScopriPerTeViewModel : ViewModel() {
             val mostAutore = countAutori.maxByOrNull { it.value }?.key
             val countGeneri = likeBook.groupingBy { it.categorie }.eachCount()
             val mostGenere = countGeneri.maxByOrNull { it.value }?.key
-            Log.d("GENERE", "Valore genere: $mostGenere")
-            Log.d("GENERE", "Valore autore: $mostAutore")
             val query1 = "inauthor:\"$mostAutore\""
             val query2 = "subject:\"$mostGenere\""
             taste.add(query1)
             taste.add(query2)
         }
-        Log.d("TASTE", "taste: $taste")
         return taste
     }
 
@@ -100,7 +94,6 @@ class ScopriPerTeViewModel : ViewModel() {
         val allBookUser = ArrayList<String?>()
         if (FirebaseAuth.getInstance().currentUser != null) {
             val cUser = FirebaseAuth.getInstance().currentUser!!
-            Log.d("TAG", "Sono :")
             val database =
                 FirebaseDatabase.getInstance("https://booktique-87881-default-rtdb.europe-west1.firebasedatabase.app/")
             val usersRef = database.reference.child("Utenti")
@@ -167,7 +160,6 @@ class ScopriPerTeViewModel : ViewModel() {
     fun authorCall(order: String, maxResults: Int){
         viewModelScope.launch {
             val taste = userTaste()
-            Log.d("AUTHCALL", "Valore di taste: $taste")
             val query1 = taste[0]
             val allBookUser = allUBook()
             val yourBooks = mutableListOf<VolumeDet>()
@@ -178,10 +170,8 @@ class ScopriPerTeViewModel : ViewModel() {
                     response: Response<ResponseBody>
                 ) {
                     if (response.isSuccessful) {
-                        Log.d("TAG", "Messaggio di debug")
 
                         val bookResponse = response.body()
-                        Log.d("TAG", "bookResponse: $bookResponse")
 
                         try {
                             if (bookResponse != null) {
@@ -269,12 +259,9 @@ class ScopriPerTeViewModel : ViewModel() {
                                 yourBooks.removeAll { libro -> allBookUser.contains(libro.id) }
 
                                 _perTeBooksList.value = yourBooks
-                                Log.d("AUTHCALL", "libri attuali: ${_perTeBooksList.value}")
 
                             }
                         } catch (e: JSONException) {
-                            // Il parsing del JSON non è valido
-                            // Gestisci l'errore
                             Log.e("JSON Parsing Error", "Errore nel parsing del JSON: ${e.message}")
                         }
 
@@ -287,7 +274,6 @@ class ScopriPerTeViewModel : ViewModel() {
                 }
 
                 override fun onFailure(call: Call<ResponseBody>, t: Throwable) {
-                    Log.d("TAG", "Messaggio di debug11111")
                     Log.e("TAG", "Errore nella chiamata API: ${t.message}", t)
                 }
             })
@@ -298,12 +284,8 @@ class ScopriPerTeViewModel : ViewModel() {
     fun genCall(order: String, maxResults: Int){
         viewModelScope.launch {
             val taste = userTaste()
-            Log.d("GENCALL", "Valore di taste: $taste")
             val query2 = taste[1]
             val allBookUser = allUBook()
-            Log.d("GENCALL", "allbookuser: $allBookUser")
-            Log.d("GENCALL","order:$order")
-            Log.d("GENCALL","maxResult:$maxResults")
             val yourBooks = mutableListOf<VolumeDet>()
             val perTeCall2 = ApiServiceManager.apiService.getPerTe(query2, order, maxResults)
             perTeCall2.enqueue(object : Callback<ResponseBody> {
@@ -401,25 +383,19 @@ class ScopriPerTeViewModel : ViewModel() {
 
                                 yourBooks.removeAll { libro -> allBookUser.contains(libro.id) }
                                 _perTeBooksList.value = yourBooks
-                                Log.d("GENCALL","Libriii:${_perTeBooksList.value}")
                             }
                         } catch (e: JSONException) {
-                            // Il parsing del JSON non è valido
-                            // Gestisci l'errore
                             Log.e("JSON Parsing Error", "Errore nel parsing del JSON: ${e.message}")
                         }
 
                     } else {
                         val statusCode = response.code()
                         val errorMessage = response.message()
-                        Log.d("API Error", "Status Code: $statusCode")
-                        Log.d("API Error", "Error Message: $errorMessage")
                     }
 
                 }
 
                 override fun onFailure(call: Call<ResponseBody>, t: Throwable) {
-                    Log.d("TAG", "Messaggio di debug11111")
                     Log.e("TAG", "Errore nella chiamata API: ${t.message}", t)
                 }
             })
@@ -449,7 +425,6 @@ class ScopriPerTeViewModel : ViewModel() {
                 id = book.id ?: ""
                 description = book.description ?: ""
             }
-            Log.d("TAG", "Sono qui: $link")
 
             val libroLeg = LibriDaL(
                 title,

@@ -49,6 +49,15 @@ class ScopriTest {
             .check(matches(isDisplayed()))
         Thread.sleep(2000)
 
+        onView(withId(R.id.buttonAggiungi))
+            .perform(click())
+        Thread.sleep(2000)
+
+        onView(withId(R.id.buttonAggiungi))
+            .check(matches(withText("Aggiunto")))
+
+        Thread.sleep(2000)
+
         onView(withId(R.id.imageButton2))
             .perform(click())
 
@@ -63,27 +72,6 @@ class ScopriTest {
         Thread.sleep(2000)
 
         onView(withId(R.id.backbuttonGen))
-            .perform(click())
-
-        Thread.sleep(4000)
-
-        onView(withId(R.id.book_leggere2))
-            .perform(click())
-
-        onView(withId(R.id.linearLayout4))
-            .check(matches(isDisplayed()))
-        Thread.sleep(2000)
-
-        onView(withId(R.id.buttonAggiungi))
-            .perform(click())
-        Thread.sleep(2000)
-
-        onView(withId(R.id.buttonAggiungi))
-            .check(matches(withText("Aggiunto")))
-
-        Thread.sleep(2000)
-
-        onView(withId(R.id.imageButton2))
             .perform(click())
 
         Thread.sleep(2000)

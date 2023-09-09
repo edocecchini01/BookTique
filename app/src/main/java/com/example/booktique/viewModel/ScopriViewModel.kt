@@ -32,7 +32,8 @@ class ScopriViewModel : ViewModel() {
         get() = _genreBooks
 
     private var booksLoaded = false
-    // Chiamata API per ottenere i nuovi libri
+
+
     fun loadNewBooks() {
         if (!booksLoaded) {
             val currentYear = Calendar.getInstance().get(Calendar.YEAR)
@@ -46,12 +47,13 @@ class ScopriViewModel : ViewModel() {
     }
 
     fun searchBooks(query: String) {
-        orderedBooks(query, "relevance") // Cambia "relevance" con l'ordine desiderato
+        orderedBooks(query, "relevance")
     }
 
 
     private val coroutineScope = CoroutineScope(Dispatchers.IO)
 
+    //chiamata alle API di GoogleBooks
     private fun orderedBooks(query: String, tipologia: String) {
         coroutineScope.launch {
             try {
@@ -67,6 +69,7 @@ class ScopriViewModel : ViewModel() {
         }
     }
 
+    //creazione dell'oggetto VolumeDet con le informazioni estratte dalla chiamata all'API, aggiornamento delle liste MutableLiveData
     private suspend fun parseAndLoadBooks(jsonString: String, tipologia: String) {
         try {
             val jsonObject = JSONObject(jsonString)
@@ -154,6 +157,7 @@ class ScopriViewModel : ViewModel() {
         }
     }
 
+    //gestione dell'errore nel caso in cui non vada a buon fine la chiamata all'API
     private suspend fun handleApiError(error: Throwable, tipologia: String) {
         Log.e("API Error", "Errore nella chiamata API: ${error.message}", error)
         withContext(Dispatchers.Main) {
@@ -165,6 +169,8 @@ class ScopriViewModel : ViewModel() {
         }
     }
 
+    //Verifica se la chiamata è stata eseguita con successo o se si è verificato un errore
+    // chiama onSuccess() con il JSON della risposta se la chiamata è avvenuta con successo.
     private inline fun handleApiResponse(
         response: Response<ResponseBody>,
         onSuccess: (jsonString: String) -> Unit

@@ -13,6 +13,7 @@ import com.google.firebase.database.ValueEventListener
 class AutenticazioneViewModel: ViewModel() {
     lateinit var cUser : FirebaseUser
 
+    //salvataggio di un NUOVO utente nel database
     fun registrazione(username: String, password: String, email: String){
         if (FirebaseAuth.getInstance().currentUser != null) {
             cUser = FirebaseAuth.getInstance().currentUser!!

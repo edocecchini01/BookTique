@@ -81,26 +81,12 @@
                     app:layout_constraintTop_toBottomOf="@+id/username">
 
                     <Button
-                        android:id="@+id/modifica_utente"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center"
-                        android:layout_marginLeft="35dp"
-                        android:layout_marginRight="10dp"
-                        android:layout_weight="1"
-                        android:backgroundTint="#FFF4E0"
-                        android:fontFamily="@font/lora_bold_italic"
-                        android:text="MODIFICA"
-                        android:textColor="#4D4D4D"
-                        android:textSize="20dp" />
-
-                    <Button
                         android:id="@+id/logout"
-                        android:layout_width="wrap_content"
+                        android:layout_width="254dp"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center"
-                        android:layout_marginLeft="10dp"
-                        android:layout_marginRight="35dp"
+                        android:layout_marginLeft="80dp"
+                        android:layout_marginRight="80dp"
                         android:layout_weight="1"
                         android:backgroundTint="@color/red"
                         android:fontFamily="@font/lora_bold_italic"

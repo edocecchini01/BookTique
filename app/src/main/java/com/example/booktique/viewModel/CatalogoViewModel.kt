@@ -28,10 +28,11 @@ class CatalogoViewModel: ViewModel() {
     val libriInCorso: LiveData<List<LibriInC>>
         get() = _libriInCorso
 
+    // estrazione dal DB di tutti i libri presenti nel catalogo personale dell'utente autenticato,
+    // inserimento degli stessi nelle liste MutableLiveData suddivisi per categorie
     fun checkBookCatalogo(){
         if (FirebaseAuth.getInstance().currentUser != null) {
             val cUser = FirebaseAuth.getInstance().currentUser!!
-            Log.d("TAG", "Sono :")
             val database =
                 FirebaseDatabase.getInstance("https://booktique-87881-default-rtdb.europe-west1.firebasedatabase.app/")
             val usersRef = database.reference.child("Utenti")
@@ -41,8 +42,6 @@ class CatalogoViewModel: ViewModel() {
 
             val lettiRef = catalogoRef.child("Letti")
             val inCorsoRef = catalogoRef.child("InCorso")
-
-
 
             lettiRef.addListenerForSingleValueEvent(object : ValueEventListener {
                 override fun onDataChange(snapshot: DataSnapshot) {
@@ -58,7 +57,6 @@ class CatalogoViewModel: ViewModel() {
                     _libriLetti.value = lettiBooks
                 }
                 override fun onCancelled(error: DatabaseError) {
-                    // Gestisci eventuali errori nella lettura dei dati
                     Log.e("TAG", "Errore nel recupero dei dati", error.toException())
                 }
             })
@@ -68,17 +66,14 @@ class CatalogoViewModel: ViewModel() {
                     if (snapshot.exists()) {
                         for (bookSnapshot in snapshot.children) {
                             val libriInC = bookSnapshot.getValue(LibriInC::class.java)
-                            Log.d("TAG", "VolumeDet : $libriInC")
                             if (libriInC!=null) {
                                 inCorsoBooks.add(libriInC)
                             }
                         }
                     }
                     _libriInCorso.value = inCorsoBooks
-                    Log.d("LIbri", inCorsoBooks.toString())
                 }
                 override fun onCancelled(error: DatabaseError) {
-                    // Gestisci eventuali errori nella lettura dei dati
                     Log.e("TAG", "Errore nel recupero dei dati", error.toException())
                 }
             })
@@ -88,7 +83,6 @@ class CatalogoViewModel: ViewModel() {
                     if (snapshot.exists()) {
                         for (bookSnapshot in snapshot.children) {
                             val libriDaL = bookSnapshot.getValue(LibriDaL::class.java)
-                            Log.d("TAG", "VolumeDet : $libriDaL")
                             if (libriDaL != null) {
                                 daLeggereBooks.add(libriDaL)
                             }
@@ -96,21 +90,19 @@ class CatalogoViewModel: ViewModel() {
                         }
                     }
                     _libriDaLeggere.value = daLeggereBooks
-                    Log.d("LIbriDaLeggere", daLeggereBooks.toString())
                 }
                 override fun onCancelled(error: DatabaseError) {
-                    // Gestisci eventuali errori nella lettura dei dati
                     Log.e("TAG", "Errore nel recupero dei dati", error.toException())
                 }
             })
         }
     }
 
+    //aggiunta nel DB di un libro all'interno del catalogo personale nel nodo "da leggere" dell'utente autenticato
     suspend fun addBook(libro: LibriDaL): Boolean{
         var check = false
         if(FirebaseAuth.getInstance().currentUser != null) {
             val cUser = FirebaseAuth.getInstance().currentUser!!
-            Log.d("TAG", "Sono qui")
             val database =
                 FirebaseDatabase.getInstance("https://booktique-87881-default-rtdb.europe-west1.firebasedatabase.app/")
             val usersRef = database.reference.child("Utenti")
@@ -131,6 +123,7 @@ class CatalogoViewModel: ViewModel() {
         return check
     }
 
+    // rimozione dal DB di un libro specifico dal catalogo personale dell'utente autenticato
      fun removeBook(bookId : String, tipologia: String){
         if (FirebaseAuth.getInstance().currentUser != null) {
             val cUser = FirebaseAuth.getInstance().currentUser!!
@@ -234,6 +227,7 @@ class CatalogoViewModel: ViewModel() {
         }
     }
 
+    //spostamento di un libro specifico tra le varie sezioni del catalogo
     fun moveBooks(bookId : String, where : Boolean, lista: String){
         if (FirebaseAuth.getInstance().currentUser != null) {
             val cUser = FirebaseAuth.getInstance().currentUser!!
@@ -246,7 +240,6 @@ class CatalogoViewModel: ViewModel() {
             val inCorsoRef = catalogoRef.child("InCorso")
             val lettiRef = catalogoRef.child("Letti")
 
-            Log.d("TAG", "bookId: $bookId")
 
             if (lista == "in corso") {
                     inCorsoRef.addListenerForSingleValueEvent(object : ValueEventListener {
@@ -256,7 +249,6 @@ class CatalogoViewModel: ViewModel() {
 
                                 if (libro != null && libro.id == bookId) {
                                     // Hai individuato il libro desiderato
-                                    Log.d("Libro", "Libro trovato: $libro")
                                     if(!where) {
                                         lettiRef.child(bookId).setValue(libro)
                                     }else if (where){
@@ -264,7 +256,6 @@ class CatalogoViewModel: ViewModel() {
                                     }
 
                                     val libroRef = childSnapshot.ref
-                                    Log.d("Libro", "Libro da eliminare: $libro")
                                     libroRef.removeValue()
                                 }
                             }
@@ -286,14 +277,12 @@ class CatalogoViewModel: ViewModel() {
                                 if (libro != null && libro.id == bookId) {
 
                                     // Hai individuato il libro desiderato
-                                    Log.d("Libro", "Libro trovato: $libro")
                                     if(!where) {
                                         inCorsoRef.child(bookId).setValue(libro)
                                     }else if (where){
                                         lettiRef.child(bookId).setValue(libro)
                                     }
                                     val libroRef = childSnapshot.ref
-                                    Log.d("Libro", "Libro da eliminare: $libro")
                                     libroRef.removeValue()
                                 }
                             }
@@ -311,11 +300,11 @@ class CatalogoViewModel: ViewModel() {
             }
         }
 
+    //aggiornamento del campo "recensione" di un libro della sezione "letti"
     fun comment(review : String, bookId: String){
 
         if (FirebaseAuth.getInstance().currentUser != null) {
             val cUser = FirebaseAuth.getInstance().currentUser!!
-            Log.d("TAG", "Sono :")
             val database =
                 FirebaseDatabase.getInstance("https://booktique-87881-default-rtdb.europe-west1.firebasedatabase.app/")
             val usersRef = database.reference.child("Utenti")
@@ -330,10 +319,10 @@ class CatalogoViewModel: ViewModel() {
         }
     }
 
+    //aggiornamento del campo "valutazione" di un libro della sezione "letti" con valore 0 (valore neutro)
     fun removelike(bookId: String){
         if (FirebaseAuth.getInstance().currentUser != null) {
             val cUser = FirebaseAuth.getInstance().currentUser!!
-            Log.d("TAG", "Sono :")
             val database =
                 FirebaseDatabase.getInstance("https://booktique-87881-default-rtdb.europe-west1.firebasedatabase.app/")
             val usersRef = database.reference.child("Utenti")
@@ -348,10 +337,10 @@ class CatalogoViewModel: ViewModel() {
         }
     }
 
+    //aggiornamento del campo "valutazione" di un libro della sezione "letti" con valore 1 (valore positivo/like)
     fun like(bookId: String){
         if (FirebaseAuth.getInstance().currentUser != null) {
             val cUser = FirebaseAuth.getInstance().currentUser!!
-            Log.d("TAG", "Sono :")
             val database =
                 FirebaseDatabase.getInstance("https://booktique-87881-default-rtdb.europe-west1.firebasedatabase.app/")
             val usersRef = database.reference.child("Utenti")
@@ -366,10 +355,10 @@ class CatalogoViewModel: ViewModel() {
         }
     }
 
+    //aggiornamento del campo "valutazione" di un libro della sezione "letti" con valore 2 (valore negativo/dislike)
     fun dislike(bookId: String){
         if (FirebaseAuth.getInstance().currentUser != null) {
             val cUser = FirebaseAuth.getInstance().currentUser!!
-            Log.d("TAG", "Sono :")
             val database =
                 FirebaseDatabase.getInstance("https://booktique-87881-default-rtdb.europe-west1.firebasedatabase.app/")
             val usersRef = database.reference.child("Utenti")
@@ -384,10 +373,10 @@ class CatalogoViewModel: ViewModel() {
         }
     }
 
+    //aggiornamento del campo "paginaAtt" di un libro della sezione "in corso"
     fun numPage(bookId: String, pagAconv: String){
         if (FirebaseAuth.getInstance().currentUser != null) {
             val cUser = FirebaseAuth.getInstance().currentUser!!
-            Log.d("TAG", "Sono :")
             val database =
                 FirebaseDatabase.getInstance("https://booktique-87881-default-rtdb.europe-west1.firebasedatabase.app/")
             val usersRef = database.reference.child("Utenti")

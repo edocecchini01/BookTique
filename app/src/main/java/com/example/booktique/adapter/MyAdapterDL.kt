@@ -27,11 +27,6 @@ class MyAdapterDL(private val listaLibri : ArrayList<LibriDaL>) :
         bListener = listener
     }
 
-    fun removeItem(position: Int) {
-        listaLibri.removeAt(position)
-        notifyItemRemoved(position)
-    }
-
     class MyViewHolder(itemView : View, listener: onItemClickListener) : RecyclerView.ViewHolder(itemView){
 
         val cover : ImageButton = itemView.findViewById(R.id.coverDL)

@@ -102,6 +102,7 @@ class ScopriGenere : Fragment() {
     }
 
     private fun loadBooks(books: List<VolumeDet>?){
+        // Carica i libri  nella lista listaLibri
         if (books != null) {
             listaLibri.addAll(books)
             adapter.notifyDataSetChanged()

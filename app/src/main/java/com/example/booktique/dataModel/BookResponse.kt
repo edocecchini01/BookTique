@@ -1,6 +1,7 @@
 package com.example.booktique.dataModel
 import com.squareup.moshi.JsonClass
 
+//rappresentazione dei dati resituiti dalle chiamate API
 @JsonClass(generateAdapter = true)
 data class BookResponse(
     val items: List<BookItem>
@@ -10,7 +11,6 @@ data class BookItem(
     val volumeInfo: VolumeDet,
 
     )
-
 
 data class VolumeDet(
     val imageLinks: ImageLinks = ImageLinks(),

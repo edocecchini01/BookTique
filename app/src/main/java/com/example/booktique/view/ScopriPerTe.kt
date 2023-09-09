@@ -58,7 +58,6 @@ class ScopriPerTe : Fragment() {
         sharedPrefs = requireContext().getSharedPreferences("MyPrefs", Context.MODE_PRIVATE)
 
         viewModel.perTeBooksList.observe(viewLifecycleOwner, Observer { PerTeBookList ->
-            Log.d("SLIDE","Pertebookssss:$PerTeBookList")
             if(bookLoaded == false) {
                 loadBooks(PerTeBookList)
             }
@@ -107,7 +106,7 @@ class ScopriPerTe : Fragment() {
 
 
     private fun slideBook() {
-        Log.d("SLIDE","Pertebook:$perTeBooksList")
+
         var currentIndex = sharedPrefs.getInt("currentIndex", 0)
         if (perTeBooksList != null) {
             if (perTeBooksList.isNotEmpty()){
@@ -116,11 +115,11 @@ class ScopriPerTe : Fragment() {
                 showBook(currentIndex)
 
                 binding.no.setOnClickListener {
-                    Log.d("SLIDENO","size:${perTeBooksList.size}")
+
                     if (currentIndex < (perTeBooksList.size - 1)){
                         currentIndex++
                         sharedPrefs.edit().putInt("currentIndex", currentIndex).apply()
-                        Log.d("SLIDENO","Index: $currentIndex")
+
                         showBook(currentIndex)
 
                     }else{
@@ -178,7 +177,7 @@ class ScopriPerTe : Fragment() {
         if (currentIndex<(perTeBooksList.size-1)) {
                 currentIndex++
                 sharedPrefs.edit().putInt("currentIndex", currentIndex).apply()
-            Log.d("AGGIUNGI LIBRO", "currentindex:$currentIndex")
+
             } else{
                 binding.imageButton2.visibility = View.GONE
                 binding.textView7.text = "Libri terminati! Torna più tardi"
@@ -228,7 +227,7 @@ class ScopriPerTe : Fragment() {
         binding.textView7.text = abbreviaInfo(book.title.toString(), 20)
 
         val imageUrl = book?.imageLinks?.thumbnail
-        Log.d("Image", "imageUrl: $imageUrl")
+        
 
         Glide.with(requireContext())
             .load(imageUrl)

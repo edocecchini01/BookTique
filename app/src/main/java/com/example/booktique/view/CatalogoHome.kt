@@ -51,6 +51,7 @@ class CatalogoHome : Fragment() {
         activity = binding.root.context as FragmentActivity
         val fragment = requireActivity().supportFragmentManager.findFragmentById(R.id.fragmentContainerView)
 
+        //gestione del click sulle Label "da Leggere", "In corso", "Letti"
         if (fragment is NavHostFragment) {
             val navController = fragment.navController
             binding.daLeggereLabel.setOnClickListener {
@@ -70,9 +71,6 @@ class CatalogoHome : Fragment() {
             ).show()
         }
 
-        //val navHostFragment = requireActivity().supportFragmentManager.findFragmentById(R.id.fragmentContainerView) as NavHostFragment
-        //val navController = navHostFragment.navController
-
         viewModel.checkBookCatalogo()
 
         viewModel.libriLetti.observe(viewLifecycleOwner, Observer { LettiBooksList ->
@@ -81,13 +79,11 @@ class CatalogoHome : Fragment() {
 
 
         viewModel.libriDaLeggere.observe(viewLifecycleOwner, Observer { DaLeggereBooksList ->
-                Log.d("da leggere", "$DaLeggereBooksList")
                 loadImagesIntoImageButtonsDaLeggere(DaLeggereBooksList)
             })
 
 
             viewModel.libriInCorso.observe(viewLifecycleOwner, Observer { InCorsoBooksList ->
-                Log.d("incorso", "$InCorsoBooksList")
                 loadImagesIntoImageButtonsInCorso(InCorsoBooksList)
             })
 
@@ -126,6 +122,7 @@ class CatalogoHome : Fragment() {
     }
 
 
+    // Caricamento delle immagini dei libri "Da Leggere" all'interno degli image buttons
     private fun loadImagesIntoImageButtonsDaLeggere(books: List<LibriDaL>?) {
         val imageButtons = listOf(
             binding.bookLetti1,
@@ -141,7 +138,6 @@ class CatalogoHome : Fragment() {
             for (i in 0 until minOf(books.size, 6)) {
                 val book = books[i]
                 val imageUrl = book.copertina
-                Log.d("Image", "imageUrl: $imageUrl")
                 if (!imageUrl.isNullOrEmpty()) {
                     Glide.with(activity)
                         .load(imageUrl)
@@ -184,7 +180,7 @@ class CatalogoHome : Fragment() {
         }
     }
 
-
+    // Caricamento delle immagini dei libri "In corso" all'interno degli image buttons
     private fun loadImagesIntoImageButtonsInCorso(books: List<LibriInC>?) {
         val imageButtons = listOf(
             binding.bookInC1,
@@ -200,7 +196,6 @@ class CatalogoHome : Fragment() {
             for (i in 0 until minOf(books.size, 6)) {
                 val book = books[i]
                 val imageUrl = book.copertina
-                Log.d("Image", "imageUrl: $imageUrl")
                 if (!imageUrl.isNullOrEmpty()) {
                     Glide.with(activity)
                         .load(imageUrl)
@@ -241,6 +236,7 @@ class CatalogoHome : Fragment() {
         }
     }
 
+    // Caricamento delle immagini dei libri "Letti" all'interno degli image buttons
     private fun loadImagesIntoImageButtonsLetti (books: List<LibriL>?) {
         val imageButtons =
             listOf(
@@ -257,7 +253,6 @@ class CatalogoHome : Fragment() {
             for (i in 0 until minOf(books.size, 6)) {
                 val book = books[i]
                 val imageUrl = book.copertina
-                Log.d("Image", "imageUrl: $imageUrl")
                 if (!imageUrl.isNullOrEmpty()) {
                     Glide.with(activity)
                         .load(imageUrl)
@@ -286,7 +281,7 @@ class CatalogoHome : Fragment() {
                                 dataSource: DataSource?,
                                 isFirstResource: Boolean
                             ): Boolean {
-                                // L'immagine è stata caricata con successo
+
                                 return false
                             }
                         })
@@ -300,7 +295,7 @@ class CatalogoHome : Fragment() {
     }
 
 
-
+    // gestione dei clickListener sugli imageButtons
     private fun setupImageButtonClickListener(book: LibriInC, imageButton: ImageButton) {
         imageButton.setOnClickListener {
             val navController = findNavController()
