@@ -34,6 +34,7 @@ class ScopriViewModel : ViewModel() {
     private var booksLoaded = false
 
 
+
     fun loadNewBooks() {
         if (!booksLoaded) {
             val currentYear = Calendar.getInstance().get(Calendar.YEAR)
@@ -78,6 +79,7 @@ class ScopriViewModel : ViewModel() {
             val newBooksList = mutableListOf<VolumeDet>()
 
             for (i in 0 until itemsArray.length()) {
+
                 val book = itemsArray.getJSONObject(i)
                 val volumeInfo = book.getJSONObject("volumeInfo")
 

@@ -30,7 +30,6 @@ class ScopriGenere : Fragment() {
     private var param: String? = null
     private var ricerca: Boolean = false
 
-
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -43,7 +42,6 @@ class ScopriGenere : Fragment() {
         arguments?.let { args ->
             ricerca = requireArguments().getBoolean("ricerca")
             param = requireArguments().getString("genere")
-            Log.d("param", param.toString())
             if(param != null){
                 if(ricerca)
                     binding.genere.text = "Ricerca: "+ param
@@ -59,7 +57,7 @@ class ScopriGenere : Fragment() {
         viewModel = ViewModelProvider(this).get(ScopriViewModel::class.java)
         binding.backbuttonGen.setOnClickListener {
             val navController = findNavController()
-            navController.navigate(R.id.action_scopriGenere_to_scopri)
+            navController.popBackStack()
         }
 
         listaLibri = ArrayList()
@@ -70,18 +68,18 @@ class ScopriGenere : Fragment() {
         adapter = MyAdapterGenere(listaLibri)
         recyclerView.adapter = adapter
 
-        if(!ricerca) {
+
+        if (!ricerca) {
             val queryparameter = "subject:" + param
-            Log.d("TAG", queryparameter)
+
             viewModel.searchBooks(queryparameter)
             viewModel.genreBooks.observe(viewLifecycleOwner, Observer { newestBooksList ->
-                Log.d("TAG", newestBooksList.toString())
                 loadBooks(newestBooksList)
             })
-        }else{
+        } else {
+
             viewModel.searchBooks(param!!)
             viewModel.genreBooks.observe(viewLifecycleOwner, Observer { newestBooksList ->
-                Log.d("TAG", newestBooksList.toString())
                 loadBooks(newestBooksList)
             })
         }
@@ -104,8 +102,11 @@ class ScopriGenere : Fragment() {
     private fun loadBooks(books: List<VolumeDet>?){
         // Carica i libri  nella lista listaLibri
         if (books != null) {
-            listaLibri.addAll(books)
-            adapter.notifyDataSetChanged()
+            if(listaLibri.size < 10) {
+                val sortedBooks = books.sortedBy { it.title }
+                listaLibri.addAll(sortedBooks)
+                adapter.notifyDataSetChanged()
+            }
         }
     }
 
