@@ -175,8 +175,8 @@
                     android:id="@+id/buttonLayout"
                     android:layout_height="70dp"
                     android:layout_width="match_parent"
-                    android:layout_marginStart="17dp"
-                    android:layout_marginEnd="17dp"
+                    android:layout_marginStart="12dp"
+                    android:layout_marginEnd="12dp"
                     android:layout_marginBottom="15dp"
                     android:layout_marginTop="10dp"
                     android:padding="15dp"
@@ -186,7 +186,7 @@
 
                     <Button
                         android:id="@+id/button_meno10"
-                        android:layout_width="35dp"
+                        android:layout_width="40dp"
                         android:layout_height="50dp"
                         android:layout_marginEnd="10dp"
                         android:layout_weight="1"
@@ -199,9 +199,9 @@
 
                     <Button
                         android:id="@+id/button_meno1"
-                        android:layout_width="35dp"
+                        android:layout_width="40dp"
                         android:layout_height="50dp"
-                        android:layout_marginEnd="40dp"
+                        android:layout_marginEnd="30dp"
                         android:layout_weight="1"
                         android:fontFamily="@font/lora_bold_italic"
                         android:textColor="@color/beige"
@@ -212,7 +212,7 @@
 
                     <Button
                         android:id="@+id/button_piu1"
-                        android:layout_width="35dp"
+                        android:layout_width="40dp"
                         android:layout_height="50dp"
                         android:layout_marginEnd="10dp"
                         android:layout_weight="1"
@@ -225,7 +225,7 @@
 
                     <Button
                         android:id="@+id/button_piu10"
-                        android:layout_width="35dp"
+                        android:layout_width="40dp"
                         android:layout_height="50dp"
                         android:layout_weight="1"
                         android:fontFamily="@font/lora_bold_italic"
