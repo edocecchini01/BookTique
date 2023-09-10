@@ -390,4 +390,5 @@ class CatalogoViewModel: ViewModel() {
         }
     }
 
+
 }

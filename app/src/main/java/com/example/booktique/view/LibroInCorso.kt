@@ -102,12 +102,111 @@ class LibroInCorso : Fragment() {
             }
 
         })
+
+            binding.buttonMeno1.setOnClickListener {
+                var pagA = binding.textView25.text.toString().toInt()
+                if(pagA > 0) {
+                    pagA = pagA - 1
+                    val pagAconv = pagA.toString()
+                    if (bookId != null) {
+                        viewModel.numPage(bookId, pagAconv)
+                    }
+                    binding.textView25.text = pagAconv
+                    binding.seekBar4.progress = pagA
+                }else{
+                    Toast.makeText(
+                        activity,
+                        "Pagine a 0, inizia la tua lettura!",
+                        Toast.LENGTH_SHORT
+                    ).show()
+                }
+            }
+
+            binding.buttonMeno10.setOnClickListener {
+                var pagA = binding.textView25.text.toString().toInt()
+                if(pagA > 10) {
+                    pagA = pagA - 10
+                    val pagAconv = pagA.toString()
+                    if (bookId != null) {
+                        viewModel.numPage(bookId, pagAconv)
+                    }
+                    binding.textView25.text = pagAconv
+                    binding.seekBar4.progress = pagA
+                }else if(pagA <= 10 && pagA > 0){
+                    pagA = 0
+                    val pagAconv = pagA.toString()
+                    if (bookId != null) {
+                        viewModel.numPage(bookId, pagAconv)
+                    }
+                    binding.textView25.text = pagAconv
+                    binding.seekBar4.progress = pagA
+                }else{
+                    Toast.makeText(
+                        activity,
+                        "Pagine a 0, inizia la tua lettura!",
+                        Toast.LENGTH_SHORT
+                    ).show()
+                }
+            }
+
+            binding.buttonPiu1.setOnClickListener {
+                var pagA = binding.textView25.text.toString().toInt()
+                val pagTot = binding.textView26.text.toString().toInt()
+                if(pagA < (pagTot-1)) {
+                    pagA = pagA + 1
+                    val pagAconv = pagA.toString()
+                    if (bookId != null) {
+                        viewModel.numPage(bookId, pagAconv)
+                    }
+                    binding.textView25.text = pagAconv
+                    binding.seekBar4.progress = pagA
+                }else{
+                    if (bookId != null) {
+                        viewModel.moveBooks(bookId,false, "in corso")
+                    }
+                    val navController = findNavController()
+                    navController.navigate(R.id.action_libroInCorso_to_catalogoHome)
+                    Toast.makeText(
+                        activity,
+                        "Complimenti hai terminato la tua lettura!",
+                        Toast.LENGTH_SHORT
+                    ).show()
+                }
+            }
+
+            binding.buttonPiu10.setOnClickListener {
+                var pagA = binding.textView25.text.toString().toInt()
+                val pagTot = binding.textView26.text.toString().toInt()
+                if(pagA < (pagTot-10)) {
+                    pagA = pagA + 10
+                    val pagAconv = pagA.toString()
+                    if (bookId != null) {
+                        viewModel.numPage(bookId, pagAconv)
+                    }
+                    binding.textView25.text = pagAconv
+                    binding.seekBar4.progress = pagA
+                }else{
+                    if (bookId != null) {
+                        viewModel.moveBooks(bookId,false, "in corso")
+                    }
+                    val navController = findNavController()
+                    navController.navigate(R.id.action_libroInCorso_to_catalogoHome)
+                    Toast.makeText(
+                        activity,
+                        "Complimenti hai terminato la tua lettura!",
+                        Toast.LENGTH_SHORT
+                    ).show()
+                }
+            }
+
     }else{
             binding.seekBar4.visibility = View.GONE
             binding.textView26.visibility = View.GONE
+            binding.buttonLayout.visibility = View.GONE
             binding.textView25.text = "Pagine totali non disponibili"
             binding.textView25.gravity = Gravity.CENTER
     }
+
         val origin = args.origin
         //gestione del pulsante indietro in base alla pagina di provenienza
         if (origin == "catalogoInCorso") {

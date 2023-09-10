@@ -171,6 +171,71 @@
                         android:textColor="@color/gray" />
                 </LinearLayout>
 
+                <LinearLayout
+                    android:id="@+id/buttonLayout"
+                    android:layout_height="70dp"
+                    android:layout_width="match_parent"
+                    android:layout_marginStart="17dp"
+                    android:layout_marginEnd="17dp"
+                    android:layout_marginBottom="15dp"
+                    android:layout_marginTop="10dp"
+                    android:padding="15dp"
+                    android:gravity="center"
+                    android:orientation="horizontal"
+                    android:background="@drawable/box_libro_dettaglio">
+
+                    <Button
+                        android:id="@+id/button_meno10"
+                        android:layout_width="35dp"
+                        android:layout_height="50dp"
+                        android:layout_marginEnd="10dp"
+                        android:layout_weight="1"
+                        android:fontFamily="@font/lora_bold_italic"
+                        android:textColor="@color/beige"
+                        android:layout_gravity="center"
+                        android:backgroundTint="@color/red"
+                        android:textSize="10sp"
+                        android:text="-10" />
+
+                    <Button
+                        android:id="@+id/button_meno1"
+                        android:layout_width="35dp"
+                        android:layout_height="50dp"
+                        android:layout_marginEnd="40dp"
+                        android:layout_weight="1"
+                        android:fontFamily="@font/lora_bold_italic"
+                        android:textColor="@color/beige"
+                        android:layout_gravity="center"
+                        android:backgroundTint="@color/red"
+                        android:textSize="10sp"
+                        android:text="-1" />
+
+                    <Button
+                        android:id="@+id/button_piu1"
+                        android:layout_width="35dp"
+                        android:layout_height="50dp"
+                        android:layout_marginEnd="10dp"
+                        android:layout_weight="1"
+                        android:fontFamily="@font/lora_bold_italic"
+                        android:textColor="@color/beige"
+                        android:layout_gravity="center"
+                        android:backgroundTint="@color/red"
+                        android:textSize="10sp"
+                        android:text="+1" />
+
+                    <Button
+                        android:id="@+id/button_piu10"
+                        android:layout_width="35dp"
+                        android:layout_height="50dp"
+                        android:layout_weight="1"
+                        android:fontFamily="@font/lora_bold_italic"
+                        android:textColor="@color/beige"
+                        android:layout_gravity="center"
+                        android:backgroundTint="@color/red"
+                        android:textSize="10sp"
+                        android:text="+10" />
+                </LinearLayout>
+
             </LinearLayout>
 
     </LinearLayout>
