@@ -12,7 +12,7 @@ Core features
 Getting started (Windows / PowerShell)
 1. Clone the repo:
 
-   git clone https://github.com/edocecchini01/BookTique_project.git
+   git clone https://github.com/edocecchini01/BookTique.git
 
 2. Open the project in Android Studio.
 3. Configure an Android SDK and an emulator or device.
