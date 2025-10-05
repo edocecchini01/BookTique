@@ -1,22 +1,26 @@
-# BookTique_project
-BookTique è una applicazione Android implementata in Kotlin. 
-L'obiettivo principale di BookTique è offrire agli utenti un'esperienza di lettura personalizzata, 
-consentendo loro di scoprire nuovi libri e di creare e gestire un proprio catalogo personale.
+## BookTique
+Minimal Android app (Kotlin) for discovering and managing personal book catalogs.
 
-## Funzionalità implementate
-L'applicazione presenta due sezioni principali:
-<ul>
-  <li> Scopri: All'interno di questa sezione si possono scoprire nuovi libri tramite la più classica ricerca o una sezione "per te" realizzata per consigliare agli utenti libri personalizzati in base ai propri gusti di lettura</li>
-  <li>Catalogo: All'interno di questa sezione si può gestire il proprio catalogo di lettura, con azioni personalizzate quali il tener traccia del progresso di lettura e l'inserimento di una recensione e valutazione</li>
-</ul>
+Why it matters
+- Discover books tailored to your taste.
+- Track reading progress, rate and review titles in a simple, distraction-free UI.
 
-## Per Iniziare:
-<ul>
-  <li>Clona il repository da GitHub sul tuo computer</li>
-  <li>Apri il progetto utilizzando Android Studio o qualsiasi altro IDE compatibile con Kotlin</li>
-  <li>Configura il tuo ambiente di sviluppo per eseguire l'app su un dispositivo Android o un emulatore</li>
-  <li> Compila ed esegui l'applicazione </li>
-</ul>
+Core features
+- Discover: search and a "For You" feed with personalized suggestions.
+- Catalog: add books, track status (to-read, reading, read), progress, ratings, and reviews.
 
-## Flutter
-E' disponibile anche una versione con meno funzionalità realizzata in Flutter al seguente link: https://github.com/LauraFe01/book_tique_flutter.git
+Getting started (Windows / PowerShell)
+1. Clone the repo:
+
+   git clone https://github.com/edocecchini01/BookTique_project.git
+
+2. Open the project in Android Studio.
+3. Configure an Android SDK and an emulator or device.
+4. Build and run from Android Studio (Run ▶) or via Gradle:
+
+   .\gradlew assembleDebug
+
+Extras
+- There is a lighter Flutter version (fewer features) at: https://github.com/LauraFe01/book_tique_flutter
+
+Enjoy reading.
